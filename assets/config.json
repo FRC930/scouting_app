@@ -1,0 +1,121 @@
+{
+    "pre-match": [
+
+        {
+            "title": "Team Number",
+            "data-type": "int"
+        },
+        {
+            "title": "Match Number",
+            "data-type": "matchnum"
+        },
+        {
+            "title": "Scouter Name",
+            "data-type": "string"
+        }
+    ],
+    "auton": [
+
+        {
+            "title": "High Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Starting Location",
+            "data-type": "choice",
+            "choices": [
+                "1", "2", "3", "4"
+            ]
+        },
+        {
+            "title": "Left Tarmac",
+            "data-type": "choice",
+            "choices": [
+                "Yes", "No"
+            ]
+        }
+    ],
+    "teleop": [
+
+        {
+            "title": "High Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "High Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Defense",
+            "data-type": "choice",
+            "choices": [
+                "None", "Not Effective", "Effective", "Very Effective"
+            ]
+        }
+    ],
+    "endgame": [
+
+        {
+            "title": "Hang Time",
+            "data-type": "stopwatch"
+        },
+        {
+            "title": "Hang Type",
+            "data-type": "choice",
+            "choices": [
+                "No Hang", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+            ]
+        }
+    ],
+    "post-match": [
+
+        {
+            "title": "Would you pick this robot?",
+            "data-type": "choice",
+            "choices": [
+                "1st Pick", "2nd Pick", "No Pick"
+            ]
+        },
+        {
+            "title": "Robot Role",
+            "data-type": "choice",
+            "choices": [
+                "Offense - Launch Pad",
+                "Offense - Hub Cleanup",
+                "Defense - Bot to Bot ",
+                "Defense - Launch Pad Zone",
+                "Defense - Center Line Zone",
+                "Defense - Terminal Zone",
+                "Defense - Circling Hub",
+                "Defense - Cargo Hitter"
+
+            ]
+        },
+        {
+            "title": "Penalties",
+            "data-type": "choice",
+            "choices": ["Yes", "No"]
+        },
+        {
+            "title": "Disabled",
+            "data-type": "choice",
+            "choices": ["Yes", "No"]
+        },
+        {
+            "title": "General Comments",
+            "data-type": "string"
+        }
+    ]
+}
