@@ -43,15 +43,12 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   }
 
   void startTimer() {
-    // Make sure the timer has not already been started
-    if (timer != null && !timer!.isActive) {
-      watchTimer.start();
-      timer?.cancel();
-      timer = Timer.periodic(
-        const Duration(milliseconds: 50),
-        (_) => setState(() {}),
-      );
-    }
+    watchTimer.start();
+    timer?.cancel();
+    timer = Timer.periodic(
+      const Duration(milliseconds: 50),
+      (_) => setState(() {}),
+    );
   }
 
   void stopTimer() {
