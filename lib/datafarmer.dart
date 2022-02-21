@@ -52,7 +52,6 @@ class _MatchPageDataState extends State<MatchPageData> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -90,15 +89,14 @@ class _MatchPageDataState extends State<MatchPageData> {
                                 child: Text(
                                   dataRequired[index]["title"],
                                   textAlign: TextAlign.left,
-                                  style: TextHandler.boldBodyText,
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
                                 ),
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
                                   hintText: dataRequired[index]["title"],
-                                  fillColor: const Color(0xFFDDDDDD),
-                                  filled: true,
                                 ),
                                 validator: (value) {
                                   if (int.tryParse(value!) == null) {
@@ -122,22 +120,21 @@ class _MatchPageDataState extends State<MatchPageData> {
                                 Padding(
                                   child: Text(
                                     dataRequired[index]["title"],
-                                    style: TextHandler.boldBodyText,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                   padding: const EdgeInsets.all(5),
                                 ),
                                 DropdownButtonFormField(
-                                  decoration: const InputDecoration(
-                                    errorStyle: TextStyle(color: Colors.black),
-                                    fillColor: Color(0xFFDDDDDD),
-                                    filled: true,
-                                  ),
                                   items: itemsList.map((String s) {
                                     return DropdownMenuItem(
                                       value: s,
                                       child: Text(
                                         s,
-                                        style: TextHandler.blackBodyText,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
                                       ),
                                     );
                                   }).toList(),
@@ -172,7 +169,8 @@ class _MatchPageDataState extends State<MatchPageData> {
                                 child: Text(
                                   dataRequired[index]["title"],
                                   textAlign: TextAlign.left,
-                                  style: TextHandler.boldBodyText,
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
                                 ),
                               ),
                               CounterField(
@@ -216,15 +214,15 @@ class _MatchPageDataState extends State<MatchPageData> {
                                   child: Text(
                                     dataRequired[index]["title"],
                                     textAlign: TextAlign.left,
-                                    style: TextHandler.boldBodyText,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                 ),
                                 TextFormField(
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                     hintText: "Match number and alliance color",
-                                    fillColor: Color(0xFFDDDDDD),
-                                    filled: true,
                                   ),
                                   validator: (value) {
                                     if ((value ?? "").isEmpty) {
@@ -264,15 +262,15 @@ class _MatchPageDataState extends State<MatchPageData> {
                                   child: Text(
                                     dataRequired[index]["title"],
                                     textAlign: TextAlign.left,
-                                    style: TextHandler.boldBodyText,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(
                                     border: const OutlineInputBorder(),
                                     hintText: dataRequired[index]["title"],
-                                    fillColor: const Color(0xFFDDDDDD),
-                                    filled: true,
                                   ),
                                   validator: (value) {
                                     if ((value ?? "").isEmpty) {
@@ -290,26 +288,20 @@ class _MatchPageDataState extends State<MatchPageData> {
                     },
                   ),
                 ),
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    primaryColor: const Color(0xFF1D57A5),
-                  ),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      if (saveData()) {
-                        WidgetsBinding.instance?.addPostFrameCallback(
-                          (_) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => widget.nextPage,
-                            ),
+                FloatingActionButton(
+                  onPressed: () {
+                    if (saveData()) {
+                      WidgetsBinding.instance?.addPostFrameCallback(
+                        (_) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => widget.nextPage,
                           ),
-                        );
-                      }
-                    },
-                    backgroundColor: const Color(0xFF1D57A5),
-                    child: const Icon(Icons.keyboard_arrow_right),
-                  ),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Icon(Icons.keyboard_arrow_right),
                 ),
               ],
             ),

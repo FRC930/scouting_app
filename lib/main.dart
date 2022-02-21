@@ -17,10 +17,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConfigHandler.getData();
-    return const MaterialApp(
+    return MaterialApp(
       title: "930 Scouting App",
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(),
+      theme: mainThemeData,
     );
   }
 }
@@ -39,13 +40,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           "930 Scouting App",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         centerTitle: true,
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: mainThemeData.backgroundColor,
           image: DecorationImage(
             alignment: Alignment.bottomCenter,
             image: AssetImage(
@@ -61,12 +61,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               Center(
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF1D57A5),
-                  ),
                   child: Text(
                     "New Match",
-                    style: TextHandler.buttonText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -80,10 +77,10 @@ class _HomePageState extends State<HomePage> {
               ),
               Center(
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF1D57A5),
+                  child: Text(
+                    "View Data",
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  child: Text("View Data", style: TextHandler.buttonText),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -110,11 +107,10 @@ class MatchDataViewer extends StatelessWidget {
     MatchViewHandler.readMatchFiles();
 
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Data Viewer",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Container(
@@ -142,11 +138,10 @@ class PreMatchData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Pre-Match Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: preMatchData,
@@ -162,11 +157,10 @@ class AutonData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Auton Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Column(
@@ -195,11 +189,10 @@ class TeleopData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Teleop Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: autonData,
@@ -216,11 +209,10 @@ class EndgameData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Endgame Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: autonData,
@@ -237,11 +229,10 @@ class PostMatchData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Post-Match Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: autonData,
@@ -255,11 +246,10 @@ class SaveDataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "Save Data",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Padding(
@@ -270,7 +260,7 @@ class SaveDataPage extends StatelessWidget {
             ElevatedButton(
               child: Text(
                 "Save data",
-                style: TextHandler.buttonText,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               onPressed: () {
                 MatchHandler.writeMatchData();

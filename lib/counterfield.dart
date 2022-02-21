@@ -30,9 +30,6 @@ class _CounterFieldState extends State<CounterField> {
         SizedBox(
           height: 58,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: const Color(0xFF1D57A5),
-            ),
             onPressed: () {
               setState(() {
                 if (counter > 0) {
@@ -42,27 +39,23 @@ class _CounterFieldState extends State<CounterField> {
                 controller.text = counter.toString();
               });
             },
-            child: const Icon(Icons.arrow_left_sharp),
+            child: const Icon(
+              Icons.arrow_left_sharp,
+              color: Colors.white,
+            ),
           ),
         ),
         Expanded(
           child: TextFormField(
             controller: controller,
             textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              fillColor: Color(0xFFDDDDDD),
-              filled: true,
-            ),
             enabled: false,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         SizedBox(
           height: 58,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: const Color(0xFF1D57A5),
-            ),
             onPressed: () {
               setState(() {
                 counter++;
@@ -70,7 +63,10 @@ class _CounterFieldState extends State<CounterField> {
                 controller.text = counter.toString();
               });
             },
-            child: const Icon(Icons.arrow_right_sharp),
+            child: const Icon(
+              Icons.arrow_right_sharp,
+              color: Colors.white,
+            ),
           ),
         ),
       ],

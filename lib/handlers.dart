@@ -88,32 +88,3 @@ class ConfigHandler {
     return _data;
   }
 }
-
-class TextHandler {
-  static TextStyle get headerText => GoogleFonts.montserrat(
-        fontSize: 32,
-        fontWeight: FontWeight.bold,
-        color: const Color(0xffdddddd),
-      );
-
-  static TextStyle get bodyText => GoogleFonts.openSans(
-        fontSize: 16,
-        color: const Color(0xffdddddd),
-      );
-
-  static TextStyle get buttonText => GoogleFonts.openSans(
-        fontSize: 22,
-        color: const Color(0xffdddddd),
-      );
-
-  static TextStyle get blackBodyText => GoogleFonts.openSans(
-        fontSize: 16,
-        color: const Color(0xFF111111),
-      );
-
-  static TextStyle get boldBodyText => GoogleFonts.openSans(
-        fontWeight: FontWeight.bold,
-        color: const Color(0xffFBDB65),
-        fontSize: 16,
-      );
-}

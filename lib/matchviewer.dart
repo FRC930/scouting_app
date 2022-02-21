@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:scouting_app3/themefile.dart';
 
 import 'handlers.dart';
 
@@ -19,7 +20,6 @@ class _MatchViewState extends State<MatchViewElement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
@@ -67,10 +67,9 @@ class _MatchViewState extends State<MatchViewElement> {
       children: <Widget>[
         Center(
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: const Color(0xFF1D57A5)),
             child: Text(
               "View QR code for all selected matches",
-              style: TextHandler.buttonText,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             onPressed: () {
               if (_CheckBoxWrapperState.numSelected > 0) {
@@ -86,27 +85,26 @@ class _MatchViewState extends State<MatchViewElement> {
         ),
         Center(
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: const Color(0xFF1D57A5)),
             child: Text(
               "Delete all selected matches",
-              style: TextHandler.buttonText,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             onPressed: () {
               if (_CheckBoxWrapperState.numSelected > 0) {
                 AlertDialog alert = AlertDialog(
                   title: Text(
                     "Delete data?",
-                    style: TextHandler.blackBodyText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   content: Text(
                     "Are you sure that you want to delete these files?",
-                    style: TextHandler.blackBodyText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   actions: [
                     TextButton(
                       child: Text(
                         "Yes",
-                        style: TextHandler.blackBodyText,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -120,7 +118,7 @@ class _MatchViewState extends State<MatchViewElement> {
                     TextButton(
                       child: Text(
                         "No",
-                        style: TextHandler.blackBodyText,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -144,7 +142,7 @@ class _MatchViewState extends State<MatchViewElement> {
             shrinkWrap: true,
             itemCount: values.length,
             itemBuilder: (context, index) {
-              Color backgroundColor = const Color(0xFF1D57A5);
+              Color backgroundColor = mainColor;
               if (File(values[index]).readAsStringSync().contains("DONE_")) {
                 backgroundColor = Colors.grey;
               }
@@ -156,7 +154,7 @@ class _MatchViewState extends State<MatchViewElement> {
                     style: ElevatedButton.styleFrom(primary: backgroundColor),
                     child: Text(
                       values[index].split("/").last,
-                      style: TextHandler.buttonText,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -208,26 +206,23 @@ class _CheckBoxWrapperState extends State<CheckBoxWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(unselectedWidgetColor: const Color(0xFF4698CA)),
-      child: Checkbox(
-        value: _value,
-        onChanged: (value) {
-          setState(() {
-            if (value == false) {
-              _value = value!;
-              numSelected--;
-              widget.fileList.remove(widget.filename);
-            } else if (numSelected < 6 && value == true) {
-              _value = value!;
-              if (!widget.fileList.contains(widget.filename)) {
-                numSelected++;
-                widget.fileList.add(widget.filename);
-              }
+    return Checkbox(
+      value: _value,
+      onChanged: (value) {
+        setState(() {
+          if (value == false) {
+            _value = value!;
+            numSelected--;
+            widget.fileList.remove(widget.filename);
+          } else if (numSelected < 6 && value == true) {
+            _value = value!;
+            if (!widget.fileList.contains(widget.filename)) {
+              numSelected++;
+              widget.fileList.add(widget.filename);
             }
-          });
-        },
-      ),
+          }
+        });
+      },
     );
   }
 
@@ -242,11 +237,10 @@ class QRCodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
       appBar: AppBar(
         title: Text(
           "QR Code viewer",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Container(
@@ -272,23 +266,23 @@ class QRCodeView extends StatelessWidget {
                   child: ElevatedButton(
                     child: Text(
                       "Delete file",
-                      style: TextHandler.buttonText,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onPressed: () {
                       AlertDialog alert = AlertDialog(
                         title: Text(
                           "Delete data?",
-                          style: TextHandler.buttonText,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         content: Text(
                           "Are you sure that you want to delete this file?",
-                          style: TextHandler.bodyText,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         actions: [
                           TextButton(
                             child: Text(
                               "Yes",
-                              style: TextHandler.buttonText,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             onPressed: () {
                               fileRef.deleteSync();
@@ -299,7 +293,7 @@ class QRCodeView extends StatelessWidget {
                           TextButton(
                             child: Text(
                               "No",
-                              style: TextHandler.buttonText,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -348,12 +342,11 @@ class QRCodeViewAll extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "QR Code viewer",
-          style: TextHandler.headerText,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: const Color(0xff222222),
           image: DecorationImage(
             alignment: Alignment.bottomCenter,
             image: AssetImage(

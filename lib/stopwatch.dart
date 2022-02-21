@@ -71,7 +71,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
               padding: const EdgeInsets.all(10),
               child: Text(
                 widget.title,
-                style: TextHandler.boldBodyText,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
             ),
             SizedBox(
@@ -89,7 +89,10 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                                   ? widget.initialMilliseconds
                                   : 0)) /
                           1000.0)),
-                      style: TextHandler.boldBodyText.copyWith(fontSize: 36),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayMedium!
+                          .copyWith(fontSize: 36),
                     ),
                   ),
                 ),
@@ -102,21 +105,21 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                   onPressed: startTimer,
                   child: Text(
                     "Start",
-                    style: TextHandler.buttonText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 ElevatedButton(
                   onPressed: stopTimer,
                   child: Text(
                     "Stop",
-                    style: TextHandler.buttonText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () => reset(),
                   child: Text(
                     "Reset",
-                    style: TextHandler.buttonText,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],
