@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scouting_app3/handlers.dart';
 
+// Custom stopwatch widget
 class StopwatchTimerWidget extends StatefulWidget {
   final String stageName;
   final String title;
-  final int initialMilliseconds;
+  final int initialTime;
 
-  const StopwatchTimerWidget(
-      this.stageName, this.title, this.initialMilliseconds,
+  const StopwatchTimerWidget(this.stageName, this.title, this.initialTime,
       {Key? key})
       : super(key: key);
 
@@ -26,11 +26,14 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   void dispose() {
     super.dispose();
 
+    // Stop trying to update the display
     timer?.cancel();
   }
 
   void reset() {
+    // We don't want to account for any previous data anymore
     addInitialTime = false;
+    // Get rid of the previous data
     MatchHandler.matchData[widget.stageName]![widget.title] = "0.0";
     setState(() {
       watchTimer.stop();
@@ -40,18 +43,24 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   }
 
   void startTimer() {
-    watchTimer.start();
-    timer?.cancel();
-    timer = Timer.periodic(
-      const Duration(milliseconds: 10),
-      (_) => setState(() {}),
-    );
+    // Make sure the timer has not already been started
+    if (timer != null && !timer!.isActive) {
+      watchTimer.start();
+      timer?.cancel();
+      timer = Timer.periodic(
+        const Duration(milliseconds: 50),
+        (_) => setState(() {}),
+      );
+    }
   }
 
   void stopTimer() {
     MatchHandler.matchData[widget.stageName]![widget.title] =
+        // Get elapsed time
         ((watchTimer.elapsedMilliseconds +
-                    (addInitialTime ? widget.initialMilliseconds : 0)) /
+                    // Check whether to add initial time from a previous stopwatch run or not
+                    (addInitialTime ? widget.initialTime : 0)) /
+                // Divide by 1000 to convert to seconds
                 1000.0)
             .toString();
     setState(() {
@@ -85,9 +94,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                   child: Center(
                     child: Text(
                       _formatTime(((watchTimer.elapsedMilliseconds +
-                              (addInitialTime
-                                  ? widget.initialMilliseconds
-                                  : 0)) /
+                              (addInitialTime ? widget.initialTime : 0)) /
                           1000.0)),
                       style: Theme.of(context)
                           .textTheme
@@ -130,6 +137,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     );
   }
 
+// Converts time to a number in the form of #.# (ex. 12.3, 5.9)
   String _formatTime(double seconds) {
     seconds *= 10;
     seconds = seconds.floorToDouble();

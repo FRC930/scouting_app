@@ -20,41 +20,39 @@ class _MatchViewState extends State<MatchViewElement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment.bottomCenter,
-              image: AssetImage(
-                "assets/logo.png",
-                bundle: rootBundle,
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment.bottomCenter,
+            image: AssetImage(
+              "assets/logo.png",
+              bundle: rootBundle,
             ),
           ),
-          child: Column(
-            children: <Widget>[
-              FutureBuilder(
-                future: _inFutureList(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Column(
-                      children: [
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Match data loading..."),
-                          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            // Asynchronously load the file list
+            FutureBuilder(
+              future: _inFutureList(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Column(
+                    children: [
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text("Match data loading..."),
                         ),
-                      ],
-                    );
-                  } else {
-                    return fileListBuild(context, snapshot);
-                  }
-                },
-              )
-            ],
-          ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return fileListBuild(context, snapshot);
+                }
+              },
+            )
+          ],
         ),
       ),
     );
@@ -83,6 +81,8 @@ class _MatchViewState extends State<MatchViewElement> {
             },
           ),
         ),
+
+        // Delete buttons and confirmation
         Center(
           child: ElevatedButton(
             child: Text(
@@ -136,6 +136,9 @@ class _MatchViewState extends State<MatchViewElement> {
             },
           ),
         ),
+        // End delete buttons and confirmation
+
+        // List of file names
         SizedBox(
           height: 400,
           child: ListView.builder(
@@ -170,10 +173,12 @@ class _MatchViewState extends State<MatchViewElement> {
             },
           ),
         ),
+        // End list of file names
       ],
     );
   }
 
+  // Function to asynchronously read match files
   Future<List<String>> _inFutureList() async {
     List<String> fileList;
     fileList = await MatchViewHandler.readMatchFiles();
@@ -182,6 +187,7 @@ class _MatchViewState extends State<MatchViewElement> {
   }
 }
 
+// Custom checkbox group input field
 class CheckBoxWrapper extends StatefulWidget {
   final List<String> fileList;
   final String filename;
@@ -194,7 +200,11 @@ class CheckBoxWrapper extends StatefulWidget {
 }
 
 class _CheckBoxWrapperState extends State<CheckBoxWrapper> {
+  // Total number of checkboxes selected, max is 6
+  // This is static so all instances share it
   static int numSelected = 0;
+
+  // Whether the current checkbox is checked
   bool _value = false;
 
   @override
@@ -210,17 +220,23 @@ class _CheckBoxWrapperState extends State<CheckBoxWrapper> {
       value: _value,
       onChanged: (value) {
         setState(() {
+          // If we are unselecting a checkbox
           if (value == false) {
+            // Set our stored value. 
+            //This is needed to actually change the checkbox appearance
             _value = value!;
             numSelected--;
             widget.fileList.remove(widget.filename);
+          // If we are selecting a checkbox
           } else if (numSelected < 6 && value == true) {
             _value = value!;
+            // Sanity check to make sure we don't add the same file twice
             if (!widget.fileList.contains(widget.filename)) {
               numSelected++;
               widget.fileList.add(widget.filename);
             }
           }
+          // If we have 6 checkboxes selected already, nothing to do
         });
       },
     );

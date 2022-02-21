@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:scouting_app3/datafarmer.dart';
 import 'package:scouting_app3/themefile.dart';
 
@@ -11,16 +10,23 @@ void main() {
   runApp(const MainApp());
 }
 
+/// Main app class
+///
+/// This is the class that will start the app and set the theme
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Pre-fetch the configuration data
     ConfigHandler.getData();
     return MaterialApp(
       title: "930 Scouting App",
+      // Only affects debug mode
       debugShowCheckedModeBanner: false,
+      // Set the home page for the app
       home: const HomePage(),
+      // Set up the theme found in the themefile
       theme: mainThemeData,
     );
   }
@@ -37,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // App bar to display page title and the back button
       appBar: AppBar(
         title: Text(
           "930 Scouting App",
@@ -44,6 +51,7 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
+      // Use container to add the logo to the background
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -113,18 +121,7 @@ class MatchDataViewer extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment.bottomCenter,
-            image: AssetImage(
-              "assets/logo.png",
-              bundle: rootBundle,
-            ),
-          ),
-        ),
-        child: const MatchViewElement(),
-      ),
+      body: const MatchViewElement(),
     );
   }
 }
