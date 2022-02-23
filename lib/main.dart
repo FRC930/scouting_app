@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -187,12 +185,10 @@ class DataPage extends StatelessWidget {
               : const Icon(Icons.keyboard_arrow_right),
           onPressed: () {
             if (nextWidget != null) {
-              try {
-                if (formKeys[pageIndex]?.currentState?.validate() ?? false) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => nextWidget!));
-                }
-              } catch (e) {}
+              if (formKeys[pageIndex]?.currentState?.validate() ?? false) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => nextWidget!));
+              }
             } else {
               Navigator.popUntil(context, (route) => route.isFirst);
             }
