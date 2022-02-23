@@ -13,8 +13,8 @@
             {
                 "title": "Match Number",
                 "data-type": "field",
-                "validation": "^[0-9]*[rRbB]$",
-                "validate-help": "This should be a match number and alliance color (ex. 12r, 6b)"
+                "validation": "^[0-9]*$",
+                "validate-help": "This should be a match number"
             },
             {
                 "title": "Scouter Name",
