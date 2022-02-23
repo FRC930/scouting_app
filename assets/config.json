@@ -29,17 +29,17 @@
         "data": [
 
             {
-                "title": "Tarmac Image",
-                "data-type": "displayImage",
-                "location": "assets/tarmac.png"
-            },
-            {
                 "title": "High Hub Scored",
                 "data-type": "counter"
             },
             {
                 "title": "Low Hub Scored",
                 "data-type": "counter"
+            }, 
+            {
+                "title": "Tarmac Image",
+                "data-type": "displayImage",
+                "location": "assets/tarmac.png"
             },
             {
                 "title": "Starting Location",

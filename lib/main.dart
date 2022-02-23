@@ -400,8 +400,18 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                 .floor(),
                             index),
                       );
+                    } else if (dataRequired[index]["data-type"] ==
+                        "displayImage") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Image(
+                          image: AssetImage("assets/Tarmac.png",
+                              bundle: rootBundle),
+                          height: 200,
+                        ),
+                      );
                     } else {
-                      return const Text("test");
+                      return const Text("Widget not found");
                     }
                   },
                 ),

@@ -155,13 +155,20 @@ class _MatchViewState extends State<MatchViewElement> {
                 backgroundColor = Colors.grey;
               }
 
+              String buttonText = "";
+              if (Platform.isWindows) {
+                buttonText = values[index].split("\\").last;
+              } else {
+                buttonText = values[index].split("/").last;
+              }
+
               return Row(
                 children: <Widget>[
                   CheckBoxWrapper(filesToPutInQR, values[index]),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: backgroundColor),
                     child: Text(
-                      values[index].split("/").last,
+                      buttonText,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onPressed: () {
