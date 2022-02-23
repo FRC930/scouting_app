@@ -1,15 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:scouting_app3/handlers.dart';
+import 'package:scouting_app3/globals.dart';
+import 'package:tuple/tuple.dart';
 
 // Custom stopwatch widget
 class StopwatchTimerWidget extends StatefulWidget {
   final String stageName;
   final String title;
   final int initialTime;
+  final int positionOnStack;
 
-  const StopwatchTimerWidget(this.stageName, this.title, this.initialTime,
+  const StopwatchTimerWidget(
+      this.stageName, this.title, this.initialTime, this.positionOnStack,
       {Key? key})
       : super(key: key);
 
@@ -34,7 +37,9 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     // We don't want to account for any previous data anymore
     addInitialTime = false;
     // Get rid of the previous data
-    MatchHandler.matchData[widget.stageName]![widget.title] = "0.0";
+    matchData[widget.stageName] ??= {};
+    matchData[widget.stageName]![widget.title] =
+        Tuple2<int, String>(widget.positionOnStack, "0.0");
     setState(() {
       watchTimer.stop();
       watchTimer.reset();
@@ -52,14 +57,16 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   }
 
   void stopTimer() {
-    MatchHandler.matchData[widget.stageName]![widget.title] =
-        // Get elapsed time
-        ((watchTimer.elapsedMilliseconds +
-                    // Check whether to add initial time from a previous stopwatch run or not
-                    (addInitialTime ? widget.initialTime : 0)) /
-                // Divide by 1000 to convert to seconds
-                1000.0)
-            .toString();
+    String elapsedTime = ((watchTimer.elapsedMilliseconds +
+                // Check whether to add initial time from a previous stopwatch run or not
+                (addInitialTime ? widget.initialTime : 0)) /
+            // Divide by 1000 to convert to seconds
+            1000.0)
+        .toString();
+    matchData[widget.stageName] ??= {};
+    matchData[widget.stageName]![widget.title] =
+        matchData[widget.stageName]![widget.title]?.withItem2(elapsedTime) ??
+            Tuple2<int, String>(widget.positionOnStack, elapsedTime);
     setState(() {
       timer?.cancel();
       watchTimer.stop();
@@ -80,23 +87,27 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                 style: Theme.of(context).textTheme.displayMedium,
               ),
             ),
-            SizedBox(
-              width: 200,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xffdddddd), width: 3),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
-                    child: Text(
-                      _formatTime(((watchTimer.elapsedMilliseconds +
-                              (addInitialTime ? widget.initialTime : 0)) /
-                          1000.0)),
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(fontSize: 36),
+            Padding(
+              padding: const EdgeInsets.all(3),
+              child: SizedBox(
+                width: 200,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(color: const Color(0xffdddddd), width: 3),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: Text(
+                        _formatTime(((watchTimer.elapsedMilliseconds +
+                                (addInitialTime ? widget.initialTime : 0)) /
+                            1000.0)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium!
+                            .copyWith(fontSize: 36),
+                      ),
                     ),
                   ),
                 ),

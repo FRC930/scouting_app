@@ -21,6 +21,7 @@ class _CounterFieldState extends State<CounterField> {
 
     counter = widget.initialValue;
     controller.text = counter.toString();
+    widget.callback(counter);
   }
 
   @override

@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const mainColor = Color(0xFF1D57A5);
-const accent1 = Color(0xFF4698CA);
-const accent2 = Color(0xFFFBDB65);
+const appMainColor = Color(0xFF1D57A5);
+const appAccent1 = Color(0xFF4698CA);
+const appAccent2 = Color(0xFFFBDB65);
+const appBackgroundColor = Color(0xFF222222);
+const appForegroundColor = Color(0xFFEEEEEE);
 
-ThemeData mainThemeData = ThemeData(
-  scaffoldBackgroundColor: const Color(0xFF222222),
+final ThemeData appThemeData = ThemeData(
+  scaffoldBackgroundColor: appBackgroundColor,
   appBarTheme: const AppBarTheme(
-    backgroundColor: mainColor,
-    iconTheme: IconThemeData(size: 30),
+    backgroundColor: appMainColor,
+    iconTheme: IconThemeData(
+      size: 30,
+      color: appForegroundColor,
+    ),
   ),
   colorScheme: ColorScheme.dark(
-    primary: mainColor,
+    primary: appMainColor,
     error: Colors.red.shade200,
-    outline: Colors.white,
   ),
   buttonTheme: const ButtonThemeData(
-    buttonColor: mainColor,
+    buttonColor: appMainColor,
     textTheme: ButtonTextTheme.accent,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: mainColor,
-    foregroundColor: Colors.white,
+    backgroundColor: appMainColor,
+    foregroundColor: appForegroundColor,
   ),
   inputDecorationTheme: InputDecorationTheme(
-    fillColor: const Color(0xFF222222),
+    fillColor: appBackgroundColor,
     filled: true,
     enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.white38, width: 2.0),
@@ -34,7 +38,7 @@ ThemeData mainThemeData = ThemeData(
       borderSide: BorderSide(color: Colors.red.shade200, width: 2.0),
     ),
     focusedBorder: const OutlineInputBorder(
-      borderSide: BorderSide(color: accent1, width: 3.0),
+      borderSide: BorderSide(color: appAccent1, width: 3.0),
     ),
     disabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.white38, width: 2.0),
@@ -44,23 +48,22 @@ ThemeData mainThemeData = ThemeData(
     headlineMedium: GoogleFonts.montserrat(
       fontSize: 32,
       fontWeight: FontWeight.bold,
-      color: const Color(0xFFFFFFFF),
+      color: appForegroundColor,
     ),
     displayMedium: GoogleFonts.openSans(
-      color: accent2,
+      color: appAccent2,
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
     bodyMedium: GoogleFonts.openSans(
-      color: const Color(0xFFFFFFFF),
+      color: appForegroundColor,
       fontSize: 16,
       fontWeight: FontWeight.bold,
     ),
   ),
   iconTheme: const IconThemeData(
-    color: Colors.white,
+    color: appForegroundColor,
     size: 40,
   ),
-  unselectedWidgetColor: accent1,
-  
+  unselectedWidgetColor: appAccent1,
 );

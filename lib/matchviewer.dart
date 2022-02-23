@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:scouting_app3/themefile.dart';
-
-import 'handlers.dart';
+import 'package:scouting_app3/globals.dart';
+import 'package:scouting_app3/theme.dart';
 
 class MatchViewElement extends StatefulWidget {
   const MatchViewElement({Key? key}) : super(key: key);
@@ -64,76 +63,82 @@ class _MatchViewState extends State<MatchViewElement> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Center(
-          child: ElevatedButton(
-            child: Text(
-              "View QR code for all selected matches",
-              style: Theme.of(context).textTheme.bodyMedium,
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: ElevatedButton(
+              child: Text(
+                "View QR code for all selected matches",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                if (_CheckBoxWrapperState.numSelected > 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QRCodeViewAll(filesToPutInQR),
+                    ),
+                  );
+                }
+              },
             ),
-            onPressed: () {
-              if (_CheckBoxWrapperState.numSelected > 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QRCodeViewAll(filesToPutInQR),
-                  ),
-                );
-              }
-            },
           ),
         ),
 
         // Delete buttons and confirmation
         Center(
-          child: ElevatedButton(
-            child: Text(
-              "Delete all selected matches",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            onPressed: () {
-              if (_CheckBoxWrapperState.numSelected > 0) {
-                AlertDialog alert = AlertDialog(
-                  title: Text(
-                    "Delete data?",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  content: Text(
-                    "Are you sure that you want to delete these files?",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text(
-                        "Yes",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          for (String filename in filesToPutInQR) {
-                            File(filename).deleteSync();
-                          }
-                        });
-                      },
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: ElevatedButton(
+              child: Text(
+                "Delete all selected matches",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                if (_CheckBoxWrapperState.numSelected > 0) {
+                  AlertDialog alert = AlertDialog(
+                    title: Text(
+                      "Delete data?",
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    TextButton(
-                      child: Text(
-                        "No",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                    content: Text(
+                      "Are you sure that you want to delete these files?",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text(
+                          "Yes",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            for (String filename in filesToPutInQR) {
+                              File(filename).deleteSync();
+                            }
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                );
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return alert;
-                  },
-                );
-              }
-            },
+                      TextButton(
+                        child: Text(
+                          "No",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return alert;
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ),
         // End delete buttons and confirmation
@@ -145,7 +150,7 @@ class _MatchViewState extends State<MatchViewElement> {
             shrinkWrap: true,
             itemCount: values.length,
             itemBuilder: (context, index) {
-              Color backgroundColor = mainColor;
+              Color backgroundColor = appMainColor;
               if (File(values[index]).readAsStringSync().contains("DONE_")) {
                 backgroundColor = Colors.grey;
               }
@@ -180,8 +185,12 @@ class _MatchViewState extends State<MatchViewElement> {
 
   // Function to asynchronously read match files
   Future<List<String>> _inFutureList() async {
-    List<String> fileList;
-    fileList = await MatchViewHandler.readMatchFiles();
+    List<String> fileList = [];
+    appFilesDir?.list().forEach((element) {
+      if (element.path.endsWith("csv")) {
+        fileList.add(element.path);
+      }
+    });
     await Future.delayed(const Duration(milliseconds: 500));
     return fileList;
   }
@@ -222,12 +231,12 @@ class _CheckBoxWrapperState extends State<CheckBoxWrapper> {
         setState(() {
           // If we are unselecting a checkbox
           if (value == false) {
-            // Set our stored value. 
+            // Set our stored value.
             //This is needed to actually change the checkbox appearance
             _value = value!;
             numSelected--;
             widget.fileList.remove(widget.filename);
-          // If we are selecting a checkbox
+            // If we are selecting a checkbox
           } else if (numSelected < 6 && value == true) {
             _value = value!;
             // Sanity check to make sure we don't add the same file twice
