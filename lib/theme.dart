@@ -48,6 +48,7 @@ final ThemeData appThemeData = ThemeData(
     headlineMedium: GoogleFonts.montserrat(
       fontSize: 32,
       fontWeight: FontWeight.bold,
+      fontStyle: FontStyle.italic,
       color: appForegroundColor,
     ),
     displayMedium: GoogleFonts.openSans(
