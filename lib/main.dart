@@ -1,57 +1,87 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scouting_app3/datafarmer.dart';
-import 'package:scouting_app3/themefile.dart';
-
-import 'handlers.dart';
-import 'matchviewer.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:scouting_app3/configurator.dart';
+import 'package:scouting_app3/counterfield.dart';
+import 'package:scouting_app3/globals.dart';
+import 'package:scouting_app3/matchviewer.dart';
+import 'package:scouting_app3/stopwatch.dart';
+import 'package:scouting_app3/theme.dart';
+import 'package:tuple/tuple.dart';
 
 void main() {
   runApp(const MainApp());
 }
 
-/// Main app class
-///
-/// This is the class that will start the app and set the theme
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Pre-fetch the configuration data
-    ConfigHandler.getData();
+    Configurator.getInstance().readConfigJson();
+
+    if (!kIsWeb) {
+      getApplicationSupportDirectory().then(
+        (value) {
+          appFilesDir = value;
+          appFilesDirString = value.path;
+        },
+      );
+    }
+
     return MaterialApp(
       title: "930 Scouting App",
       // Only affects debug mode
       debugShowCheckedModeBanner: false,
-      // Set the home page for the app
+      theme: appThemeData,
       home: const HomePage(),
-      // Set up the theme found in the themefile
-      theme: mainThemeData,
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (kIsWeb) {
+        AlertDialog alert = AlertDialog(
+          title: Text(
+            "Device error",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          content: Text(
+            "This application is unable to run in the web browser, "
+            "as there is currently no way to store files for later use.",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                "Ok",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+        showDialog(context: context, builder: (context) => alert);
+      }
+    });
+
     return Scaffold(
-      // App bar to display page title and the back button
       appBar: AppBar(
         title: Text(
           "930 Scouting App",
-          style: Theme.of(context).textTheme.headlineMedium,
+          style: appThemeData.textTheme.headlineMedium,
         ),
         centerTitle: true,
       ),
-      // Use container to add the logo to the background
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -62,177 +92,330 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(40),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: Column(
+              children: kIsWeb
+                  ? []
+                  : [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DataPage(
+                                  nextWidget: DataPage(
+                                    nextWidget: DataPage(
+                                      nextWidget: DataPage(
+                                        nextWidget: DataPage(
+                                          nextWidget: SaveDataPage(),
+                                          pageIndex: 4,
+                                        ),
+                                        pageIndex: 3,
+                                      ),
+                                      pageIndex: 2,
+                                    ),
+                                    pageIndex: 1,
+                                  ),
+                                  pageIndex: 0,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "New Match",
+                            style: appThemeData.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MatchDataViewer(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            " View Data ",
+                            style: appThemeData.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                    ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DataPage extends StatelessWidget {
+  final Widget? nextWidget;
+  final int pageIndex;
+
+  const DataPage({Key? key, this.nextWidget, this.pageIndex = 0})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Map pageData = Configurator.getInstance().getSection(pageIndex);
+    String appBarTitle = pageData["title"];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          appBarTitle,
+          style: appThemeData.textTheme.headlineMedium,
+        ),
+      ),
+      body: DataCollectorWidget(pageIndex: pageIndex),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomCenter,
+        child: FloatingActionButton(
+          child: (nextWidget == null)
+              ? const Icon(Icons.keyboard_arrow_left)
+              : const Icon(Icons.keyboard_arrow_right),
+          onPressed: () {
+            if (nextWidget != null) {
+              if (formKeys[pageIndex]?.currentState?.validate() ?? false) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => nextWidget!));
+              }
+            } else {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class DataCollectorWidget extends StatefulWidget {
+  final int pageIndex;
+
+  const DataCollectorWidget({Key? key, this.pageIndex = 0}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _DataCollectorWidgetState();
+}
+
+class _DataCollectorWidgetState extends State<DataCollectorWidget> {
+  @override
+  Widget build(BuildContext context) {
+    String sectionTitle =
+        Configurator.getInstance().getSection(widget.pageIndex)["title"];
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          alignment: Alignment.bottomCenter,
+          image: AssetImage(
+            "assets/logo.png",
+            bundle: rootBundle,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Form(
+          onWillPop: () async {
+            formKeys[widget.pageIndex]?.currentState?.validate();
+            return true;
+          },
+          key: (formKeys[widget.pageIndex] = GlobalKey<FormState>()),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: ElevatedButton(
-                  child: Text(
-                    "New Match",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PreMatchData(),
-                      ),
-                    );
+              Expanded(
+                child: ListView.builder(
+                  itemCount: Configurator.getInstance()
+                      .getSection(widget.pageIndex)["data"]
+                      .length,
+                  itemBuilder: (content, index) {
+                    final dataRequired = Configurator.getInstance()
+                        .getSection(widget.pageIndex)["data"];
+                    String initialValueString = "";
+                    if (matchData[sectionTitle] != null) {
+                      for (Tuple2 item in matchData[sectionTitle]!.values) {
+                        if (item.item1 == index) {
+                          initialValueString = matchData[sectionTitle]![
+                                      dataRequired[index]["title"]]
+                                  ?.item2 ??
+                              "";
+                          break;
+                        }
+                      }
+                    }
+                    if (dataRequired[index]["data-type"] == "field") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                dataRequired[index]["title"],
+                                textAlign: TextAlign.left,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: dataRequired[index]["title"],
+                              ),
+                              initialValue: initialValueString,
+                              validator: (value) {
+                                RegExp validationExpression =
+                                    RegExp(dataRequired[index]["validation"]);
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter a value";
+                                } else if ((validationExpression
+                                            .stringMatch(value) ??
+                                        "")
+                                    .isEmpty) {
+                                  return dataRequired[index]["validate-help"];
+                                }
+                                matchData[sectionTitle] ??= {};
+                                matchData[sectionTitle]![dataRequired[index]
+                                    ["title"]] = matchData[sectionTitle]![
+                                            dataRequired[index]["title"]]
+                                        ?.withItem2(value) ??
+                                    Tuple2<int, String>(
+                                        index, value.toString());
+                                return null;
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    } else if (dataRequired[index]["data-type"] == "counter") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                dataRequired[index]["title"],
+                                textAlign: TextAlign.left,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ),
+                            CounterField(
+                              (int num) {
+                                matchData[sectionTitle] ??= {};
+                                matchData[sectionTitle] ??= {};
+                                matchData[sectionTitle]![dataRequired[index]
+                                    ["title"]] = matchData[sectionTitle]![
+                                            dataRequired[index]["title"]]
+                                        ?.withItem2(num.toString()) ??
+                                    Tuple2<int, String>(index, num.toString());
+                              },
+                              int.tryParse(matchData[sectionTitle]
+                                              ?[dataRequired[index]["title"]]
+                                          ?.item2 ??
+                                      "0") ??
+                                  0,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (dataRequired[index]["data-type"] == "choice") {
+                      List<String> itemsList =
+                          dataRequired[index]["choices"].cast<String>();
+
+                      return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Padding(
+                                child: Text(
+                                  dataRequired[index]["title"],
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
+                                ),
+                                padding: const EdgeInsets.all(5),
+                              ),
+                              DropdownButtonFormField(
+                                items: itemsList.map((menuItemName) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      menuItemName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    value: menuItemName,
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  matchData[sectionTitle] ??= {};
+                                  matchData[sectionTitle]![dataRequired[index]
+                                      ["title"]] = matchData[sectionTitle]![
+                                              dataRequired[index]["title"]]
+                                          ?.withItem2(value.toString()) ??
+                                      Tuple2<int, String>(
+                                          index, value.toString());
+                                },
+                                value: initialValueString.isEmpty
+                                    ? null
+                                    : initialValueString,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "No choice selected";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ));
+                    } else if (dataRequired[index]["data-type"] ==
+                        "stopwatch") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: StopwatchTimerWidget(
+                            sectionTitle,
+                            dataRequired[index]["title"],
+                            (double.tryParse(matchData[sectionTitle]
+                                                ?[dataRequired[index]["title"]]
+                                            ?.item2 ??
+                                        "0.0")! *
+                                    1000)
+                                .floor(),
+                            index),
+                      );
+                    } else if (dataRequired[index]["data-type"] ==
+                        "displayImage") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Image(
+                          image: AssetImage("assets/Tarmac.png",
+                              bundle: rootBundle),
+                          height: 200,
+                        ),
+                      );
+                    } else {
+                      return const Text("Widget not found");
+                    }
                   },
                 ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  child: Text(
-                    "View Data",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MatchDataViewer(),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              )
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class MatchDataViewer extends StatelessWidget {
-  const MatchDataViewer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    MatchViewHandler.readMatchFiles();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Data Viewer",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: const MatchViewElement(),
-    );
-  }
-}
-
-class PreMatchData extends StatelessWidget {
-  final MatchPageData preMatchData =
-      const MatchPageData("pre-match", AutonData());
-
-  const PreMatchData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Pre-Match Data",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: preMatchData,
-    );
-  }
-}
-
-class AutonData extends StatelessWidget {
-  final MatchPageData autonData = const MatchPageData("auton", TeleopData());
-
-  const AutonData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Auton Data",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Image(
-              image: AssetImage("assets/Tarmac.png", bundle: rootBundle),
-              height: 200,
-            ),
-          ),
-          Expanded(
-            child: autonData,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TeleopData extends StatelessWidget {
-  final MatchPageData autonData = const MatchPageData("teleop", EndgameData());
-
-  const TeleopData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Teleop Data",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: autonData,
-    );
-  }
-}
-
-class EndgameData extends StatelessWidget {
-  final MatchPageData autonData =
-      const MatchPageData("endgame", PostMatchData());
-
-  const EndgameData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Endgame Data",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: autonData,
-    );
-  }
-}
-
-class PostMatchData extends StatelessWidget {
-  final MatchPageData autonData =
-      const MatchPageData("post-match", SaveDataPage());
-
-  const PostMatchData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Post-Match Data",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: autonData,
     );
   }
 }
@@ -245,29 +428,61 @@ class SaveDataPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Save Data",
+          "930 Scouting App",
+          style: appThemeData.textTheme.headlineMedium,
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment.bottomCenter,
+            image: AssetImage(
+              "assets/logo.png",
+              bundle: rootBundle,
+            ),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Align(
+            alignment: Alignment.center,
+            child: ElevatedButton(
+              child: Padding(
+                padding: const EdgeInsets.all(40),
+                child: Text(
+                  "Write Match Data",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium!
+                      .copyWith(fontSize: 22),
+                ),
+              ),
+              onPressed: () {
+                writeMatchData();
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MatchDataViewer extends StatelessWidget {
+  const MatchDataViewer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Data Viewer",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            ElevatedButton(
-              child: Text(
-                "Save data",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              onPressed: () {
-                MatchHandler.writeMatchData();
-                MatchHandler.clearData();
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-            ),
-          ],
-        ),
-      ),
+      body: const MatchViewElement(),
     );
   }
 }
