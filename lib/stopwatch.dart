@@ -24,6 +24,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   Timer? timer;
   Stopwatch watchTimer = Stopwatch();
   bool addInitialTime = true;
+  bool firstRun = true;
 
   @override
   void dispose() {
@@ -75,6 +76,13 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (firstRun) {
+      firstRun = !firstRun;
+      matchData[widget.stageName] ??= {};
+      matchData[widget.stageName]![widget.title] =
+          Tuple2<int, String>(widget.positionOnStack, "0.0");
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Center(
