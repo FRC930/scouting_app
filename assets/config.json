@@ -20,7 +20,7 @@
             "validate-help": "This cannot have semicolons in it"
         }
     ],
-    "Auton Data": [
+    "Match Data": [
 
         {
             "title": "High Hub Scored",
@@ -43,14 +43,12 @@
             ]
         },
         {
-            "title": "Left Tarmac",
+            "title": "Tarmac Taxi",
             "data-type": "choice",
             "choices": [
                 "Yes", "No"
             ]
-        }
-    ],
-    "Teleop Data": [
+        },
 
         {
             "title": "High Hub Scored",
@@ -72,11 +70,9 @@
             "title": "Defense",
             "data-type": "choice",
             "choices": [
-                "None", "Not Effective", "Effective", "Very Effective"
+                "0 (No defense)", "1 (Bad defense)", "2 (Mediocre defense)", "3 (Good defense)"
             ]
-        }
-    ],
-    "Endgame Data": [
+        },
 
         {
             "title": "Hang Time",
@@ -96,33 +92,28 @@
             "title": "Would you pick this robot?",
             "data-type": "choice",
             "choices": [
-                "1st Pick", "2nd Pick", "No Pick"
+                "No Pick", "1st Pick", "2nd Pick"
             ]
         },
         {
             "title": "Robot Role",
             "data-type": "choice",
             "choices": [
-                "Offense - Launch Pad",
                 "Offense - Hub Cleanup",
-                "Defense - Bot to Bot",
-                "Defense - Launch Pad Zone",
-                "Defense - Center Line Zone",
-                "Defense - Terminal Zone",
-                "Defense - Circling Hub",
-                "Defense - Cargo Hitter"
-
+                "Offense - Launch Pad",
+                "Defense - Pushing Robots",
+                "Defense - Ramming Robots",
+                "Defense - Hitting Cargo"
             ]
         },
         {
             "title": "Penalties",
-            "data-type": "choice",
-            "choices": ["Yes", "No"]
+            "data-type": "counter"
         },
         {
             "title": "Disabled",
             "data-type": "choice",
-            "choices": ["Yes", "No"]
+            "choices": ["No", "Yes"]
         },
         {
             "title": "General Comments",

@@ -495,7 +495,7 @@ class FileViewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "QR Code viewer",
+          "Raw File Viewer",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),

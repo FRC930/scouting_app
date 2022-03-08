@@ -106,16 +106,10 @@ class HomePage extends StatelessWidget {
                                 builder: (context) => const DataPage(
                                   pageName: "Pre-Match Data",
                                   nextWidget: DataPage(
-                                    pageName: "Auton Data",
+                                    pageName: "Match Data",
                                     nextWidget: DataPage(
-                                      pageName: "Teleop Data",
-                                      nextWidget: DataPage(
-                                        pageName: "Endgame Data",
-                                        nextWidget: DataPage(
-                                          pageName: "Post-Match Data",
-                                          nextWidget: SaveDataPage(),
-                                        ),
-                                      ),
+                                      pageName: "Post-Match Data",
+                                      nextWidget: SaveDataPage(),
                                     ),
                                   ),
                                 ),
@@ -164,6 +158,13 @@ class DataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String appBarTitle = pageName;
+    if (matchData["Pre-Match Data"]?[0]["data"].toString().isNotEmpty ??
+        false) {
+      appBarTitle = "Team " +
+          matchData["Pre-Match Data"]?[0]["data"] +
+          "'s " +
+          appBarTitle;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -339,7 +340,8 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                       value;
                                 },
                                 value: initialValueString.isEmpty
-                                    ? null
+                                    ? (matchData[sectionTitle]?[index]
+                                        ["choices"][0])
                                     : initialValueString,
                                 validator: (value) {
                                   if (value == null) {
@@ -374,7 +376,11 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                           height: 200,
                         ),
                       );
-                    } else {
+                    } 
+                    // else if (dataRequired[index]["data-type"] ==
+                    //     "sectionTitle") {
+                    // }
+                     else {
                       return const Text("Widget not found");
                     }
                   },
