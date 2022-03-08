@@ -376,10 +376,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                           height: 200,
                         ),
                       );
-                    } 
-                    // else if (dataRequired[index]["data-type"] ==
-                    //     "sectionTitle") {
-                    // }
+                    }
                      else {
                       return const Text("Widget not found");
                     }

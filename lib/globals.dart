@@ -12,11 +12,6 @@ LinkedHashMap<String, List> matchData = LinkedHashMap();
 Map<String, GlobalKey<FormState>> formKeys = {};
 
 Future<void> readConfigJson() async {
-  // rootBundle.load("assets/config.json").then(
-  //   (value) {
-  //     matchData = json.decode(value.toString());
-  //   },
-  // );
   rootBundle.loadString("assets/config.json").then((response) {
     matchData = LinkedHashMap.from(json.decode(response));
     matchData.forEach((key, value) {
