@@ -1,150 +1,134 @@
-[
+{
+    "Pre-Match Data": [
 
-    {
-        "title": "Pre-Match Data",
-        "data": [
+        {
+            "title": "Team Number",
+            "data-type": "field",
+            "validation": "^[0-9]*$",
+            "validate-help": "This should be a valid FRC team"
+        },
+        {
+            "title": "Match Number",
+            "data-type": "field",
+            "validation": "^[0-9]*$",
+            "validate-help": "This should be a match number"
+        },
+        {
+            "title": "Scouter Name",
+            "data-type": "field",
+            "validation": "^[^;]*$",
+            "validate-help": "This cannot have semicolons in it"
+        }
+    ],
+    "Auton Data": [
 
-            {
-                "title": "Team Number",
-                "data-type": "field",
-                "validation": "^[0-9]*$",
-                "validate-help": "This should be a valid FRC team"
-            },
-            {
-                "title": "Match Number",
-                "data-type": "field",
-                "validation": "^[0-9]*$",
-                "validate-help": "This should be a match number"
-            },
-            {
-                "title": "Scouter Name",
-                "data-type": "field",
-                "validation": "^[^;]*$",
-                "validate-help": "This cannot have semicolons in it"
-            }
-        ]
-    },
-    {
-        "title": "Auton Data",
-        "data": [
+        {
+            "title": "High Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Tarmac Image",
+            "data-type": "displayImage",
+            "location": "assets/tarmac.png"
+        },
+        {
+            "title": "Starting Location",
+            "data-type": "choice",
+            "choices": [
+                "1", "2", "3", "4"
+            ]
+        },
+        {
+            "title": "Left Tarmac",
+            "data-type": "choice",
+            "choices": [
+                "Yes", "No"
+            ]
+        }
+    ],
+    "Teleop Data": [
 
-            {
-                "title": "High Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Scored",
-                "data-type": "counter"
-            }, 
-            {
-                "title": "Tarmac Image",
-                "data-type": "displayImage",
-                "location": "assets/tarmac.png"
-            },
-            {
-                "title": "Starting Location",
-                "data-type": "choice",
-                "choices": [
-                    "1", "2", "3", "4"
-                ]
-            },
-            {
-                "title": "Left Tarmac",
-                "data-type": "choice",
-                "choices": [
-                    "Yes", "No"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Teleop Data",
-        "data": [
+        {
+            "title": "High Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "High Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Low Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Defense",
+            "data-type": "choice",
+            "choices": [
+                "None", "Not Effective", "Effective", "Very Effective"
+            ]
+        }
+    ],
+    "Endgame Data": [
 
-            {
-                "title": "High Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "High Hub Missed",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Missed",
-                "data-type": "counter"
-            },
-            {
-                "title": "Defense",
-                "data-type": "choice",
-                "choices": [
-                    "None", "Not Effective", "Effective", "Very Effective"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Endgame Data",
-        "data": [
+        {
+            "title": "Hang Time",
+            "data-type": "stopwatch"
+        },
+        {
+            "title": "Hang Type",
+            "data-type": "choice",
+            "choices": [
+                "No Hang", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+            ]
+        }
+    ],
+    "Post-Match Data": [
 
-            {
-                "title": "Hang Time",
-                "data-type": "stopwatch"
-            },
-            {
-                "title": "Hang Type",
-                "data-type": "choice",
-                "choices": [
-                    "No Hang", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Post-Match Data",
-        "data": [
+        {
+            "title": "Would you pick this robot?",
+            "data-type": "choice",
+            "choices": [
+                "1st Pick", "2nd Pick", "No Pick"
+            ]
+        },
+        {
+            "title": "Robot Role",
+            "data-type": "choice",
+            "choices": [
+                "Offense - Launch Pad",
+                "Offense - Hub Cleanup",
+                "Defense - Bot to Bot",
+                "Defense - Launch Pad Zone",
+                "Defense - Center Line Zone",
+                "Defense - Terminal Zone",
+                "Defense - Circling Hub",
+                "Defense - Cargo Hitter"
 
-            {
-                "title": "Would you pick this robot?",
-                "data-type": "choice",
-                "choices": [
-                    "1st Pick", "2nd Pick", "No Pick"
-                ]
-            },
-            {
-                "title": "Robot Role",
-                "data-type": "choice",
-                "choices": [
-                    "Offense - Launch Pad",
-                    "Offense - Hub Cleanup",
-                    "Defense - Bot to Bot",
-                    "Defense - Launch Pad Zone",
-                    "Defense - Center Line Zone",
-                    "Defense - Terminal Zone",
-                    "Defense - Circling Hub",
-                    "Defense - Cargo Hitter"
-
-                ]
-            },
-            {
-                "title": "Penalties",
-                "data-type": "choice",
-                "choices": ["Yes", "No"]
-            },
-            {
-                "title": "Disabled",
-                "data-type": "choice",
-                "choices": ["Yes", "No"]
-            },
-            {
-                "title": "General Comments",
-                "data-type": "field",
-                "validation": "^[^;]*$",
-                "validate-help": "This cannot have semicolons in it"
-            }
-        ]
-    }
-]
+            ]
+        },
+        {
+            "title": "Penalties",
+            "data-type": "choice",
+            "choices": ["Yes", "No"]
+        },
+        {
+            "title": "Disabled",
+            "data-type": "choice",
+            "choices": ["Yes", "No"]
+        },
+        {
+            "title": "General Comments",
+            "data-type": "field",
+            "validation": "^[^;]*$",
+            "validate-help": "This cannot have semicolons in it"
+        }
+    ]
+}
