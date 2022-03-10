@@ -195,7 +195,7 @@ class _MatchViewState extends State<MatchViewElement> {
   Future<List<String>> _inFutureList() async {
     List<String> fileList = [];
     appFilesDir?.list().forEach((element) {
-      if (  element.path.endsWith("json")) {
+      if (element.path.endsWith("json")) {
         fileList.add(element.path);
       }
     });
@@ -299,7 +299,10 @@ class QRCodeView extends StatelessWidget {
 
                     fileJson.forEach((key, value) {
                       for (Map dataPoint in value) {
-                        qrString += dataPoint["data"] + ";";
+                        if (dataPoint["data-type"] != "displayImage" &&
+                            dataPoint["data-type"] != "heading") {
+                          qrString += dataPoint["data"] + ";";
+                        }
                       }
                     });
 

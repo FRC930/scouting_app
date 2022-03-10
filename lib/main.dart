@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app3/counterfield.dart';
 import 'package:scouting_app3/globals.dart';
@@ -9,6 +10,8 @@ import 'package:scouting_app3/stopwatch.dart';
 import 'package:scouting_app3/theme.dart';
 
 void main() {
+  GoogleFonts.config.allowRuntimeFetching = false;
+
   runApp(const MainApp());
 }
 
@@ -310,6 +313,19 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                     } else if (dataRequired[index]["data-type"] == "choice") {
                       List<String> itemsList =
                           dataRequired[index]["choices"]?.cast<String>();
+                      List<String> hintList = [];
+                      if (dataRequired[index].containsKey("hints")) {
+                        hintList = dataRequired[index]["hints"]?.cast<String>();
+                      } else {
+                        for (int i = 0; i < itemsList.length; i++) {
+                          hintList.add("");
+                        }
+                      }
+
+                      if (matchData[sectionTitle]?[index]["data"].isEmpty) {
+                        matchData[sectionTitle]?[index]["data"] =
+                            matchData[sectionTitle]?[index]["choices"][0];
+                      }
 
                       return Padding(
                           padding: const EdgeInsets.all(10),
@@ -327,7 +343,10 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                 items: itemsList.map((menuItemName) {
                                   return DropdownMenuItem(
                                     child: Text(
-                                      menuItemName,
+                                      menuItemName +
+                                          " " +
+                                          hintList[
+                                              itemsList.indexOf(menuItemName)],
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
@@ -376,8 +395,17 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                           height: 200,
                         ),
                       );
-                    }
-                     else {
+                    } else if (dataRequired[index]["data-type"] == "heading") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            dataRequired[index]["title"],
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ),
+                      );
+                    } else {
                       return const Text("Widget not found");
                     }
                   },

@@ -4,13 +4,13 @@
         {
             "title": "Team Number",
             "data-type": "field",
-            "validation": "^[0-9]*$",
-            "validate-help": "This should be a valid FRC team"
+            "validation": "^(93|537|706|930|1091|1259|1306|1675|1714|1732|1739|1792|2062|2077|2194|2202|2506|2574|2830|3197|3418|3596|4786|4787|5096|5148|6223|6381|6421|6574|6643|6823|7237|7417|7900|7915|8531|8700|8701|8779|8802|8803|8847)*$",
+            "validate-help": "This should be a valid FRC team at the current event"
         },
         {
             "title": "Match Number",
             "data-type": "field",
-            "validation": "^[0-9]*$",
+            "validation": "^[0-9][0-9]$",
             "validate-help": "This should be a match number"
         },
         {
@@ -18,17 +18,6 @@
             "data-type": "field",
             "validation": "^[^;]*$",
             "validate-help": "This cannot have semicolons in it"
-        }
-    ],
-    "Match Data": [
-
-        {
-            "title": "High Hub Scored",
-            "data-type": "counter"
-        },
-        {
-            "title": "Low Hub Scored",
-            "data-type": "counter"
         },
         {
             "title": "Tarmac Image",
@@ -41,6 +30,21 @@
             "choices": [
                 "1", "2", "3", "4"
             ]
+        }
+    ],
+    "Match Data": [
+
+        {
+            "title": "Auton Data",
+            "data-type": "heading"
+        },
+        {
+            "title": "Auton Upper Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Auton Lower Hub Scored",
+            "data-type": "counter"
         },
         {
             "title": "Tarmac Taxi",
@@ -49,31 +53,40 @@
                 "Yes", "No"
             ]
         },
-
         {
-            "title": "High Hub Scored",
+            "title": "Teleop Data",
+            "data-type": "heading"
+        },
+        {
+            "title": "Teleop Upper Hub Scored",
             "data-type": "counter"
         },
         {
-            "title": "High Hub Missed",
+            "title": "Teleop Upper Hub Missed",
             "data-type": "counter"
         },
         {
-            "title": "Low Hub Scored",
+            "title": "Teleop Lower Hub Scored",
             "data-type": "counter"
         },
         {
-            "title": "Low Hub Missed",
+            "title": "Teleop Lower Hub Missed",
             "data-type": "counter"
         },
         {
             "title": "Defense",
             "data-type": "choice",
             "choices": [
-                "0 (No defense)", "1 (Bad defense)", "2 (Mediocre defense)", "3 (Good defense)"
+                "0", "1", "2", "3"
+            ],
+            "hints": [
+                "(No defense)", "(Bad defense)", "(Mediocre defense)", "(Good defense)"
             ]
         },
-
+        {
+            "title": "Endgame Data",
+            "data-type": "heading"
+        },
         {
             "title": "Hang Time",
             "data-type": "stopwatch"
@@ -82,7 +95,7 @@
             "title": "Hang Type",
             "data-type": "choice",
             "choices": [
-                "No Hang", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
             ]
         }
     ],

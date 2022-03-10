@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:scouting_app3/globals.dart';
+import 'package:scouting_app3/theme.dart';
 
 // Custom stopwatch widget
 class StopwatchTimerWidget extends StatefulWidget {
@@ -95,6 +96,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: const Color(0xffdddddd), width: 3),
+                    color: appBackgroundColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),

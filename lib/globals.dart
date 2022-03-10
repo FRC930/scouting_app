@@ -24,11 +24,14 @@ Future<void> readConfigJson() async {
 
 void writeMatchData() {
   if (!kIsWeb) {
-    String filename = "match-";
-    matchData["Pre-Match Data"]?.forEach((element) {
-      filename += element["data"];
-      filename += "_";
-    });
+    String filename = "match";
+    for (int i = 0; i <= 2; i++) {
+      String? currentData = matchData["Pre-Match Data"]?[i]["data"];
+      if (currentData != null) {
+        filename += currentData;
+        filename += "_";
+      }
+    }
     filename += ".json";
 
     readConfigJson();
