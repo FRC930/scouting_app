@@ -76,6 +76,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
       stopTimer();
       isFirst = false;
     }
+    
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Center(
