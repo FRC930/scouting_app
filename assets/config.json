@@ -1,150 +1,138 @@
-[
+{
+    "Pre-Match Data": [
 
-    {
-        "title": "Pre-Match Data",
-        "data": [
+        {
+            "title": "Team Number",
+            "data-type": "field",
+            "validation": "^(93|537|706|930|1091|1259|1306|1675|1714|1732|1739|1792|2062|2077|2194|2202|2506|2574|2830|3197|3418|3596|4786|4787|5096|5148|6223|6381|6421|6574|6643|6823|7237|7417|7900|7915|8531|8700|8701|8779|8802|8803|8847)*$",
+            "validate-help": "This should be a valid FRC team at the current event"
+        },
+        {
+            "title": "Match Number",
+            "data-type": "field",
+            "validation": "^[0-9][0-9]$",
+            "validate-help": "This should be a match number"
+        },
+        {
+            "title": "Scouter Name",
+            "data-type": "field",
+            "validation": "^[^;]*$",
+            "validate-help": "This cannot have semicolons in it"
+        },
+        {
+            "title": "Tarmac Image",
+            "data-type": "displayImage",
+            "location": "assets/tarmac.png"
+        },
+        {
+            "title": "Starting Location",
+            "data-type": "choice",
+            "choices": [
+                "1", "2", "3", "4"
+            ]
+        }
+    ],
+    "Match Data": [
 
-            {
-                "title": "Team Number",
-                "data-type": "field",
-                "validation": "^[0-9]*$",
-                "validate-help": "This should be a valid FRC team"
-            },
-            {
-                "title": "Match Number",
-                "data-type": "field",
-                "validation": "^[0-9]*$",
-                "validate-help": "This should be a match number"
-            },
-            {
-                "title": "Scouter Name",
-                "data-type": "field",
-                "validation": "^[^;]*$",
-                "validate-help": "This cannot have semicolons in it"
-            }
-        ]
-    },
-    {
-        "title": "Auton Data",
-        "data": [
+        {
+            "title": "Auton Data",
+            "data-type": "heading"
+        },
+        {
+            "title": "Auton Upper Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Auton Lower Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Tarmac Taxi",
+            "data-type": "choice",
+            "choices": [
+                "Yes", "No"
+            ]
+        },
+        {
+            "title": "Teleop Data",
+            "data-type": "heading"
+        },
+        {
+            "title": "Teleop Upper Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Teleop Upper Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Teleop Lower Hub Scored",
+            "data-type": "counter"
+        },
+        {
+            "title": "Teleop Lower Hub Missed",
+            "data-type": "counter"
+        },
+        {
+            "title": "Defense",
+            "data-type": "choice",
+            "choices": [
+                "0", "1", "2", "3"
+            ],
+            "hints": [
+                "(No defense)", "(Bad defense)", "(Mediocre defense)", "(Good defense)"
+            ]
+        },
+        {
+            "title": "Endgame Data",
+            "data-type": "heading"
+        },
+        {
+            "title": "Hang Time",
+            "data-type": "stopwatch"
+        },
+        {
+            "title": "Hang Type",
+            "data-type": "choice",
+            "choices": [
+                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+            ]
+        }
+    ],
+    "Post-Match Data": [
 
-            {
-                "title": "High Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Scored",
-                "data-type": "counter"
-            }, 
-            {
-                "title": "Tarmac Image",
-                "data-type": "displayImage",
-                "location": "assets/tarmac.png"
-            },
-            {
-                "title": "Starting Location",
-                "data-type": "choice",
-                "choices": [
-                    "1", "2", "3", "4"
-                ]
-            },
-            {
-                "title": "Left Tarmac",
-                "data-type": "choice",
-                "choices": [
-                    "Yes", "No"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Teleop Data",
-        "data": [
-
-            {
-                "title": "High Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "High Hub Missed",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Scored",
-                "data-type": "counter"
-            },
-            {
-                "title": "Low Hub Missed",
-                "data-type": "counter"
-            },
-            {
-                "title": "Defense",
-                "data-type": "choice",
-                "choices": [
-                    "None", "Not Effective", "Effective", "Very Effective"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Endgame Data",
-        "data": [
-
-            {
-                "title": "Hang Time",
-                "data-type": "stopwatch"
-            },
-            {
-                "title": "Hang Type",
-                "data-type": "choice",
-                "choices": [
-                    "No Hang", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Post-Match Data",
-        "data": [
-
-            {
-                "title": "Would you pick this robot?",
-                "data-type": "choice",
-                "choices": [
-                    "1st Pick", "2nd Pick", "No Pick"
-                ]
-            },
-            {
-                "title": "Robot Role",
-                "data-type": "choice",
-                "choices": [
-                    "Offense - Launch Pad",
-                    "Offense - Hub Cleanup",
-                    "Defense - Bot to Bot",
-                    "Defense - Launch Pad Zone",
-                    "Defense - Center Line Zone",
-                    "Defense - Terminal Zone",
-                    "Defense - Circling Hub",
-                    "Defense - Cargo Hitter"
-
-                ]
-            },
-            {
-                "title": "Penalties",
-                "data-type": "choice",
-                "choices": ["Yes", "No"]
-            },
-            {
-                "title": "Disabled",
-                "data-type": "choice",
-                "choices": ["Yes", "No"]
-            },
-            {
-                "title": "General Comments",
-                "data-type": "field",
-                "validation": "^[^;]*$",
-                "validate-help": "This cannot have semicolons in it"
-            }
-        ]
-    }
-]
+        {
+            "title": "Would you pick this robot?",
+            "data-type": "choice",
+            "choices": [
+                "No Pick", "1st Pick", "2nd Pick"
+            ]
+        },
+        {
+            "title": "Robot Role",
+            "data-type": "choice",
+            "choices": [
+                "Offense - Hub Cleanup",
+                "Offense - Launch Pad",
+                "Defense - Pushing Robots",
+                "Defense - Ramming Robots",
+                "Defense - Hitting Cargo"
+            ]
+        },
+        {
+            "title": "Penalties",
+            "data-type": "counter"
+        },
+        {
+            "title": "Disabled",
+            "data-type": "choice",
+            "choices": ["No", "Yes"]
+        },
+        {
+            "title": "General Comments",
+            "data-type": "field",
+            "validation": "^[^;]*$",
+            "validate-help": "This cannot have semicolons in it"
+        }
+    ]
+}

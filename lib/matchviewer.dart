@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -194,7 +195,7 @@ class _MatchViewState extends State<MatchViewElement> {
   Future<List<String>> _inFutureList() async {
     List<String> fileList = [];
     appFilesDir?.list().forEach((element) {
-      if (element.path.endsWith("csv")) {
+      if (element.path.endsWith("json")) {
         fileList.add(element.path);
       }
     });
@@ -290,7 +291,25 @@ class QRCodeView extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: QRCodeViewPage(fileRef.readAsStringSync()),
+                child: QRCodeViewPage(
+                  () {
+                    String fileString = fileRef.readAsStringSync();
+                    String qrString = "";
+                    Map fileJson = json.decode(fileString);
+
+                    fileJson.forEach((key, value) {
+                      for (Map dataPoint in value) {
+                        if (dataPoint["data-type"] != "displayImage" &&
+                            dataPoint["data-type"] != "heading") {
+                          qrString += dataPoint["data"] + ";";
+                        }
+                      }
+                    });
+
+                    return qrString;
+                  }(),
+                  fileRef.readAsStringSync(),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -361,8 +380,17 @@ class QRCodeViewAll extends StatelessWidget {
 
     for (var element in matchFileList) {
       File currentFile = File(element);
-      retString += currentFile.readAsStringSync() + "\n";
-      currentFile.writeAsStringSync("DONE_", mode: FileMode.append);
+
+      String fileString = currentFile.readAsStringSync();
+      Map fileJson = json.decode(fileString);
+
+      fileJson.forEach((key, value) {
+        for (Map dataPoint in value) {
+          retString += dataPoint["data"] + ";";
+        }
+      });
+
+      retString += "\n";
     }
 
     return retString;
@@ -390,9 +418,7 @@ class QRCodeViewAll extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Center(
-            child: QRCodeViewPage(
-              buildQRString(),
-            ),
+            child: QRCodeViewPage(buildQRString(), ""),
           ),
         ),
       ),
@@ -402,8 +428,10 @@ class QRCodeViewAll extends StatelessWidget {
 
 class QRCodeViewPage extends StatefulWidget {
   final String entireData;
+  final String fileContents;
 
-  const QRCodeViewPage(this.entireData, {Key? key}) : super(key: key);
+  const QRCodeViewPage(this.entireData, this.fileContents, {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRCodeViewState();
@@ -436,7 +464,57 @@ class _QRCodeViewState extends State<QRCodeViewPage> {
             ),
           ),
         ),
+        (widget.fileContents.isNotEmpty)
+            ? Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  child: Text(
+                    "View raw file",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FileViewPage(widget.fileContents),
+                        ));
+                  },
+                ),
+              )
+            : const Padding(padding: EdgeInsets.all(0)),
       ],
+    );
+  }
+}
+
+class FileViewPage extends StatelessWidget {
+  final String fileContents;
+
+  const FileViewPage(this.fileContents, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Raw File Viewer",
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(color: appBackgroundColor),
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Text(
+              fileContents,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

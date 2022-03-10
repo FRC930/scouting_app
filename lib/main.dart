@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:scouting_app3/configurator.dart';
 import 'package:scouting_app3/counterfield.dart';
 import 'package:scouting_app3/globals.dart';
 import 'package:scouting_app3/matchviewer.dart';
 import 'package:scouting_app3/stopwatch.dart';
 import 'package:scouting_app3/theme.dart';
-import 'package:tuple/tuple.dart';
 
 void main() {
+  GoogleFonts.config.allowRuntimeFetching = false;
+
   runApp(const MainApp());
 }
 
@@ -19,9 +20,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Pre-fetch the configuration data
-    Configurator.getInstance().readConfigJson();
-
     if (!kIsWeb) {
       getApplicationSupportDirectory().then(
         (value) {
@@ -30,6 +28,8 @@ class MainApp extends StatelessWidget {
         },
       );
     }
+
+    readConfigJson();
 
     return MaterialApp(
       title: "930 Scouting App",
@@ -107,20 +107,14 @@ class HomePage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const DataPage(
+                                  pageName: "Pre-Match Data",
                                   nextWidget: DataPage(
+                                    pageName: "Match Data",
                                     nextWidget: DataPage(
-                                      nextWidget: DataPage(
-                                        nextWidget: DataPage(
-                                          nextWidget: SaveDataPage(),
-                                          pageIndex: 4,
-                                        ),
-                                        pageIndex: 3,
-                                      ),
-                                      pageIndex: 2,
+                                      pageName: "Post-Match Data",
+                                      nextWidget: SaveDataPage(),
                                     ),
-                                    pageIndex: 1,
                                   ),
-                                  pageIndex: 0,
                                 ),
                               ),
                             );
@@ -159,15 +153,21 @@ class HomePage extends StatelessWidget {
 
 class DataPage extends StatelessWidget {
   final Widget? nextWidget;
-  final int pageIndex;
+  final String pageName;
 
-  const DataPage({Key? key, this.nextWidget, this.pageIndex = 0})
+  const DataPage({Key? key, this.nextWidget, this.pageName = ""})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Map pageData = Configurator.getInstance().getSection(pageIndex);
-    String appBarTitle = pageData["title"];
+    String appBarTitle = pageName;
+    if (matchData["Pre-Match Data"]?[0]["data"].toString().isNotEmpty ??
+        false) {
+      appBarTitle = "Team " +
+          matchData["Pre-Match Data"]?[0]["data"] +
+          "'s " +
+          appBarTitle;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -176,7 +176,7 @@ class DataPage extends StatelessWidget {
           style: appThemeData.textTheme.headlineMedium,
         ),
       ),
-      body: DataCollectorWidget(pageIndex: pageIndex),
+      body: DataCollectorWidget(pageName: pageName),
       floatingActionButton: Align(
         alignment: Alignment.bottomCenter,
         child: FloatingActionButton(
@@ -185,7 +185,7 @@ class DataPage extends StatelessWidget {
               : const Icon(Icons.keyboard_arrow_right),
           onPressed: () {
             if (nextWidget != null) {
-              if (formKeys[pageIndex]?.currentState?.validate() ?? false) {
+              if (formKeys[pageName]?.currentState?.validate() ?? false) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => nextWidget!));
               }
@@ -200,9 +200,9 @@ class DataPage extends StatelessWidget {
 }
 
 class DataCollectorWidget extends StatefulWidget {
-  final int pageIndex;
+  final String pageName;
 
-  const DataCollectorWidget({Key? key, this.pageIndex = 0}) : super(key: key);
+  const DataCollectorWidget({Key? key, this.pageName = ""}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _DataCollectorWidgetState();
@@ -211,8 +211,7 @@ class DataCollectorWidget extends StatefulWidget {
 class _DataCollectorWidgetState extends State<DataCollectorWidget> {
   @override
   Widget build(BuildContext context) {
-    String sectionTitle =
-        Configurator.getInstance().getSection(widget.pageIndex)["title"];
+    String sectionTitle = widget.pageName;
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -227,31 +226,22 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
         padding: const EdgeInsets.all(40),
         child: Form(
           onWillPop: () async {
-            formKeys[widget.pageIndex]?.currentState?.validate();
+            formKeys[widget.pageName]?.currentState?.validate();
             return true;
           },
-          key: (formKeys[widget.pageIndex] = GlobalKey<FormState>()),
+          key: (formKeys[widget.pageName] = GlobalKey<FormState>()),
           child: Column(
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: Configurator.getInstance()
-                      .getSection(widget.pageIndex)["data"]
-                      .length,
+                  itemCount: matchData[widget.pageName]!.length,
                   itemBuilder: (content, index) {
-                    final dataRequired = Configurator.getInstance()
-                        .getSection(widget.pageIndex)["data"];
+                    final List dataRequired = matchData[widget.pageName] ?? [];
+
                     String initialValueString = "";
-                    if (matchData[sectionTitle] != null) {
-                      for (Tuple2 item in matchData[sectionTitle]!.values) {
-                        if (item.item1 == index) {
-                          initialValueString = matchData[sectionTitle]![
-                                      dataRequired[index]["title"]]
-                                  ?.item2 ??
-                              "";
-                          break;
-                        }
-                      }
+                    if ((matchData[sectionTitle]?.length ?? 0) >= index) {
+                      initialValueString =
+                          matchData[sectionTitle]?[index]["data"] ?? "";
                     }
                     if (dataRequired[index]["data-type"] == "field") {
                       return Padding(
@@ -262,7 +252,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                dataRequired[index]["title"],
+                                dataRequired[index]["title"] ?? "",
                                 textAlign: TextAlign.left,
                                 style:
                                     Theme.of(context).textTheme.displayMedium,
@@ -274,8 +264,8 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                               ),
                               initialValue: initialValueString,
                               validator: (value) {
-                                RegExp validationExpression =
-                                    RegExp(dataRequired[index]["validation"]);
+                                RegExp validationExpression = RegExp(
+                                    dataRequired[index]["validation"] ?? "");
                                 if (value == null || value.isEmpty) {
                                   return "Please enter a value";
                                 } else if ((validationExpression
@@ -284,13 +274,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                     .isEmpty) {
                                   return dataRequired[index]["validate-help"];
                                 }
-                                matchData[sectionTitle] ??= {};
-                                matchData[sectionTitle]![dataRequired[index]
-                                    ["title"]] = matchData[sectionTitle]![
-                                            dataRequired[index]["title"]]
-                                        ?.withItem2(value) ??
-                                    Tuple2<int, String>(
-                                        index, value.toString());
+                                matchData[sectionTitle]?[index]["data"] = value;
                                 return null;
                               },
                             )
@@ -306,7 +290,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                dataRequired[index]["title"],
+                                dataRequired[index]["title"] ?? "",
                                 textAlign: TextAlign.left,
                                 style:
                                     Theme.of(context).textTheme.displayMedium,
@@ -314,17 +298,12 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                             ),
                             CounterField(
                               (int num) {
-                                matchData[sectionTitle] ??= {};
-                                matchData[sectionTitle] ??= {};
-                                matchData[sectionTitle]![dataRequired[index]
-                                    ["title"]] = matchData[sectionTitle]![
-                                            dataRequired[index]["title"]]
-                                        ?.withItem2(num.toString()) ??
-                                    Tuple2<int, String>(index, num.toString());
+                                matchData[sectionTitle]?[index]["data"] =
+                                    num.toString();
                               },
-                              int.tryParse(matchData[sectionTitle]
-                                              ?[dataRequired[index]["title"]]
-                                          ?.item2 ??
+                              // Get integer from the data string if it exists
+                              int.tryParse(matchData[sectionTitle]?[index]
+                                          ["data"] ??
                                       "0") ??
                                   0,
                             ),
@@ -333,7 +312,20 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                       );
                     } else if (dataRequired[index]["data-type"] == "choice") {
                       List<String> itemsList =
-                          dataRequired[index]["choices"].cast<String>();
+                          dataRequired[index]["choices"]?.cast<String>();
+                      List<String> hintList = [];
+                      if (dataRequired[index].containsKey("hints")) {
+                        hintList = dataRequired[index]["hints"]?.cast<String>();
+                      } else {
+                        for (int i = 0; i < itemsList.length; i++) {
+                          hintList.add("");
+                        }
+                      }
+
+                      if (matchData[sectionTitle]?[index]["data"].isEmpty) {
+                        matchData[sectionTitle]?[index]["data"] =
+                            matchData[sectionTitle]?[index]["choices"][0];
+                      }
 
                       return Padding(
                           padding: const EdgeInsets.all(10),
@@ -351,7 +343,10 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                 items: itemsList.map((menuItemName) {
                                   return DropdownMenuItem(
                                     child: Text(
-                                      menuItemName,
+                                      menuItemName +
+                                          " " +
+                                          hintList[
+                                              itemsList.indexOf(menuItemName)],
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
@@ -360,16 +355,12 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                   );
                                 }).toList(),
                                 onChanged: (value) {
-                                  matchData[sectionTitle] ??= {};
-                                  matchData[sectionTitle]![dataRequired[index]
-                                      ["title"]] = matchData[sectionTitle]![
-                                              dataRequired[index]["title"]]
-                                          ?.withItem2(value.toString()) ??
-                                      Tuple2<int, String>(
-                                          index, value.toString());
+                                  matchData[sectionTitle]?[index]["data"] =
+                                      value;
                                 },
                                 value: initialValueString.isEmpty
-                                    ? null
+                                    ? (matchData[sectionTitle]?[index]
+                                        ["choices"][0])
                                     : initialValueString,
                                 validator: (value) {
                                   if (value == null) {
@@ -388,11 +379,9 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                         child: StopwatchTimerWidget(
                             sectionTitle,
                             dataRequired[index]["title"],
-                            (double.tryParse(matchData[sectionTitle]
-                                                ?[dataRequired[index]["title"]]
-                                            ?.item2 ??
-                                        "0.0")! *
-                                    1000)
+                            (double.tryParse(matchData[sectionTitle]![index]
+                                        ["data"]) ??
+                                    0.0 * 1000)
                                 .floor(),
                             index),
                       );
@@ -404,6 +393,16 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                           image: AssetImage("assets/Tarmac.png",
                               bundle: rootBundle),
                           height: 200,
+                        ),
+                      );
+                    } else if (dataRequired[index]["data-type"] == "heading") {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            dataRequired[index]["title"],
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
                       );
                     } else {

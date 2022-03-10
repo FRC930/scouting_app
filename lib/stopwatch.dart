@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:scouting_app3/globals.dart';
-import 'package:tuple/tuple.dart';
+import 'package:scouting_app3/theme.dart';
 
 // Custom stopwatch widget
 class StopwatchTimerWidget extends StatefulWidget {
@@ -24,7 +24,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
   Timer? timer;
   Stopwatch watchTimer = Stopwatch();
   bool addInitialTime = true;
-  bool firstRun = true;
+  bool isFirst = true;
 
   @override
   void dispose() {
@@ -38,9 +38,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     // We don't want to account for any previous data anymore
     addInitialTime = false;
     // Get rid of the previous data
-    matchData[widget.stageName] ??= {};
-    matchData[widget.stageName]![widget.title] =
-        Tuple2<int, String>(widget.positionOnStack, "0.0");
+    matchData[widget.stageName]![widget.positionOnStack]["data"] = "0.0";
     setState(() {
       watchTimer.stop();
       watchTimer.reset();
@@ -64,10 +62,8 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
             // Divide by 1000 to convert to seconds
             1000.0)
         .toString();
-    matchData[widget.stageName] ??= {};
-    matchData[widget.stageName]![widget.title] =
-        matchData[widget.stageName]![widget.title]?.withItem2(elapsedTime) ??
-            Tuple2<int, String>(widget.positionOnStack, elapsedTime);
+    matchData[widget.stageName]![widget.positionOnStack]["data"] =
+        elapsedTime.toString();
     setState(() {
       timer?.cancel();
       watchTimer.stop();
@@ -76,13 +72,11 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (firstRun) {
-      firstRun = !firstRun;
-      matchData[widget.stageName] ??= {};
-      matchData[widget.stageName]![widget.title] =
-          Tuple2<int, String>(widget.positionOnStack, "0.0");
+    if (isFirst) {
+      stopTimer();
+      isFirst = false;
     }
-
+    
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Center(
@@ -103,6 +97,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: const Color(0xffdddddd), width: 3),
+                    color: appBackgroundColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
