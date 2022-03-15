@@ -51,7 +51,12 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     timer?.cancel();
     timer = Timer.periodic(
       const Duration(milliseconds: 50),
-      (_) => setState(() {}),
+      (_) => setState(() {
+        if (currentPage != widget.stageName) {
+          timer?.cancel();
+          stopTimer();
+        }
+      }),
     );
   }
 
@@ -65,8 +70,8 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     matchData[widget.stageName]![widget.positionOnStack]["data"] =
         elapsedTime.toString();
     setState(() {
-      timer?.cancel();
       watchTimer.stop();
+      timer?.cancel();
     });
   }
 
@@ -76,7 +81,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
       stopTimer();
       isFirst = false;
     }
-    
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Center(

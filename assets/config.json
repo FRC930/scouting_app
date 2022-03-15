@@ -5,13 +5,15 @@
             "title": "Team Number",
             "data-type": "field",
             "validation": "^(93|537|706|930|1091|1259|1306|1675|1714|1732|1739|1792|2062|2077|2194|2202|2506|2574|2830|3197|3418|3596|4786|4787|5096|5148|6223|6381|6421|6574|6643|6823|7237|7417|7900|7915|8531|8700|8701|8779|8802|8803|8847)*$",
-            "validate-help": "This should be a valid FRC team at the current event"
+            "validate-help": "This should be a valid FRC team at the current event",
+            "keyboard-type": "number"
         },
         {
             "title": "Match Number",
             "data-type": "field",
-            "validation": "^[0-9][0-9]$",
-            "validate-help": "This should be a match number"
+            "validation": "^[0-9]{1,2}$",
+            "validate-help": "This should be a match number",
+            "keyboard-type": "number"
         },
         {
             "title": "Scouter Name",
@@ -28,6 +30,9 @@
             "title": "Starting Location",
             "data-type": "choice",
             "choices": [
+                "1", "2", "3", "4"
+            ], 
+            "hints": [
                 "1", "2", "3", "4"
             ]
         }
@@ -50,6 +55,9 @@
             "title": "Tarmac Taxi",
             "data-type": "choice",
             "choices": [
+                "Yes", "No"
+            ],
+            "hints": [
                 "Yes", "No"
             ]
         },
@@ -80,7 +88,7 @@
                 "0", "1", "2", "3"
             ],
             "hints": [
-                "(No defense)", "(Bad defense)", "(Mediocre defense)", "(Good defense)"
+                "0 (No defense)", "1 (Bad defense)", "2 (Mediocre defense)", "3 (Good defense)"
             ]
         },
         {
@@ -96,6 +104,9 @@
             "data-type": "choice",
             "choices": [
                 "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+            ],
+            "hints":[
+                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
             ]
         }
     ],
@@ -106,12 +117,22 @@
             "data-type": "choice",
             "choices": [
                 "No Pick", "1st Pick", "2nd Pick"
+            ],
+            "hints": [
+                "No Pick", "1st Pick", "2nd Pick"
             ]
         },
         {
             "title": "Robot Role",
             "data-type": "choice",
             "choices": [
+                "Offense - Hub Cleanup",
+                "Offense - Launch Pad",
+                "Defense - Pushing Robots",
+                "Defense - Ramming Robots",
+                "Defense - Hitting Cargo"
+            ],
+            "hints": [
                 "Offense - Hub Cleanup",
                 "Offense - Launch Pad",
                 "Defense - Pushing Robots",
@@ -126,7 +147,8 @@
         {
             "title": "Disabled",
             "data-type": "choice",
-            "choices": ["No", "Yes"]
+            "choices": ["No", "Yes"],
+            "hints": ["No", "Yes"]
         },
         {
             "title": "General Comments",

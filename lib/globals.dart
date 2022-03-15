@@ -10,6 +10,7 @@ Directory? appFilesDir;
 String? appFilesDirString;
 LinkedHashMap<String, List> matchData = LinkedHashMap();
 Map<String, GlobalKey<FormState>> formKeys = {};
+String currentPage = "";
 
 Future<void> readConfigJson() async {
   rootBundle.loadString("assets/config.json").then((response) {
