@@ -160,6 +160,10 @@ class DataPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (pageName != currentPage) {
+      currentPage = pageName;
+    }
+
     String appBarTitle = pageName;
     if (matchData["Pre-Match Data"]?[0]["data"].toString().isNotEmpty ??
         false) {
@@ -244,6 +248,17 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                           matchData[sectionTitle]?[index]["data"] ?? "";
                     }
                     if (dataRequired[index]["data-type"] == "field") {
+                      TextInputType textType = TextInputType.text;
+                      if (dataRequired[index]["keyboard-type"] != null) {
+                        switch (dataRequired[index]["keyboard-type"]) {
+                          case "number":
+                            textType = TextInputType.number;
+                            break;
+                          default:
+                            break;
+                        }
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
@@ -262,6 +277,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                               decoration: InputDecoration(
                                 hintText: dataRequired[index]["title"],
                               ),
+                              keyboardType: textType,
                               initialValue: initialValueString,
                               validator: (value) {
                                 RegExp validationExpression = RegExp(
@@ -343,10 +359,7 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
                                 items: itemsList.map((menuItemName) {
                                   return DropdownMenuItem(
                                     child: Text(
-                                      menuItemName +
-                                          " " +
-                                          hintList[
-                                              itemsList.indexOf(menuItemName)],
+                                      hintList[itemsList.indexOf(menuItemName)],
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
