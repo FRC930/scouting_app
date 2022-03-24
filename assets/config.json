@@ -1,6 +1,5 @@
 {
     "Pre-Match Data": [
-
         {
             "title": "Team Number",
             "data-type": "field",
@@ -19,25 +18,9 @@
             "data-type": "field",
             "validation": "^[^;]*$",
             "validate-help": "This cannot have semicolons in it"
-        },
-        {
-            "title": "Tarmac Image",
-            "data-type": "displayImage",
-            "location": "assets/tarmac.png"
-        },
-        {
-            "title": "Starting Location",
-            "data-type": "choice",
-            "choices": [
-                "1", "2", "3", "4"
-            ], 
-            "hints": [
-                "1", "2", "3", "4"
-            ]
         }
     ],
     "Match Data": [
-
         {
             "title": "Auton Data",
             "data-type": "heading"
@@ -51,13 +34,36 @@
             "data-type": "counter"
         },
         {
+            "title": "Tarmac Image",
+            "data-type": "displayImage",
+            "location": "assets/tarmac.png"
+        },
+        {
+            "title": "Starting Location",
+            "data-type": "choice",
+            "choices": [
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
+            "hints": [
+                "1",
+                "2",
+                "3",
+                "4"
+            ]
+        },
+        {
             "title": "Tarmac Taxi",
             "data-type": "choice",
             "choices": [
-                "Yes", "No"
+                "Yes",
+                "No"
             ],
             "hints": [
-                "Yes", "No"
+                "Yes",
+                "No"
             ]
         },
         {
@@ -84,10 +90,16 @@
             "title": "Defense",
             "data-type": "choice",
             "choices": [
-                "0", "1", "2", "3"
+                "0",
+                "1",
+                "2",
+                "3"
             ],
             "hints": [
-                "0 (No defense)", "1 (Bad defense)", "2 (Mediocre defense)", "3 (Good defense)"
+                "0 (No defense)",
+                "1 (Bad defense)",
+                "2 (Mediocre defense)",
+                "3 (Good defense)"
             ]
         },
         {
@@ -102,23 +114,36 @@
             "title": "Hang Type",
             "data-type": "choice",
             "choices": [
-                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+                "No Hang",
+                "Robot Fell",
+                "Low Rung",
+                "Mid Rung",
+                "High Rung",
+                "Traversal Rung"
             ],
-            "hints":[
-                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
+            "hints": [
+                "No Hang",
+                "Robot Fell",
+                "Low Rung",
+                "Mid Rung",
+                "High Rung",
+                "Traversal Rung"
             ]
         }
     ],
     "Post-Match Data": [
-
         {
             "title": "Would you pick this robot?",
             "data-type": "choice",
             "choices": [
-                "No Pick", "1st Pick", "2nd Pick"
+                "No Pick",
+                "1st Pick",
+                "2nd Pick"
             ],
             "hints": [
-                "No Pick", "1st Pick", "2nd Pick"
+                "No Pick",
+                "1st Pick",
+                "2nd Pick"
             ]
         },
         {
@@ -146,8 +171,14 @@
         {
             "title": "Disabled",
             "data-type": "choice",
-            "choices": ["No", "Yes"],
-            "hints": ["No", "Yes"]
+            "choices": [
+                "No",
+                "Yes"
+            ],
+            "hints": [
+                "No",
+                "Yes"
+            ]
         },
         {
             "title": "General Comments",
