@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DataManager {
+class MatchDataManager {
   static List _configData = [];
   static List<String> _matchData = [];
   static Map _appConfig = {};

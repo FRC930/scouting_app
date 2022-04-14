@@ -8,7 +8,7 @@ import 'package:bearscouts/settings.dart';
 void main() {
   runApp(const MainApp());
 
-  DataManager.readData();
+  MatchDataManager.readData();
 }
 
 class MainApp extends StatelessWidget {

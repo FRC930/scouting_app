@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:bearscouts/data_manager.dart';
 
 class StopwatchWidget extends StatefulWidget {
-  final int dataIndex;
+  final Function(String) writeData;
   final int initialTimeMilliseconds;
+  final String title;
 
-  const StopwatchWidget(this.dataIndex, this.initialTimeMilliseconds,
+  const StopwatchWidget(
+      this.writeData, this.initialTimeMilliseconds, this.title,
       {Key? key})
       : super(key: key);
 
@@ -29,7 +30,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
   void reset() {
     addInitialTime = false;
-    DataManager.setMatchDataAtIndex(widget.dataIndex, "0.0");
+    widget.writeData("0.0");
     setState(() {
       timer.stop();
       timer.reset();
@@ -50,7 +51,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 (addInitialTime ? widget.initialTimeMilliseconds : 0)) /
             1000.0)
         .toString();
-    DataManager.setMatchDataAtIndex(widget.dataIndex, elapsedTime);
+    widget.writeData(elapsedTime);
     setState(() {
       timer.stop();
       updateTimer?.cancel();
@@ -67,7 +68,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                DataManager.getDatapoint(widget.dataIndex)["title"],
+                widget.title
               ),
             ),
             Padding(

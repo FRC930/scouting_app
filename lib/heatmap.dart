@@ -2,56 +2,55 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:bearscouts/data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class HeatMap extends StatefulWidget {
-  final int index;
+  final Map datapointValues;
+  final String initialValue;
+  final Function(String) validateAndWrite;
 
-  const HeatMap(this.index, {Key? key}) : super(key: key);
+  const HeatMap(this.datapointValues, this.initialValue, this.validateAndWrite,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HeatMapState();
 }
 
 class _HeatMapState extends State<HeatMap> {
-  Map? currentData;
   final _HeatmapPainter _painter2 = _HeatmapPainter();
+  String currentValue = "";
 
   @override
   void initState() {
     super.initState();
 
-    currentData = DataManager.getDatapoint(widget.index);
-
-    if (currentData!["location"].toString().contains("assets/")) {
-      _loadUIImageFromAssetBundle(currentData!["location"]).then((image) {
+    if (widget.datapointValues["location"].toString().contains("assets/")) {
+      _loadUIImageFromAssetBundle(widget.datapointValues["location"])
+          .then((image) {
         setState(() {
           _painter2.setImage(image);
-          _painter2.addAllPoints(
-              DataManager.getMatchDataAtIndex(widget.index).split("|"));
         });
       });
-    } else if (currentData!["location"].toString().isEmpty ||
-        currentData!["location"].toString().toLowerCase() == "null") {
+    } else if (widget.datapointValues["location"].toString().isEmpty ||
+        widget.datapointValues["location"].toString().toLowerCase() == "null") {
       _loadUIImageFromAssetBundle("assets/field_image.png").then((image) {
         setState(() {
           _painter2.setImage(image);
-          _painter2.addAllPoints(
-              DataManager.getMatchDataAtIndex(widget.index).split("|"));
         });
       });
     } else {
-      _loadUIImageFromLocalStorage(currentData!["location"]).then((image) {
+      _loadUIImageFromLocalStorage(widget.datapointValues["location"])
+          .then((image) {
         setState(() {
           _painter2.setImage(image);
-          _painter2.addAllPoints(
-              DataManager.getMatchDataAtIndex(widget.index).split("|"));
         });
       });
     }
+    _painter2.addAllPoints(widget.initialValue.split("|"));
+    currentValue = widget.initialValue;
   }
 
   String _offsetToString(ui.Offset offset) {
@@ -70,7 +69,7 @@ class _HeatMapState extends State<HeatMap> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  currentData!["title"],
+                  widget.datapointValues["title"],
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
@@ -86,12 +85,8 @@ class _HeatMapState extends State<HeatMap> {
         ),
         GestureDetector(
           onTapDown: (details) {
-            DataManager.setMatchDataAtIndex(
-              widget.index,
-              DataManager.getMatchDataAtIndex(widget.index) +
-                  _offsetToString(details.localPosition) +
-                  "|",
-            );
+            currentValue += _offsetToString(details.globalPosition) + "|";
+            widget.validateAndWrite(currentValue);
 
             setState(() {
               _painter2.addHeatmapPoint(details.localPosition);

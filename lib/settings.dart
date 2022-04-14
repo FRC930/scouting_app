@@ -181,8 +181,8 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                       Navigator.pushNamedAndRemoveUntil(
                           context, "/loading", (route) => false);
 
-                      DataManager.writeCurrentData();
-                      DataManager.readData();
+                      MatchDataManager.writeCurrentData();
+                      MatchDataManager.readData();
                     },
                     subtitle: const Text(
                       "Apply changes and lock the admin screen.",
@@ -239,12 +239,12 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
   void dispose() {
     super.dispose();
 
-    DataManager.writeCurrentData();
+    MatchDataManager.writeCurrentData();
   }
 
   @override
   Widget build(BuildContext context) {
-    List currentDatapoints = DataManager.getDatapoints();
+    List currentDatapoints = MatchDataManager.getDatapoints();
 
     return Scaffold(
       appBar: AppBar(
@@ -256,8 +256,8 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
               size: 24,
             ),
             onPressed: () {
-              DataManager.writeCurrentData();
-              DataManager.readData();
+              MatchDataManager.writeCurrentData();
+              MatchDataManager.readData();
 
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -279,7 +279,7 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                       onPressed: () {
-                        DataManager.addDatapoint({
+                        MatchDataManager.addDatapoint({
                           "title": "New Datapoint",
                           "data-type": "field",
                           "page-name": "Home Page",
@@ -337,7 +337,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
   void initState() {
     super.initState();
 
-    currentSettings = DataManager.getDatapoint(widget.index);
+    currentSettings = MatchDataManager.getDatapoint(widget.index);
   }
 
   @override
@@ -382,7 +382,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                                 ),
                               );
 
-                              DataManager.removeDatapointAt(widget.index);
+                              MatchDataManager.removeDatapointAt(widget.index);
                             },
                           ),
                           TextButton(
@@ -405,7 +405,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                   padding: const EdgeInsets.all(10),
                   child: IconButton(
                     onPressed: () {
-                      DataManager.swapDatapointsAtIndexes(
+                      MatchDataManager.swapDatapointsAtIndexes(
                           widget.index, widget.index - 1);
 
                       SchedulerBinding.instance
@@ -427,7 +427,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                   padding: const EdgeInsets.all(10),
                   child: IconButton(
                     onPressed: () {
-                      DataManager.swapDatapointsAtIndexes(
+                      MatchDataManager.swapDatapointsAtIndexes(
                           widget.index, widget.index + 1);
 
                       SchedulerBinding.instance
@@ -762,7 +762,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                 (route) => false,
               );
 
-              DataManager.readData();
+              MatchDataManager.readData();
             },
           ),
         ],
@@ -796,7 +796,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                     if (result != null) {
                       File file = File(result.files.single.path!);
                       var data = await file.readAsString();
-                      DataManager.setDatapoints(jsonDecode(data));
+                      MatchDataManager.setDatapoints(jsonDecode(data));
                     }
 
                     showDialog(
@@ -854,7 +854,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
 
                         await file.create();
                         await file.writeAsString(jsonEncode(
-                          DataManager.getDatapoints(),
+                          MatchDataManager.getDatapoints(),
                         ));
 
                         var okAlert = AlertDialog(
@@ -924,7 +924,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              DataManager.readConfigFromAssetBundle();
+                              MatchDataManager.readConfigFromAssetBundle();
 
                               Navigator.pop(context);
                             },
@@ -986,7 +986,7 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
   void initState() {
     super.initState();
 
-    _controller.text = DataManager.getAppConfig(widget.settingName);
+    _controller.text = MatchDataManager.getAppConfig(widget.settingName);
   }
 
   @override
@@ -1007,7 +1007,7 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
               labelText: widget.settingName,
             ),
             onChanged: (value) {
-              DataManager.setAppConfigAt(widget.settingName, value);
+              MatchDataManager.setAppConfigAt(widget.settingName, value);
             },
           ),
         ),
@@ -1021,7 +1021,7 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
   void dispose() {
     super.dispose();
 
-    DataManager.writeCurrentData();
+    MatchDataManager.writeCurrentData();
   }
 
   @override

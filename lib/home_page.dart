@@ -11,7 +11,7 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   Widget build(BuildContext context) {
-    String tabletName = DataManager.getAppConfig("Tablet Name");
+    String tabletName = MatchDataManager.getAppConfig("Tablet Name");
 
     Color textColor = Colors.white;
 
