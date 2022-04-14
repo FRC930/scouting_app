@@ -3,18 +3,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:scouting_app3/globals.dart';
-import 'package:scouting_app3/theme.dart';
 
-class MatchViewElement extends StatefulWidget {
-  const MatchViewElement({Key? key}) : super(key: key);
+class MatchViewer extends StatefulWidget {
+  const MatchViewer({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MatchViewState();
+  State<StatefulWidget> createState() => _MatchViewerState();
 }
 
-class _MatchViewState extends State<MatchViewElement> {
+class _MatchViewerState extends State<MatchViewer> {
   List<String> filesToPutInQR = [];
 
   @override
@@ -61,16 +60,12 @@ class _MatchViewState extends State<MatchViewElement> {
   Widget fileListBuild(BuildContext context, AsyncSnapshot snapshot) {
     List<String> values = snapshot.data;
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Center(
           child: Padding(
             padding: const EdgeInsets.all(3),
             child: ElevatedButton(
-              child: Text(
-                "View QR code for all selected matches",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              child: const Text("View QR code for all selected matches"),
               onPressed: () {
                 if (_CheckBoxWrapperState.numSelected > 0) {
                   Navigator.push(
@@ -90,41 +85,27 @@ class _MatchViewState extends State<MatchViewElement> {
           child: Padding(
             padding: const EdgeInsets.all(3),
             child: ElevatedButton(
-              child: Text(
-                "Delete all selected matches",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              child: const Text("Delete all selected matches"),
               onPressed: () {
                 if (_CheckBoxWrapperState.numSelected > 0) {
                   AlertDialog alert = AlertDialog(
-                    title: Text(
-                      "Delete data?",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    content: Text(
-                      "Are you sure that you want to delete these files?",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    title: const Text("Delete data?"),
+                    content: const Text(
+                        "Are you sure that you want to delete these files?"),
                     actions: [
                       TextButton(
-                        child: Text(
-                          "Yes",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
+                        child: const Text("Yes"),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          setState(() {
-                            for (String filename in filesToPutInQR) {
-                              File(filename).deleteSync();
-                            }
-                          });
+                          for (String filename in filesToPutInQR) {
+                            File(filename).deleteSync();
+                          }
+                          Navigator.pushReplacementNamed(
+                              context, "/match_viewer");
                         },
                       ),
                       TextButton(
-                        child: Text(
-                          "No",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
+                        child: const Text("No"),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -146,16 +127,10 @@ class _MatchViewState extends State<MatchViewElement> {
 
         // List of file names
         SizedBox(
-          height: 400,
+          height: 600,
           child: ListView.builder(
-            shrinkWrap: true,
             itemCount: values.length,
             itemBuilder: (context, index) {
-              Color backgroundColor = appMainColor;
-              if (File(values[index]).readAsStringSync().contains("DONE_")) {
-                backgroundColor = Colors.grey;
-              }
-
               String buttonText = "";
               if (Platform.isWindows) {
                 buttonText = values[index].split("\\").last;
@@ -167,11 +142,7 @@ class _MatchViewState extends State<MatchViewElement> {
                 children: <Widget>[
                   CheckBoxWrapper(filesToPutInQR, values[index]),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: backgroundColor),
-                    child: Text(
-                      buttonText,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    child: Text(buttonText),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -180,7 +151,7 @@ class _MatchViewState extends State<MatchViewElement> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               );
             },
@@ -194,12 +165,16 @@ class _MatchViewState extends State<MatchViewElement> {
   // Function to asynchronously read match files
   Future<List<String>> _inFutureList() async {
     List<String> fileList = [];
-    appFilesDir?.list().forEach((element) {
+    Directory appFilesDir = await getApplicationSupportDirectory();
+    appFilesDir = Directory(appFilesDir.path + "/matches");
+    if (!(await appFilesDir.exists())) {
+      await appFilesDir.create();
+    }
+    appFilesDir.list().forEach((element) {
       if (element.path.endsWith("json")) {
         fileList.add(element.path);
       }
     });
-    await Future.delayed(const Duration(milliseconds: 500));
     return fileList;
   }
 }
@@ -271,99 +246,66 @@ class QRCodeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "QR Code viewer",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        title: const Text("QR Code viewer"),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment.bottomCenter,
-            image: AssetImage(
-              "assets/logo.png",
-              bundle: rootBundle,
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: QRCodeViewPage(
+                () {
+                  String fileString = fileRef.readAsStringSync();
+                  String qrString = "";
+                  List fileJson = json.decode(fileString);
+
+                  for (String datapoint in fileJson) {
+                    qrString += datapoint + ";";
+                  }
+
+                  return qrString;
+                }(),
+                fileRef.readAsStringSync(),
+              ),
             ),
-          ),
-        ),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: QRCodeViewPage(
-                  () {
-                    String fileString = fileRef.readAsStringSync();
-                    String qrString = "";
-                    Map fileJson = json.decode(fileString);
-
-                    fileJson.forEach((key, value) {
-                      for (Map dataPoint in value) {
-                        if (dataPoint["data-type"] != "displayImage" &&
-                            dataPoint["data-type"] != "heading") {
-                          qrString += dataPoint["data"] + ";";
-                        }
-                      }
-                    });
-
-                    return qrString;
-                  }(),
-                  fileRef.readAsStringSync(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: ElevatedButton(
+                  child: const Text("Delete file"),
+                  onPressed: () {
+                    AlertDialog alert = AlertDialog(
+                      title: const Text("Delete data?"),
+                      content: const Text(
+                          "Are you sure that you want to delete this file?"),
+                      actions: [
+                        TextButton(
+                          child: const Text("Yes"),
+                          onPressed: () {
+                            fileRef.deleteSync();
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("No"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return alert;
+                      },
+                    );
+                  },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Center(
-                  child: ElevatedButton(
-                    child: Text(
-                      "Delete file",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onPressed: () {
-                      AlertDialog alert = AlertDialog(
-                        title: Text(
-                          "Delete data?",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        content: Text(
-                          "Are you sure that you want to delete this file?",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        actions: [
-                          TextButton(
-                            child: Text(
-                              "Yes",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            onPressed: () {
-                              fileRef.deleteSync();
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                            },
-                          ),
-                          TextButton(
-                            child: Text(
-                              "No",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return alert;
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -382,13 +324,11 @@ class QRCodeViewAll extends StatelessWidget {
       File currentFile = File(element);
 
       String fileString = currentFile.readAsStringSync();
-      Map fileJson = json.decode(fileString);
+      List fileJson = json.decode(fileString);
 
-      fileJson.forEach((key, value) {
-        for (Map dataPoint in value) {
-          retString += dataPoint["data"] + ";";
-        }
-      });
+      for (String datapoint in fileJson) {
+        retString += datapoint + ";";
+      }
 
       retString += "\n";
     }
@@ -400,10 +340,7 @@ class QRCodeViewAll extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "QR Code viewer",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        title: const Text("QR Code viewer"),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -468,10 +405,7 @@ class _QRCodeViewState extends State<QRCodeViewPage> {
             ? Padding(
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
-                  child: Text(
-                    "View raw file",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  child: const Text("View raw file"),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -497,22 +431,13 @@ class FileViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Raw File Viewer",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        title: const Text("Raw File Viewer"),
       ),
-      body: Container(
-        decoration: const BoxDecoration(color: appBackgroundColor),
-        child: Padding(
-          padding: const EdgeInsets.all(40),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Text(
-              fileContents,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(40),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Text(fileContents),
         ),
       ),
     );

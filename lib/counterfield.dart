@@ -42,7 +42,6 @@ class _CounterFieldState extends State<CounterField> {
             },
             child: const Icon(
               Icons.arrow_left_sharp,
-              color: Colors.white,
             ),
           ),
         ),
@@ -66,7 +65,6 @@ class _CounterFieldState extends State<CounterField> {
             },
             child: const Icon(
               Icons.arrow_right_sharp,
-              color: Colors.white,
             ),
           ),
         ),

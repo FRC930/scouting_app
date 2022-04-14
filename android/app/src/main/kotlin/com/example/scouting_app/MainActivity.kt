@@ -1,4 +1,4 @@
-package com.awtpi314.scouting_app3
+package com.team930.bearscouts
 
 import io.flutter.embedding.android.FlutterActivity
 
