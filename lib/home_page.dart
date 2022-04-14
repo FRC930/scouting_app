@@ -1,4 +1,3 @@
-import 'package:bearscouts/heatmap.dart';
 import 'package:flutter/material.dart';
 import 'package:bearscouts/data_manager.dart';
 

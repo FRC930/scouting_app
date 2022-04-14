@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as UI;
+import 'dart:ui' as ui;
 
 import 'package:bearscouts/data_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 class HeatMap extends StatefulWidget {
@@ -20,7 +18,7 @@ class HeatMap extends StatefulWidget {
 
 class _HeatMapState extends State<HeatMap> {
   Map? currentData;
-  _HeatmapPainter _painter2 = _HeatmapPainter();
+  final _HeatmapPainter _painter2 = _HeatmapPainter();
 
   @override
   void initState() {
@@ -56,7 +54,7 @@ class _HeatMapState extends State<HeatMap> {
     }
   }
 
-  String _offsetToString(UI.Offset offset) {
+  String _offsetToString(ui.Offset offset) {
     double x = offset.dx / _painter2.width * 54.0;
     double y = offset.dy / _painter2.height * 26.5;
     return '(${x.toStringAsFixed(1)},${y.toStringAsFixed(1)})';
@@ -116,39 +114,39 @@ class _HeatMapState extends State<HeatMap> {
     );
   }
 
-  Future<UI.Image> _loadUIImageFromAssetBundle(String assetName) async {
+  Future<ui.Image> _loadUIImageFromAssetBundle(String assetName) async {
     ByteData data = await rootBundle.load(assetName);
     var immutableImageBuffer =
-        await UI.ImmutableBuffer.fromUint8List(data.buffer.asUint8List());
+        await ui.ImmutableBuffer.fromUint8List(data.buffer.asUint8List());
     var imageDescriptor =
-        await UI.ImageDescriptor.encoded(immutableImageBuffer);
-    UI.Codec codec = await imageDescriptor.instantiateCodec(
+        await ui.ImageDescriptor.encoded(immutableImageBuffer);
+    ui.Codec codec = await imageDescriptor.instantiateCodec(
         targetWidth: MediaQuery.of(context).size.width.toInt() - 20);
-    UI.FrameInfo fi = await codec.getNextFrame();
+    ui.FrameInfo fi = await codec.getNextFrame();
     return fi.image;
   }
 
-  Future<UI.Image> _loadUIImageFromLocalStorage(String filename) async {
+  Future<ui.Image> _loadUIImageFromLocalStorage(String filename) async {
     Uint8List data = await File(filename).readAsBytes();
-    var immutableImageBuffer = await UI.ImmutableBuffer.fromUint8List(data);
+    var immutableImageBuffer = await ui.ImmutableBuffer.fromUint8List(data);
     var imageDescriptor =
-        await UI.ImageDescriptor.encoded(immutableImageBuffer);
-    UI.Codec codec = await imageDescriptor.instantiateCodec(
+        await ui.ImageDescriptor.encoded(immutableImageBuffer);
+    ui.Codec codec = await imageDescriptor.instantiateCodec(
         targetWidth: MediaQuery.of(context).size.width.toInt() - 20);
-    UI.FrameInfo fi = await codec.getNextFrame();
+    ui.FrameInfo fi = await codec.getNextFrame();
     return fi.image;
   }
 }
 
 class _HeatmapPainter extends ChangeNotifier implements CustomPainter {
-  UI.Image? _backgroundImage;
-  final List<UI.Offset> _heatmapPoints = [];
+  ui.Image? _backgroundImage;
+  final List<ui.Offset> _heatmapPoints = [];
 
   void addAllPoints(List<String> points) {
     for (var point in points) {
       if (point.isNotEmpty) {
         point = point.substring(1, point.length - 1);
-        addHeatmapPoint(UI.Offset(
+        addHeatmapPoint(ui.Offset(
           double.parse(point.split(",")[0]) / 54.0 * width,
           double.parse(point.split(",")[1]) / 26.5 * height,
         ));
@@ -156,7 +154,7 @@ class _HeatmapPainter extends ChangeNotifier implements CustomPainter {
     }
   }
 
-  void addHeatmapPoint(UI.Offset point) {
+  void addHeatmapPoint(ui.Offset point) {
     _heatmapPoints.add(point);
     notifyListeners();
   }
@@ -166,7 +164,7 @@ class _HeatmapPainter extends ChangeNotifier implements CustomPainter {
     notifyListeners();
   }
 
-  void setImage(UI.Image image) {
+  void setImage(ui.Image image) {
     _backgroundImage = image;
   }
 
@@ -174,29 +172,29 @@ class _HeatmapPainter extends ChangeNotifier implements CustomPainter {
   int get height => _backgroundImage?.height ?? 0;
 
   @override
-  bool? hitTest(UI.Offset position) => true;
+  bool? hitTest(ui.Offset position) => true;
 
   @override
-  void paint(UI.Canvas canvas, UI.Size size) {
+  void paint(ui.Canvas canvas, ui.Size size) {
     if (_backgroundImage == null) {
       return;
     }
 
     canvas.drawRect(
       Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
-      UI.Paint()..color = const UI.Color(0xFF1C1B1F),
+      ui.Paint()..color = const ui.Color(0xFF1C1B1F),
     );
-    canvas.drawImage(_backgroundImage!, Offset.zero, UI.Paint());
+    canvas.drawImage(_backgroundImage!, Offset.zero, ui.Paint());
 
-    for (UI.Offset point in _heatmapPoints) {
+    for (ui.Offset point in _heatmapPoints) {
       canvas.drawCircle(
         point,
         20,
-        UI.Paint()
+        ui.Paint()
           ..shader = const RadialGradient(
             colors: [
-              UI.Color(0xFFFF0000),
-              UI.Color(0x00FF0000),
+              ui.Color(0xFFFF0000),
+              ui.Color(0x00FF0000),
             ],
           ).createShader(Rect.fromCircle(
             center: point,
