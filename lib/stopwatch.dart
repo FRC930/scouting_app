@@ -1,87 +1,65 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:scouting_app3/globals.dart';
-import 'package:scouting_app3/theme.dart';
 
-// Custom stopwatch widget
-class StopwatchTimerWidget extends StatefulWidget {
-  final String stageName;
+class StopwatchWidget extends StatefulWidget {
+  final Function(String) writeData;
+  final int initialTimeMilliseconds;
   final String title;
-  final int initialTime;
-  final int positionOnStack;
 
-  const StopwatchTimerWidget(
-      this.stageName, this.title, this.initialTime, this.positionOnStack,
+  const StopwatchWidget(
+      this.writeData, this.initialTimeMilliseconds, this.title,
       {Key? key})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _StopwatchTimerWidgetState();
+  State<StatefulWidget> createState() => _StopwatchWidgetState();
 }
 
-class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
-  Timer? timer;
-  Stopwatch watchTimer = Stopwatch();
+class _StopwatchWidgetState extends State<StopwatchWidget> {
+  Stopwatch timer = Stopwatch();
+  Timer? updateTimer;
   bool addInitialTime = true;
-  bool isFirst = true;
 
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    super.initState();
 
-    // Stop trying to update the display
-    timer?.cancel();
+    stopTimer();
   }
 
   void reset() {
-    // We don't want to account for any previous data anymore
     addInitialTime = false;
-    // Get rid of the previous data
-    matchData[widget.stageName]![widget.positionOnStack]["data"] = "0.0";
+    widget.writeData("0.0");
     setState(() {
-      watchTimer.stop();
-      watchTimer.reset();
-      timer?.cancel();
+      timer.stop();
+      timer.reset();
+      updateTimer?.cancel();
     });
   }
 
   void startTimer() {
-    watchTimer.start();
-    timer?.cancel();
-    timer = Timer.periodic(
-      const Duration(milliseconds: 50),
-      (_) => setState(() {
-        if (currentPage != widget.stageName) {
-          timer?.cancel();
-          stopTimer();
-        }
-      }),
-    );
+    timer.start();
+    updateTimer?.cancel();
+    updateTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      setState(() {});
+    });
   }
 
   void stopTimer() {
-    String elapsedTime = ((watchTimer.elapsedMilliseconds +
-                // Check whether to add initial time from a previous stopwatch run or not
-                (addInitialTime ? widget.initialTime : 0)) /
-            // Divide by 1000 to convert to seconds
+    String elapsedTime = ((timer.elapsedMilliseconds +
+                (addInitialTime ? widget.initialTimeMilliseconds : 0)) /
             1000.0)
         .toString();
-    matchData[widget.stageName]![widget.positionOnStack]["data"] =
-        elapsedTime.toString();
+    widget.writeData(elapsedTime);
     setState(() {
-      watchTimer.stop();
-      timer?.cancel();
+      timer.stop();
+      updateTimer?.cancel();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isFirst) {
-      stopTimer();
-      isFirst = false;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Center(
@@ -90,8 +68,7 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                widget.title,
-                style: Theme.of(context).textTheme.displayMedium,
+                widget.title
               ),
             ),
             Padding(
@@ -102,19 +79,17 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: const Color(0xffdddddd), width: 3),
-                    color: appBackgroundColor,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Center(
                       child: Text(
-                        _formatTime(((watchTimer.elapsedMilliseconds +
-                                (addInitialTime ? widget.initialTime : 0)) /
+                        _formatTime(((timer.elapsedMilliseconds +
+                                (addInitialTime
+                                    ? widget.initialTimeMilliseconds
+                                    : 0)) /
                             1000.0)),
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium!
-                            .copyWith(fontSize: 36),
                       ),
                     ),
                   ),
@@ -126,24 +101,15 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: startTimer,
-                  child: Text(
-                    "Start",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  child: const Text("Start"),
                 ),
                 ElevatedButton(
                   onPressed: stopTimer,
-                  child: Text(
-                    "Stop",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  child: const Text("Stop"),
                 ),
                 ElevatedButton(
                   onPressed: () => reset(),
-                  child: Text(
-                    "Reset",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  child: const Text("Reset"),
                 ),
               ],
             )
@@ -153,7 +119,6 @@ class _StopwatchTimerWidgetState extends State<StopwatchTimerWidget> {
     );
   }
 
-// Converts time to a number in the form of #.# (ex. 12.3, 5.9)
   String _formatTime(double seconds) {
     seconds *= 10;
     seconds = seconds.floorToDouble();

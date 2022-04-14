@@ -1,159 +1,208 @@
-{
-    "Pre-Match Data": [
-
-        {
-            "title": "Team Number",
-            "data-type": "field",
-            "validation": "^[0-9]*$",
-            "validate-help": "This should be a valid FRC team at the current event"
-        },
-        {
-            "title": "Match Number",
-            "data-type": "field",
-            "validation": "^[0-9]{1,2}$",
-            "validate-help": "This should be a match number",
-            "keyboard-type": "number"
-        },
-        {
-            "title": "Scouter Name",
-            "data-type": "field",
-            "validation": "^[^;]*$",
-            "validate-help": "This cannot have semicolons in it"
-        },
-        {
-            "title": "Tarmac Image",
-            "data-type": "displayImage",
-            "location": "assets/tarmac.png"
-        },
-        {
-            "title": "Starting Location",
-            "data-type": "choice",
-            "choices": [
-                "1", "2", "3", "4"
-            ], 
-            "hints": [
-                "1", "2", "3", "4"
-            ]
-        }
-    ],
-    "Match Data": [
-
-        {
-            "title": "Auton Data",
-            "data-type": "heading"
-        },
-        {
-            "title": "Auton Upper Hub Scored",
-            "data-type": "counter"
-        },
-        {
-            "title": "Auton Lower Hub Scored",
-            "data-type": "counter"
-        },
-        {
-            "title": "Tarmac Taxi",
-            "data-type": "choice",
-            "choices": [
-                "Yes", "No"
-            ],
-            "hints": [
-                "Yes", "No"
-            ]
-        },
-        {
-            "title": "Teleop Data",
-            "data-type": "heading"
-        },
-        {
-            "title": "Teleop Upper Hub Scored",
-            "data-type": "counter"
-        },
-        {
-            "title": "Teleop Upper Hub Missed",
-            "data-type": "counter"
-        },
-        {
-            "title": "Teleop Lower Hub Scored",
-            "data-type": "counter"
-        },
-        {
-            "title": "Teleop Lower Hub Missed",
-            "data-type": "counter"
-        },
-        {
-            "title": "Defense",
-            "data-type": "choice",
-            "choices": [
-                "0", "1", "2", "3"
-            ],
-            "hints": [
-                "0 (No defense)", "1 (Bad defense)", "2 (Mediocre defense)", "3 (Good defense)"
-            ]
-        },
-        {
-            "title": "Endgame Data",
-            "data-type": "heading"
-        },
-        {
-            "title": "Hang Time",
-            "data-type": "stopwatch"
-        },
-        {
-            "title": "Hang Type",
-            "data-type": "choice",
-            "choices": [
-                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
-            ],
-            "hints":[
-                "No Hang", "Robot Fell", "Low Rung", "Mid Rung", "High Rung", "Traversal Rung"
-            ]
-        }
-    ],
-    "Post-Match Data": [
-
-        {
-            "title": "Would you pick this robot?",
-            "data-type": "choice",
-            "choices": [
-                "No Pick", "1st Pick", "2nd Pick"
-            ],
-            "hints": [
-                "No Pick", "1st Pick", "2nd Pick"
-            ]
-        },
-        {
-            "title": "Robot Role",
-            "data-type": "choice",
-            "choices": [
-                "Offense - Hub Cleanup",
-                "Offense - Launch Pad",
-                "Defense - Pushing Robots",
-                "Defense - Ramming Robots",
-                "Defense - Hitting Cargo"
-            ],
-            "hints": [
-                "Offense - Hub Cleanup",
-                "Offense - Launch Pad",
-                "Defense - Pushing Robots",
-                "Defense - Ramming Robots",
-                "Defense - Hitting Cargo"
-            ]
-        },
-        {
-            "title": "Penalties",
-            "data-type": "counter"
-        },
-        {
-            "title": "Disabled",
-            "data-type": "choice",
-            "choices": ["No", "Yes"],
-            "hints": ["No", "Yes"]
-        },
-        {
-            "title": "General Comments",
-            "data-type": "field",
-            "validation": "^[^;]*$",
-            "validate-help": "This cannot have semicolons in it"
-        }
-    ]
-}
+[
+    {
+        "title": "Team Number",
+        "data-type": "field",
+        "validation": "^[0-9]*$",
+        "validate-help": "This should be a valid FRC team at the current event",
+        "page-name": "Pre-Match",
+        "keyboard-type": "number"
+    },
+    {
+        "title": "Match Number",
+        "data-type": "field",
+        "validation": "^[0-9]*$",
+        "validate-help": "This should be a match number",
+        "keyboard-type": "number",
+        "page-name": "Pre-Match"
+    },
+    {
+        "title": "Scouter Name",
+        "data-type": "field",
+        "validation": "^[^;]*$",
+        "validate-help": "This cannot have semicolons in it",
+        "page-name": "Pre-Match"
+    },
+    {
+        "title": "Auton Data",
+        "data-type": "heading",
+        "page-name": "Match"
+    },
+    {
+        "title": "Auton Upper Hub Scored",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Auton Lower Hub Scored",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Tarmac Image",
+        "data-type": "displayImage",
+        "location": "assets/Tarmac.png",
+        "page-name": "Pre-Match"
+    },
+    {
+        "title": "Starting Location",
+        "data-type": "choice",
+        "choices": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "hints": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "page-name": "Pre-Match"
+    },
+    {
+        "title": "Tarmac Taxi",
+        "data-type": "choice",
+        "choices": [
+            "Yes",
+            "No"
+        ],
+        "hints": [
+            "Yes",
+            "No"
+        ],
+        "page-name": "Match"
+    },
+    {
+        "title": "Teleop Data",
+        "data-type": "heading",
+        "page-name": "Match"
+    },
+    {
+        "title": "Teleop Upper Hub Scored",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Teleop Upper Hub Missed",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Teleop Lower Hub Scored",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Teleop Lower Hub Missed",
+        "data-type": "counter",
+        "page-name": "Match"
+    },
+    {
+        "title": "Defense",
+        "data-type": "choice",
+        "choices": [
+            "0",
+            "1",
+            "2",
+            "3"
+        ],
+        "hints": [
+            "0 (No defense)",
+            "1 (Bad defense)",
+            "2 (Mediocre defense)",
+            "3 (Good defense)"
+        ],
+        "page-name": "Match"
+    },
+    {
+        "title": "Endgame Data",
+        "data-type": "heading",
+        "page-name": "Match"
+    },
+    {
+        "title": "Hang Time",
+        "data-type": "stopwatch",
+        "page-name": "Match"
+    },
+    {
+        "title": "Hang Type",
+        "data-type": "choice",
+        "choices": [
+            "No Hang",
+            "Robot Fell",
+            "Low Rung",
+            "Mid Rung",
+            "High Rung",
+            "Traversal Rung"
+        ],
+        "hints": [
+            "No Hang",
+            "Robot Fell",
+            "Low Rung",
+            "Mid Rung",
+            "High Rung",
+            "Traversal Rung"
+        ],
+        "page-name": "Match"
+    },
+    {
+        "title": "Would you pick this robot?",
+        "data-type": "choice",
+        "choices": [
+            "No Pick",
+            "1st Pick",
+            "2nd Pick"
+        ],
+        "hints": [
+            "No Pick",
+            "1st Pick",
+            "2nd Pick"
+        ],
+        "page-name": "Post-Match"
+    },
+    {
+        "title": "Robot Role",
+        "data-type": "choice",
+        "choices": [
+            "Offense - Hub Cleanup",
+            "Offense - Launch Pad",
+            "Defense - Pushing Robots",
+            "Defense - Ramming Robots",
+            "Defense - Hitting Cargo"
+        ],
+        "hints": [
+            "Offense - Hub Cleanup",
+            "Offense - Launch Pad",
+            "Defense - Pushing Robots",
+            "Defense - Ramming Robots",
+            "Defense - Hitting Cargo"
+        ],
+        "page-name": "Post-Match"
+    },
+    {
+        "title": "Penalties",
+        "data-type": "counter",
+        "page-name": "Post-Match"
+    },
+    {
+        "title": "Disabled",
+        "data-type": "choice",
+        "choices": [
+            "No",
+            "Yes"
+        ],
+        "hints": [
+            "No",
+            "Yes"
+        ],
+        "page-name": "Post-Match"
+    },
+    {
+        "title": "General Comments",
+        "data-type": "field",
+        "validation": "^[^;]*$",
+        "validate-help": "This cannot have semicolons in it",
+        "page-name": "Post-Match"
+    }
+]

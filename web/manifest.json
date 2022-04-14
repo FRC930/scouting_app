@@ -1,11 +1,11 @@
 {
-    "name": "WEARs MY APP",
-    "short_name": "WEARs",
+    "name": "scouting_app",
+    "short_name": "scouting_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Team 930 Scouting app",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
