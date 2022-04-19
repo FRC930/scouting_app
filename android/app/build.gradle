@@ -49,7 +49,7 @@ android {
 
     defaultConfig {
         applicationId "com.team930.bearscouts"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

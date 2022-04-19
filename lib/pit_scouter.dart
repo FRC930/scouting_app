@@ -3,14 +3,14 @@ import 'package:bearscouts/storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MatchScouter extends StatefulWidget {
-  const MatchScouter({Key? key}) : super(key: key);
+class PitScouter extends StatefulWidget {
+  const PitScouter({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MatchScouterState();
+  State<StatefulWidget> createState() => _PitScouterState();
 }
 
-class _MatchScouterState extends State<MatchScouter> {
+class _PitScouterState extends State<PitScouter> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,26 +21,84 @@ class _MatchScouterState extends State<MatchScouter> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  Storage().matchData =
-                      List.filled(Storage().matchConfigData.length, "");
-                  return const Datapage(0);
+                  Storage().pitData =
+                      List.filled(Storage().pitConfigData.length, "");
+                  return const TeamChoosePage();
                 }));
               },
-              child: const Text("New Match"),
+              child: const Text("New Form Entry"),
             ),
           ),
         ),
         Center(
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const Datapage(0);
-              }));
+              if (PitSaveDataPage.teamNumber == "0") {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const TeamChoosePage();
+                }));
+              } else {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const Datapage(0);
+                }));
+              }
             },
-            child: const Text("Continue Current Match"),
+            child: const Text("Continue Current Form Entry"),
           ),
         ),
       ],
+    );
+  }
+}
+
+class TeamChoosePage extends StatefulWidget {
+  const TeamChoosePage({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _TeamChoosePageState();
+}
+
+class _TeamChoosePageState extends State<TeamChoosePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Team Selector"),
+      ),
+      body: ListView.builder(
+        itemCount: Storage().appConfig["Team Numbers"].length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              child: ListTile(
+                title: Text(
+                  Storage().appConfig["Team Numbers"][index].toString() +
+                      " - " +
+                      Storage().appConfig["Team Names"][index].toString(),
+                  textAlign: TextAlign.right,
+                  style: Theme.of(context).textTheme.headline4?.copyWith(
+                      color: Theme.of(context).colorScheme.onTertiaryContainer),
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                iconColor: Theme.of(context).colorScheme.onTertiaryContainer,
+                onTap: () {
+                  PitSaveDataPage.teamName =
+                      Storage().appConfig["Team Names"][index];
+                  PitSaveDataPage.teamNumber =
+                      Storage().appConfig["Team Numbers"][index];
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const Datapage(0);
+                  }));
+                },
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -64,7 +122,7 @@ class _DatapageState extends State<Datapage> {
     super.initState();
 
     widgets = Storage()
-        .matchPageConfigs[Storage().matchPageNames[widget.pageIndex]] ??= [];
+        .pitPageConfigs[Storage().pitPageNames[widget.pageIndex]] ??= [];
 
     widgetStates = List.generate(widgets.length, (_) => false, growable: true);
   }
@@ -73,7 +131,7 @@ class _DatapageState extends State<Datapage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Storage().matchPageNames[widget.pageIndex]),
+        title: Text(PitSaveDataPage.teamName),
       ),
       body: Form(
         key: _formKey,
@@ -87,11 +145,10 @@ class _DatapageState extends State<Datapage> {
                     return DataCollectorWidget(
                       validateAndWrite: (bool state, String value) {
                         widgetStates[index] = state;
-                        Storage().matchData[widgets[index]] = value;
+                        Storage().pitData[widgets[index]] = value;
                       },
-                      getData: () => Storage().matchData[widgets[index]],
-                      datapointValues:
-                          Storage().matchConfigData[widgets[index]],
+                      getData: () => Storage().pitData[widgets[index]],
+                      datapointValues: Storage().pitConfigData[widgets[index]],
                     );
                   } else {
                     return Padding(
@@ -101,7 +158,7 @@ class _DatapageState extends State<Datapage> {
                           if (_formKey.currentState!.validate() &&
                               !widgetStates.contains(false)) {
                             if (widget.pageIndex <
-                                Storage().matchPageNames.length - 1) {
+                                Storage().pitPageNames.length - 1) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return Datapage(widget.pageIndex + 1);
@@ -109,7 +166,7 @@ class _DatapageState extends State<Datapage> {
                             } else {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const SaveDataPage();
+                                return const PitSaveDataPage();
                               }));
                             }
                           }
@@ -128,8 +185,11 @@ class _DatapageState extends State<Datapage> {
   }
 }
 
-class SaveDataPage extends StatelessWidget {
-  const SaveDataPage({Key? key}) : super(key: key);
+class PitSaveDataPage extends StatelessWidget {
+  static String teamNumber = "0";
+  static String teamName = "";
+
+  const PitSaveDataPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,16 +215,16 @@ class SaveDataPage extends StatelessWidget {
             child: ElevatedButton(
               child: Padding(
                 padding: const EdgeInsets.all(40),
-                child: Text("Write Match Data",
+                child: Text("Write Pit Data",
                     style: Theme.of(context)
                         .textTheme
                         .headline5
                         ?.copyWith(fontSize: 22)),
               ),
               onPressed: () {
-                Storage().writeMatchData();
+                Storage().writePitData(teamName, teamNumber);
                 Navigator.pushNamedAndRemoveUntil(
-                    context, "/match_scouter", (route) => false);
+                    context, "/pit_scout/data_view", (route) => false);
               },
             ),
           ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Color palette
+/// [Material Design color palette](https://material.io/design/color/the-color-system.html#color-theme-creation)
+/// This is used by the app to determine color across the entire app
+
 const seed = Color(0xFF6750A4);
 
 const lightColorScheme = ColorScheme(

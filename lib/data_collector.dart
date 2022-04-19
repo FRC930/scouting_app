@@ -5,15 +5,19 @@ import 'package:bearscouts/heatmap.dart';
 import 'package:bearscouts/stopwatch.dart';
 import 'package:flutter/material.dart';
 
+/// DataCollectorWidget
+/// This is the main collecting widget for the scouting app. It represents any
+/// of the different widget types by using the datapointValues passed to it.
 class DataCollectorWidget extends StatefulWidget {
+  /// The configuration representing the type of data collector
   final Map datapointValues;
-  final int index;
-  final Function(bool, String) validateAndWrite;
-  final Function() getData;
+  /// A callback to write data to storage (and tell if the widget is in a valid state)
+  final void Function(bool, String) validateAndWrite;
+  /// A callback to get data from storage
+  final String Function() getData;
 
   const DataCollectorWidget({
     Key? key,
-    required this.index,
     required this.validateAndWrite,
     required this.getData,
     required this.datapointValues,
@@ -32,8 +36,9 @@ class _DataCollectorWidgetState extends State<DataCollectorWidget> {
 
     if (widget.datapointValues["data-type"] == "field") {
       _widgetValue = GlobalKey<FormState>();
-    } else if (widget.datapointValues["data-type"] == "heading" ||
-        widget.datapointValues["data-type"] == "displayImage") {
+    } else if (widget.datapointValues["data-type"] == "toggle") {
+      widget.validateAndWrite(true, "false");
+    } else if (widget.datapointValues["data-type"] != "heatmap") {
       widget.validateAndWrite(true, "");
     }
   }

@@ -15,7 +15,7 @@ class MatchDataManager {
   static List<String> _pageNames = [];
 
   static Future<List> readConfigFromAssetBundle() async {
-    String jsonString = await rootBundle.loadString('assets/config.json');
+    String jsonString = await rootBundle.loadString('assets/match_config.json');
 
     setDatapoints(json.decode(jsonString) as List);
 
@@ -31,7 +31,7 @@ class MatchDataManager {
   }
 
   static Future<void> writeCurrentData() async {
-    final file = await _getLocalFile("config.json");
+    final file = await _getLocalFile("match_config.json");
     await file.writeAsString(json.encode(_configData));
 
     final appConfigFile = await _getLocalFile("app_config.json");
@@ -79,7 +79,7 @@ class MatchDataManager {
 
   static Future<List> readData() async {
     try {
-      final file = await _getLocalFile("config.json");
+      final file = await _getLocalFile("match_config.json");
       if (!await file.exists()) {
         readConfigFromAssetBundle();
       } else {

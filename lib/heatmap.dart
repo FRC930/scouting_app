@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:bearscouts/storage_manager.dart';
 
 class HeatMap extends StatefulWidget {
   final Map datapointValues;
@@ -31,25 +32,30 @@ class _HeatMapState extends State<HeatMap> {
       _loadUIImageFromAssetBundle(widget.datapointValues["location"])
           .then((image) {
         setState(() {
+          _painter2.clearHeatmapPoints();
           _painter2.setImage(image);
+          _painter2.addAllPoints(widget.initialValue.split("|"));
         });
       });
     } else if (widget.datapointValues["location"].toString().isEmpty ||
         widget.datapointValues["location"].toString().toLowerCase() == "null") {
       _loadUIImageFromAssetBundle("assets/field_image.png").then((image) {
         setState(() {
+          _painter2.clearHeatmapPoints();
           _painter2.setImage(image);
+          _painter2.addAllPoints(widget.initialValue.split("|"));
         });
       });
     } else {
       _loadUIImageFromLocalStorage(widget.datapointValues["location"])
           .then((image) {
         setState(() {
+          _painter2.clearHeatmapPoints();
           _painter2.setImage(image);
+          _painter2.addAllPoints(widget.initialValue.split("|"));
         });
       });
     }
-    _painter2.addAllPoints(widget.initialValue.split("|"));
     currentValue = widget.initialValue;
   }
 
@@ -85,7 +91,7 @@ class _HeatMapState extends State<HeatMap> {
         ),
         GestureDetector(
           onTapDown: (details) {
-            currentValue += _offsetToString(details.globalPosition) + "|";
+            currentValue += _offsetToString(details.localPosition) + "|";
             widget.validateAndWrite(currentValue);
 
             setState(() {
@@ -156,6 +162,11 @@ class _HeatmapPainter extends ChangeNotifier implements CustomPainter {
 
   void undoLastHeatmapPoint() {
     _heatmapPoints.removeLast();
+    notifyListeners();
+  }
+
+  void clearHeatmapPoints() {
+    _heatmapPoints.clear();
     notifyListeners();
   }
 

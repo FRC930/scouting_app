@@ -1,0 +1,260 @@
+[
+    {
+        "title": "Drive Train Type",
+        "data-type": "choice",
+        "choices": [
+            "Tank",
+            "Mecanum",
+            "Swerve"
+        ],
+        "hints": [
+            "Tank Drive",
+            "Mecanum Drive",
+            "Swerve Drive"
+        ],
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Wheel Type",
+        "data-type": "choice",
+        "choices": [
+            "Traction",
+            "Blue Nitrile",
+            "Colson",
+            "Mecanum",
+            "Pneumatic"
+        ],
+        "hints": [
+            "Traction",
+            "Blue Nitrile",
+            "Colson",
+            "Mecanum",
+            "Pneumatic"
+        ],
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Number of Wheels",
+        "data-type": "counter",
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Robot Width",
+        "data-type": "field",
+        "validation": "^[0-9]*\\.?[0-9]*$",
+        "validate-help": "This should be a number representative of the width of the robot in inches.",
+        "keyboard-type": "number",
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Robot Weight",
+        "data-type": "field",
+        "validation": "^[0-9]*\\.?[0-9]*$",
+        "validate-help": "This should be a number representative of the weight of the robot in pounds.",
+        "keyboard-type": "number",
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Driver Camera",
+        "data-type": "toggle",
+        "page-name": "Physical Robot Features"
+    },
+    {
+        "title": "Ball Storage",
+        "data-type": "counter",
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Hub Level",
+        "data-type": "choice",
+        "choices": [
+            "Lower Hub",
+            "Upper Hub",
+            "Both"
+        ],
+        "hints": [
+            "Lower Hub",
+            "Upper Hub",
+            "Both"
+        ],
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Shooter Mechanism",
+        "data-type": "choice",
+        "choices": [
+            "2 Wheel Shooter",
+            "1 Wheel Shooter",
+            "Dumper",
+            "None",
+            "Catapult",
+            "Other"
+        ],
+        "hints": [
+            "2 Wheel Shooter",
+            "1 Wheel Shooter",
+            "Dumper",
+            "None",
+            "Catapult",
+            "Other"
+        ],
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Fender Shot",
+        "data-type": "toggle",
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Tarmac Shot",
+        "data-type": "toggle",
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Launch Pad Shot",
+        "data-type": "toggle",
+        "page-name": "Robot Abilities"
+    },
+    {
+        "title": "Low Rung Hang",
+        "data-type": "choice",
+        "choices": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "hints": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Mid Rung Hang",
+        "data-type": "choice",
+        "choices": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "hints": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "High Rung Hang",
+        "data-type": "choice",
+        "choices": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "hints": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Traversal Rung Hang",
+        "data-type": "choice",
+        "choices": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "hints": [
+            "Yes",
+            "No",
+            "Planned"
+        ],
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Climber Mechanism",
+        "data-type": "choice",
+        "choices": [
+            "Elevator Climber",
+            "Double Elevator Climber",
+            "Windmill Climber",
+            "None",
+            "Other"
+        ],
+        "hints": [
+            "Elevator Climber",
+            "Double Elevator Climber",
+            "Windmill Climber",
+            "None",
+            "Other"
+        ],
+        "page-name": "Endgame Capabilities"
+    }, 
+    {
+        "title": "Hook Type",
+        "data-type": "choice",
+        "choices": [
+            "Open Hook",
+            "Closed Hook",
+            "None"
+        ],
+        "hints": [
+            "Open Hook",
+            "Closed Hook",
+            "None"
+        ],
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Hooks On Bar",
+        "data-type": "counter",
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Endgame Lock",
+        "data-type": "toggle",
+        "page-name": "Endgame Capabilities"
+    },
+    {
+        "title": "Programming Language",
+        "data-type": "choice",
+        "choices": [
+            "Java",
+            "C++",
+            "LabView",
+            "Other"
+        ],
+        "hints": [
+            "Java",
+            "C++",
+            "LabView",
+            "Other"
+        ],
+        "page-name": "Miscellaneous"
+    },
+    {
+        "title": "Most Time Spent",
+        "data-type": "field",
+        "validation": "^[^;]*$",
+        "validate-help": "This cannot contain semicolons",
+        "page-name": "Miscellaneous"
+    },
+    {
+        "title": "Robot Name",
+        "data-type": "field",
+        "validation": "^[^;]*$",
+        "validate-help": "This cannot contain semicolons",
+        "page-name": "Miscellaneous"
+    },
+    {
+        "title": "Comments",
+        "data-type": "field",
+        "validation": "^[^;]*$",
+        "validate-help": "This cannot contain semicolons",
+        "page-name": "Miscellaneous"
+    }
+]

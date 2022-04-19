@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bearscouts/storage_manager.dart';
 import 'package:crypto/crypto.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:bearscouts/data_manager.dart';
 import 'package:bearscouts/nav_drawer.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,7 +21,7 @@ class SettingsAuthPage extends StatefulWidget {
 
 class _SettingsAuthPageState extends State<SettingsAuthPage> {
   static const String _passwordHash =
-      "404b131bbcc856693d8d494a7e02af41f8f6ea98a002e58b890fb43c1e18d1e0";
+      "a327bee904ca10725aed4ddb19b4e1161c6f97d281e36bb23439d837a3c7cd3e";
   final TextEditingController _passwordController = TextEditingController();
   bool authenticated = false;
 
@@ -85,7 +86,7 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      "Edit Data Configuration",
+                      "Edit Match Data Configuration",
                       textAlign: TextAlign.right,
                       style: Theme.of(context).textTheme.headline4?.copyWith(
                           color: Theme.of(context)
@@ -97,7 +98,33 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                         Theme.of(context).colorScheme.onTertiaryContainer,
                     onTap: () => Navigator.pushNamed(context, "/settings"),
                     subtitle: const Text(
-                      "Edit data properties and configuration",
+                      "Edit match data properties and configuration",
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      "Edit Pit Data Configuration",
+                      textAlign: TextAlign.right,
+                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onTertiaryContainer),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    iconColor:
+                        Theme.of(context).colorScheme.onTertiaryContainer,
+                    onTap: () => Navigator.pushNamed(context, "/settings/pit"),
+                    subtitle: const Text(
+                      "Edit pit data properties and configuration",
                       textAlign: TextAlign.right,
                     ),
                   ),
@@ -181,8 +208,8 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                       Navigator.pushNamedAndRemoveUntil(
                           context, "/loading", (route) => false);
 
-                      MatchDataManager.writeCurrentData();
-                      MatchDataManager.readData();
+                      Storage().writeConfigToLocalStorage().then(
+                          (value) => Storage().readConfigFromLocalStorage());
                     },
                     subtitle: const Text(
                       "Apply changes and lock the admin screen.",
@@ -201,8 +228,10 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
 
 class ConfigSettingsPage extends StatefulWidget {
   final int scrollTo;
+  final String type;
 
-  const ConfigSettingsPage({Key? key, this.scrollTo = 0}) : super(key: key);
+  const ConfigSettingsPage({Key? key, this.scrollTo = 0, this.type = "match"})
+      : super(key: key);
 
   @override
   _ConfigSettingsPageState createState() => _ConfigSettingsPageState();
@@ -239,12 +268,17 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
   void dispose() {
     super.dispose();
 
-    MatchDataManager.writeCurrentData();
+    Storage().writeConfigToLocalStorage();
   }
 
   @override
   Widget build(BuildContext context) {
-    List currentDatapoints = MatchDataManager.getDatapoints();
+    List currentDatapoints;
+    if (widget.type == "match") {
+      currentDatapoints = Storage().matchConfigData;
+    } else {
+      currentDatapoints = Storage().pitConfigData;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -256,8 +290,8 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
               size: 24,
             ),
             onPressed: () {
-              MatchDataManager.writeCurrentData();
-              MatchDataManager.readData();
+              Storage().writeConfigToLocalStorage().then((value) async =>
+                  await Storage().readConfigFromLocalStorage());
 
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -279,14 +313,21 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                       onPressed: () {
-                        MatchDataManager.addDatapoint({
+                        Map newDatapoint = {
                           "title": "New Datapoint",
                           "data-type": "field",
                           "page-name": "Home Page",
                           "validation": "^[^;]*\$",
                           "validate-help": "How did you get here?",
                           "keyboard-type": "text",
-                        });
+                        };
+                        if (widget.type == "match") {
+                          Storage().matchConfigData.add(newDatapoint);
+                          Storage().matchData.add("");
+                        } else {
+                          Storage().pitConfigData.add(newDatapoint);
+                          Storage().pitData.add("");
+                        }
 
                         Navigator.pushReplacement(
                           context,
@@ -309,7 +350,16 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
                       _widgetOffsets[type]!;
                 }
 
-                return _DatapointSettingsWidget(index: index);
+                if (widget.type == "match") {
+                  return _DatapointSettingsWidget(
+                      index: index, datapoints: Storage().matchConfigData);
+                } else {
+                  return _DatapointSettingsWidget(
+                    index: index,
+                    datapoints: Storage().pitConfigData,
+                    type: "pit",
+                  );
+                }
               },
               itemCount: currentDatapoints.length + 1,
             ),
@@ -322,8 +372,14 @@ class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
 
 class _DatapointSettingsWidget extends StatefulWidget {
   final int index;
+  final List datapoints;
+  final String type;
 
-  const _DatapointSettingsWidget({Key? key, required this.index})
+  const _DatapointSettingsWidget(
+      {Key? key,
+      required this.index,
+      required this.datapoints,
+      this.type = "match"})
       : super(key: key);
 
   @override
@@ -337,7 +393,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
   void initState() {
     super.initState();
 
-    currentSettings = MatchDataManager.getDatapoint(widget.index);
+    currentSettings = widget.datapoints[widget.index];
   }
 
   @override
@@ -382,7 +438,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                                 ),
                               );
 
-                              MatchDataManager.removeDatapointAt(widget.index);
+                              widget.datapoints.removeAt(widget.index);
                             },
                           ),
                           TextButton(
@@ -405,8 +461,10 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                   padding: const EdgeInsets.all(10),
                   child: IconButton(
                     onPressed: () {
-                      MatchDataManager.swapDatapointsAtIndexes(
-                          widget.index, widget.index - 1);
+                      Map tempDatapoint = widget.datapoints[widget.index];
+                      widget.datapoints[widget.index] =
+                          widget.datapoints[widget.index - 1];
+                      widget.datapoints[widget.index - 1] = tempDatapoint;
 
                       SchedulerBinding.instance
                           ?.addPostFrameCallback((timeStamp) {
@@ -427,8 +485,10 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
                   padding: const EdgeInsets.all(10),
                   child: IconButton(
                     onPressed: () {
-                      MatchDataManager.swapDatapointsAtIndexes(
-                          widget.index, widget.index + 1);
+                      Map tempDatapoint = widget.datapoints[widget.index];
+                      widget.datapoints[widget.index] =
+                          widget.datapoints[widget.index + 1];
+                      widget.datapoints[widget.index + 1] = tempDatapoint;
 
                       SchedulerBinding.instance
                           ?.addPostFrameCallback((timeStamp) {
@@ -454,7 +514,7 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
   }
 
   Widget buildSettingsChangeWidget() {
-    if (currentSettings.isEmpty) {
+    if (widget.datapoints[widget.index].isEmpty) {
       return getTypeSelector(null);
     }
 
@@ -534,6 +594,13 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
   }
 
   List<Widget> getCommonSettings() {
+    List<String> pageNames = [];
+    if (widget.type == "match") {
+      pageNames = Storage().appConfig["Match Page Order"].toString().split(",");
+    } else {
+      pageNames = Storage().appConfig["Pit Page Order"].toString().split(",");
+    }
+
     return <Widget>[
       TextFormField(
         decoration: const InputDecoration(
@@ -544,15 +611,12 @@ class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
           currentSettings["title"] = value;
         },
       ),
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: "Page Name",
-        ),
-        initialValue: currentSettings["page-name"] ?? "",
-        onChanged: (value) {
-          currentSettings["page-name"] = value;
-        },
-      ),
+      getMultipleChoiceSelector(
+          pageNames,
+          pageNames,
+          currentSettings["page-name"],
+          (value) => currentSettings["page-name"] = value,
+          "Page Name"),
       getTypeSelector(currentSettings["data-type"]),
     ];
   }
@@ -762,7 +826,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                 (route) => false,
               );
 
-              MatchDataManager.readData();
+              Storage().readConfigFromLocalStorage();
             },
           ),
         ],
@@ -796,7 +860,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                     if (result != null) {
                       File file = File(result.files.single.path!);
                       var data = await file.readAsString();
-                      MatchDataManager.setDatapoints(jsonDecode(data));
+                      Storage().matchConfigData = jsonDecode(data);
                     }
 
                     showDialog(
@@ -853,9 +917,8 @@ class _ImportExportPageState extends State<ImportExportPage> {
                         }
 
                         await file.create();
-                        await file.writeAsString(jsonEncode(
-                          MatchDataManager.getDatapoints(),
-                        ));
+                        await file.writeAsString(
+                            jsonEncode(Storage().matchConfigData));
 
                         var okAlert = AlertDialog(
                           actions: [
@@ -924,7 +987,7 @@ class _ImportExportPageState extends State<ImportExportPage> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              MatchDataManager.readConfigFromAssetBundle();
+                              Storage().readConfigFromAssetBundle();
 
                               Navigator.pop(context);
                             },
@@ -986,7 +1049,7 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
   void initState() {
     super.initState();
 
-    _controller.text = MatchDataManager.getAppConfig(widget.settingName);
+    _controller.text = Storage().appConfig[widget.settingName];
   }
 
   @override
@@ -1007,8 +1070,79 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
               labelText: widget.settingName,
             ),
             onChanged: (value) {
-              MatchDataManager.setAppConfigAt(widget.settingName, value);
+              Storage().appConfig[widget.settingName] = value;
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class QRTeamSettingsWidget extends StatefulWidget {
+  const QRTeamSettingsWidget({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _QRTeamSettingsWidgetState();
+}
+
+class _QRTeamSettingsWidgetState extends State<QRTeamSettingsWidget> {
+  Map teamsJson = {};
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          width: 3,
+        )),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              MobileScanner(
+                allowDuplicates: false,
+                controller: MobileScannerController(
+                  facing: CameraFacing.back,
+                  torchEnabled: false,
+                ),
+                onDetect: (barcode, args) {
+                  if (barcode.rawValue != null) {
+                    teamsJson = json.decode(barcode.rawValue!);
+                  }
+                },
+              ),
+              Center(
+                  child: ElevatedButton(
+                child: const Text("Read Team Configuration"),
+                onPressed: () {
+                  Storage().appConfig["Team Names"] = teamsJson["Team Names"];
+                  Storage().appConfig["Team Numbers"] =
+                      teamsJson["Team Numbers"];
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Teams read successfully"),
+                      content: const Text(
+                        "The teams have been read from the QR code. These changes will be reflected in pit scouting after an app reload.",
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("OK"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ))
+            ],
           ),
         ),
       ),
@@ -1021,7 +1155,7 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
   void dispose() {
     super.dispose();
 
-    MatchDataManager.writeCurrentData();
+    Storage().writeConfigToLocalStorage();
   }
 
   @override
@@ -1045,9 +1179,11 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
           ),
         ],
       ),
-      body: Column(children: const <Widget>[
+      body: ListView(children: const <Widget>[
         _SettingsWidget(settingName: "Tablet Name"),
-        _SettingsWidget(settingName: "Page Order"),
+        _SettingsWidget(settingName: "Match Page Order"),
+        _SettingsWidget(settingName: "Pit Page Order"),
+        QRTeamSettingsWidget(),
       ]),
     );
   }

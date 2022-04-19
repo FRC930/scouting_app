@@ -1,20 +1,29 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class MatchViewer extends StatefulWidget {
-  const MatchViewer({Key? key}) : super(key: key);
+class FileViewer extends StatefulWidget {
+  final String viewerType;
+
+  const FileViewer({Key? key, this.viewerType = "match"}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MatchViewerState();
+  State<StatefulWidget> createState() => _FileViewerState();
 }
 
-class _MatchViewerState extends State<MatchViewer> {
+class _FileViewerState extends State<FileViewer> {
   List<String> filesToPutInQR = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +46,10 @@ class _MatchViewerState extends State<MatchViewer> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Column(
-                    children: [
+                    children: const [
                       Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text("Match data loading..."),
-                        ),
+                        child: Text("Match data loading...",
+                            style: TextStyle(fontSize: 96)),
                       ),
                     ],
                   );
@@ -59,6 +66,13 @@ class _MatchViewerState extends State<MatchViewer> {
 
   Widget fileListBuild(BuildContext context, AsyncSnapshot snapshot) {
     List<String> values = snapshot.data;
+    // Sometimes it seems that the asnyc snapshot is not ready when the widget is built
+    // This is a workaround to make sure that the widget is built
+    if (values.isEmpty) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        setState(() {});
+      });
+    }
     return Column(
       children: <Widget>[
         Center(
@@ -96,12 +110,11 @@ class _MatchViewerState extends State<MatchViewer> {
                       TextButton(
                         child: const Text("Yes"),
                         onPressed: () {
-                          Navigator.of(context).pop();
                           for (String filename in filesToPutInQR) {
                             File(filename).deleteSync();
                           }
-                          Navigator.pushReplacementNamed(
-                              context, "/match_viewer");
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/pit_scout/data_view", (route) => false);
                         },
                       ),
                       TextButton(
@@ -166,7 +179,11 @@ class _MatchViewerState extends State<MatchViewer> {
   Future<List<String>> _inFutureList() async {
     List<String> fileList = [];
     Directory appFilesDir = await getApplicationSupportDirectory();
-    appFilesDir = Directory(appFilesDir.path + "/matches");
+    if (widget.viewerType == "match") {
+      appFilesDir = Directory(appFilesDir.path + "/matches");
+    } else {
+      appFilesDir = Directory(appFilesDir.path + "/pit");
+    }
     if (!(await appFilesDir.exists())) {
       await appFilesDir.create();
     }
