@@ -52,17 +52,6 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.fact_check_outlined),
-            iconColor: Theme.of(context).colorScheme.primary,
-            title: const Text("Pit Scouting"),
-            onTap: () {
-              Navigator.pop(context);
-
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/pit_scout', (_) => false);
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.settings),
             iconColor: Theme.of(context).colorScheme.primary,
             title: const Text("Settings"),

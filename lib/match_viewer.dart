@@ -69,7 +69,7 @@ class _FileViewerState extends State<FileViewer> {
     // Sometimes it seems that the asnyc snapshot is not ready when the widget is built
     // This is a workaround to make sure that the widget is built
     if (values.isEmpty) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }
