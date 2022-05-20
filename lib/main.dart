@@ -1,83 +1,139 @@
-import 'package:bearscouts/storage_manager.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:bearscouts/color_schemes.dart';
-import 'package:bearscouts/loading_screen.dart';
-import 'package:bearscouts/main_page.dart';
+import 'dart:io';
+
+import 'package:bearscouts/data_management.dart';
+import 'package:bearscouts/database.dart';
 import 'package:bearscouts/settings.dart';
-import 'package:logging/logging.dart';
+import 'package:flutter/material.dart';
+import 'package:bearscouts/nav_drawer.dart';
+import 'package:bearscouts/pit_scouting.dart';
+import 'package:bearscouts/themefile.dart';
+import 'package:bearscouts/view_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() {
-  Logger.root.level = Level.INFO;
-  Logger.root.onRecord.listen((record) {
-    debugPrint('${record.level.name}: ${record.time}: ${record.message}');
-  });
+import 'match_scouting.dart';
 
-  runApp(const MainApp());
+Future<void> main() async {
+  if (Platform.isWindows || Platform.isLinux) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
 
-  Storage().readConfigFromLocalStorage();
+  WidgetsFlutterBinding.ensureInitialized();
+  // await DBManager.instance.readConfigFromAssetBundle();
+  await DBManager.instance.checkIfTablesExist();
+
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '930 Scouting App',
-      theme: ThemeData(
-        colorScheme: darkColorScheme,
-        textTheme: appTextTheme,
-        appBarTheme: darkAppBarTheme,
-        bottomNavigationBarTheme: darkNavigationBarTheme,
-      ),
-      onGenerateRoute: (settings) {
-        Widget Function(BuildContext) builder;
-
-        switch (settings.name) {
-          case '/':
-            builder = (context) => const MainPage();
-            break;
-          case '/loading':
-            builder = (context) => const LoadingScreen();
-            break;
-          case '/match_scouter':
-            builder = (context) => const MainPage(initialIndex: 1);
-            break;
-          case '/match_viewer':
-            builder = (context) => const MainPage(initialIndex: 2);
-            break;
-          case '/settings':
-            builder = (context) => const ConfigSettingsPage();
-            break;
-          case '/settings/app':
-            builder = (context) => const AppSettingsPage();
-            break;
-          case '/settings/pit':
-            builder = (context) => const ConfigSettingsPage(type: "pit");
-            break;
-          case '/settings/auth':
-            builder = (context) => const SettingsAuthPage();
-            break;
-          case '/settings/import_export':
-            builder = (context) => const ImportExportPage();
-            break;
-          case '/pit_scout':
-            builder = (context) => const PitScoutingMainPage();
-            break;
-          case '/pit_scout/data_record':
-            builder = (context) => const PitScoutingMainPage(initialIndex: 1);
-            break;
-          case '/pit_scout/data_view':
-            builder = (context) => const PitScoutingMainPage(initialIndex: 2);
-            break;
-          default:
-            builder = (context) => const MainPage();
-        }
-        return MaterialPageRoute(builder: builder);
-      },
-      initialRoute: "/loading",
+      title: 'BEARscouts',
+      theme: lightColorTheme,
+      darkTheme: darkColorTheme,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case '/match_scouting':
+            return MaterialPageRoute(
+              builder: (context) => const MatchScouter(),
+            );
+          case '/pit_scouting':
+            return MaterialPageRoute(
+              builder: (context) => const PitScouter(),
+            );
+          case '/viewer':
+            return MaterialPageRoute(
+              builder: (context) => const ViewPage(),
+            );
+          case '/settings':
+            return MaterialPageRoute(
+              builder: (context) => const SettingsAuthPage(),
+            );
+          case '/settings/match_data':
+            return MaterialPageRoute(
+              builder: (context) => const MatchSettingsPage(),
+            );
+          case '/settings/pit_data':
+            return MaterialPageRoute(
+              builder: (context) => const PitSettingsPage(),
+            );
+          case '/settings/app_config':
+            return MaterialPageRoute(
+              builder: (context) => const AppSettingsPage(),
+            );
+          case '/settings/data_management':
+            return MaterialPageRoute(
+              builder: (context) => const DataManagementPage(),
+            );
+          case '/':
+          default:
+            return MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            );
+        }
+      },
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BEARscouts'),
+      ),
+      drawer: const NavDrawer(),
+      body: FutureBuilder(
+        builder:
+            (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+          if (snapshot.hasData) {
+            String tabletName = snapshot.data!.getString("tabletName") ?? "";
+
+            Color textColor = Colors.white;
+
+            if (tabletName.toLowerCase().contains("red")) {
+              textColor = Colors.red;
+            } else if (tabletName.toLowerCase().contains("blue")) {
+              textColor = Colors.blue;
+            }
+
+            tabletName += "\nScouting Tablet";
+
+            return Center(
+              child: Text(
+                tabletName,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 64,
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+        future: SharedPreferences.getInstance(),
+      ),
     );
   }
 }

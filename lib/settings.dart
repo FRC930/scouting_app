@@ -1,16 +1,11 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:bearscouts/storage_manager.dart';
-import 'package:crypto/crypto.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:bearscouts/custom_widgets.dart';
+import 'package:bearscouts/database.dart';
 import 'package:bearscouts/nav_drawer.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsAuthPage extends StatefulWidget {
   const SettingsAuthPage({Key? key}) : super(key: key);
@@ -52,7 +47,8 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                       var bytes = utf8.encode(_passwordController.text);
                       var digest = sha256.convert(bytes);
 
-                      if (_passwordHash == digest.toString()) {
+                      if (_passwordHash.toLowerCase() ==
+                          digest.toString().toLowerCase()) {
                         setState(() {
                           authenticated = true;
                         });
@@ -96,7 +92,8 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                     trailing: const Icon(Icons.chevron_right),
                     iconColor:
                         Theme.of(context).colorScheme.onTertiaryContainer,
-                    onTap: () => Navigator.pushNamed(context, "/settings"),
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/settings/match_data"),
                     subtitle: const Text(
                       "Edit match data properties and configuration",
                       textAlign: TextAlign.right,
@@ -122,7 +119,8 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                     trailing: const Icon(Icons.chevron_right),
                     iconColor:
                         Theme.of(context).colorScheme.onTertiaryContainer,
-                    onTap: () => Navigator.pushNamed(context, "/settings/pit"),
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/settings/pit_data"),
                     subtitle: const Text(
                       "Edit pit data properties and configuration",
                       textAlign: TextAlign.right,
@@ -150,10 +148,10 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                         Theme.of(context).colorScheme.onTertiaryContainer,
                     onTap: () => Navigator.pushNamed(
                       context,
-                      "/settings/app",
+                      "/settings/app_config",
                     ),
                     subtitle: const Text(
-                      "Edit app settings (tablet name, page order, etc.)",
+                      "Edit app settings (tablet name)",
                       textAlign: TextAlign.right,
                     ),
                   ),
@@ -177,42 +175,10 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                     trailing: const Icon(Icons.chevron_right),
                     iconColor:
                         Theme.of(context).colorScheme.onTertiaryContainer,
-                    onTap: () =>
-                        Navigator.pushNamed(context, "/settings/import_export"),
+                    onTap: () => Navigator.pushNamed(
+                        context, "/settings/data_management"),
                     subtitle: const Text(
                       "Export, import and restore data",
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 2),
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      "Restart App",
-                      textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.headline4?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onTertiaryContainer),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    iconColor:
-                        Theme.of(context).colorScheme.onTertiaryContainer,
-                    onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/loading", (route) => false);
-
-                      Storage().writeConfigToLocalStorage().then(
-                          (value) => Storage().readConfigFromLocalStorage());
-                    },
-                    subtitle: const Text(
-                      "Apply changes and lock the admin screen.",
                       textAlign: TextAlign.right,
                     ),
                   ),
@@ -226,798 +192,195 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
   }
 }
 
-class ConfigSettingsPage extends StatefulWidget {
-  final int scrollTo;
-  final String type;
+class MatchSettingsPage extends StatefulWidget {
+  final int widgetToScroll;
 
-  const ConfigSettingsPage({Key? key, this.scrollTo = 0, this.type = "match"})
+  const MatchSettingsPage({this.widgetToScroll = 0, Key? key})
       : super(key: key);
 
   @override
-  _ConfigSettingsPageState createState() => _ConfigSettingsPageState();
+  _MatchSettingsPageState createState() => _MatchSettingsPageState();
 }
 
-class _ConfigSettingsPageState extends State<ConfigSettingsPage> {
+class _MatchSettingsPageState extends State<MatchSettingsPage> {
   final ScrollController _scrollController = ScrollController();
-  static final Map<int, double> _scrollOffsets = {0: 0.0};
-  static final Map<String, double> _widgetOffsets = {
-    "choice": 410.0,
-    "counter": 286.0,
-    "field": 472.0,
-    "stopwatch": 286.0,
-    "displayImage": 334.0,
-    "heading": 286.0,
-    "slider": 472.0,
-    "toggle": 286.0,
-    "heatmap": 334.0,
-  };
 
   @override
   void initState() {
     super.initState();
 
-    Timer(
-      const Duration(milliseconds: 33),
-      () => _scrollController.jumpTo(
-        _scrollOffsets[widget.scrollTo] ?? 0.0,
-      ),
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        _scrollController.jumpTo(
+          widget.widgetToScroll * 558.0,
+        );
+      },
     );
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    Storage().writeConfigToLocalStorage();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    List currentDatapoints;
-    if (widget.type == "match") {
-      currentDatapoints = Storage().matchConfigData;
-    } else {
-      currentDatapoints = Storage().pitConfigData;
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: const Text('Match Settings'),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.exit_to_app,
-              size: 24,
-            ),
             onPressed: () {
-              Storage().writeConfigToLocalStorage().then((value) async =>
-                  await Storage().readConfigFromLocalStorage());
-
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                "/loading",
-                (route) => false,
-              );
+              Navigator.pushReplacementNamed(context, "/settings/match_data");
             },
+            icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (context, index) {
-                if (index == currentDatapoints.length) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Map newDatapoint = {
-                          "title": "New Datapoint",
-                          "data-type": "field",
-                          "page-name": "Home Page",
-                          "validation": "^[^;]*\$",
-                          "validate-help": "How did you get here?",
-                          "keyboard-type": "text",
-                        };
-                        if (widget.type == "match") {
-                          Storage().matchConfigData.add(newDatapoint);
-                          Storage().matchData.add("");
-                        } else {
-                          Storage().pitConfigData.add(newDatapoint);
-                          Storage().pitData.add("");
-                        }
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConfigSettingsPage(
-                              scrollTo: currentDatapoints.length - 2,
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text("Add new datapoint"),
-                    ),
-                  );
-                }
-
-                var datapoint = currentDatapoints[index];
-                var type = datapoint["data-type"];
-                if (index > 0) {
-                  _scrollOffsets[index] = (_scrollOffsets[index - 1] ?? 0.0) +
-                      _widgetOffsets[type]!;
-                }
-
-                if (widget.type == "match") {
-                  return _DatapointSettingsWidget(
-                      index: index, datapoints: Storage().matchConfigData);
-                } else {
-                  return _DatapointSettingsWidget(
-                    index: index,
-                    datapoints: Storage().pitConfigData,
-                    type: "pit",
-                  );
-                }
-              },
-              itemCount: currentDatapoints.length + 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DatapointSettingsWidget extends StatefulWidget {
-  final int index;
-  final List datapoints;
-  final String type;
-
-  const _DatapointSettingsWidget(
-      {Key? key,
-      required this.index,
-      required this.datapoints,
-      this.type = "match"})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _DatapointSettingsWidgetState();
-}
-
-class _DatapointSettingsWidgetState extends State<_DatapointSettingsWidget> {
-  Map currentSettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    currentSettings = widget.datapoints[widget.index];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          width: 3,
-        )),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: buildSettingsChangeWidget(),
-            ),
-            Row(
+      body: FutureBuilder(
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    onPressed: () {
-                      AlertDialog deletionAlert = AlertDialog(
-                        title: const Text("Delete Datapoint?"),
-                        actions: [
-                          TextButton(
-                            child: const Text(
-                              "Delete",
-                              style: TextStyle(color: Colors.white54),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ConfigSettingsPage(
-                                    scrollTo: widget.index,
-                                  ),
-                                ),
-                              );
-
-                              widget.datapoints.removeAt(widget.index);
-                            },
-                          ),
-                          TextButton(
-                            child: const Text("Cancel"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
+                FutureBuilder(
+                  builder: (BuildContext context,
+                      AsyncSnapshot<SharedPreferences> snapshot) {
+                    if (snapshot.hasData) {
+                      return BearScoutsTextField(
+                        const [
+                          "Match Pages",
+                          "",
+                          "",
+                          "text",
+                          "Please enter a valid list of match pages separated by commas",
                         ],
+                        (bool isValid, String value) {
+                          snapshot.data!.setString("matchPages", value);
+                        },
+                        snapshot.data!.getString("matchPages") ?? "",
                       );
-                      showDialog(
-                        context: context,
-                        builder: (context) => deletionAlert,
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                  future: SharedPreferences.getInstance(),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return DatapointSettingsWidget(
+                        snapshot.data![index],
+                        true,
                       );
                     },
-                    icon: const Icon(Icons.delete, size: 36),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    onPressed: () {
-                      Map tempDatapoint = widget.datapoints[widget.index];
-                      widget.datapoints[widget.index] =
-                          widget.datapoints[widget.index - 1];
-                      widget.datapoints[widget.index - 1] = tempDatapoint;
-
-                      SchedulerBinding.instance
-                          ?.addPostFrameCallback((timeStamp) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConfigSettingsPage(
-                              scrollTo: widget.index,
-                            ),
-                          ),
-                        );
-                      });
-                    },
-                    icon: const Icon(Icons.arrow_circle_up, size: 40),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    onPressed: () {
-                      Map tempDatapoint = widget.datapoints[widget.index];
-                      widget.datapoints[widget.index] =
-                          widget.datapoints[widget.index + 1];
-                      widget.datapoints[widget.index + 1] = tempDatapoint;
-
-                      SchedulerBinding.instance
-                          ?.addPostFrameCallback((timeStamp) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConfigSettingsPage(
-                              scrollTo: widget.index,
-                            ),
-                          ),
-                        );
-                      });
-                    },
-                    icon: const Icon(Icons.arrow_circle_down, size: 40),
+                    itemCount: snapshot.data!.length,
+                    controller: _scrollController,
                   ),
                 ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildSettingsChangeWidget() {
-    if (widget.datapoints[widget.index].isEmpty) {
-      return getTypeSelector(null);
-    }
-
-    switch (currentSettings["data-type"]) {
-      case "field":
-        return getFieldSettings();
-      case "counter":
-        return getCounterSettings();
-      case "choice":
-        return getMultipleChoiceSettings();
-      case "stopwatch":
-        return getStopwatchSettings();
-      case "displayImage":
-        return getImageSettings();
-      case "heading":
-        return getHeadingSettings();
-      case "slider":
-        return getSliderSettings();
-      case "toggle":
-        return getToggleSettings();
-      case "heatmap":
-        return getHeatmapSettings();
-      default:
-        return getTypeSelector(null);
-    }
-  }
-
-  DropdownButtonFormField<String> getMultipleChoiceSelector(
-      List<String> values,
-      List<String> labels,
-      String? currentValue,
-      Function(String?) onSelectionChanged,
-      String label) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(labelText: label),
-      value: currentValue,
-      items: List<DropdownMenuItem<String>>.generate(
-        values.length,
-        (index) => DropdownMenuItem<String>(
-          value: values[index],
-          child: Text(labels[index]),
-        ),
-      ),
-      onChanged: onSelectionChanged,
-    );
-  }
-
-  DropdownButtonFormField<String> getTypeSelector(String? currentSelection) {
-    return getMultipleChoiceSelector(
-        [
-          "choice",
-          "counter",
-          "field",
-          "stopwatch",
-          "displayImage",
-          "heading",
-          "slider",
-          "toggle",
-          "heatmap",
-        ],
-        [
-          "Multiple Choice",
-          "Counter",
-          "Field",
-          "Stopwatch",
-          "Display Image",
-          "Heading",
-          "Slider",
-          "Toggle",
-          "Heatmap",
-        ],
-        currentSelection,
-        (value) => setState(() {
-              currentSettings["data-type"] = value;
-            }),
-        "Widget Type");
-  }
-
-  List<Widget> getCommonSettings() {
-    List<String> pageNames = [];
-    if (widget.type == "match") {
-      pageNames = Storage().appConfig["Match Page Order"].toString().split(",");
-    } else {
-      pageNames = Storage().appConfig["Pit Page Order"].toString().split(",");
-    }
-
-    return <Widget>[
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: "Title",
-        ),
-        initialValue: currentSettings["title"] ?? "",
-        onChanged: (value) {
-          currentSettings["title"] = value;
-        },
-      ),
-      getMultipleChoiceSelector(
-          pageNames,
-          pageNames,
-          currentSettings["page-name"],
-          (value) => currentSettings["page-name"] = value,
-          "Page Name"),
-      getTypeSelector(currentSettings["data-type"]),
-    ];
-  }
-
-  Widget getFieldSettings() {
-    List<Widget> settings = getCommonSettings();
-    settings.add(
-      getMultipleChoiceSelector(
-        ["^[^;]*\$", "^[0-9]*\$"],
-        ["Text", "Number"],
-        currentSettings["validation"],
-        (value) {
-          currentSettings["validation"] = value;
-        },
-        "Validation",
-      ),
-    );
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Validation Error Message",
-      ),
-      initialValue: currentSettings["validate-help"] ?? "",
-      onChanged: (value) {
-        currentSettings["validate-help"] = value;
-      },
-    ));
-    settings.add(
-      getMultipleChoiceSelector(
-        ["number", "text"],
-        ["Number", "Text"],
-        currentSettings["keyboard-type"],
-        (value) => {currentSettings["keyboard-type"] = value},
-        "Keyboard Type",
-      ),
-    );
-
-    return Column(
-      children: settings,
-    );
-  }
-
-  Widget getCounterSettings() {
-    return Column(
-      children: getCommonSettings(),
-    );
-  }
-
-  Widget getMultipleChoiceSettings() {
-    List<Widget> settings = getCommonSettings();
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Choices",
-      ),
-      initialValue: currentSettings["choices"]?.join(","),
-      onChanged: (value) {
-        currentSettings["choices"] = value.split(",");
-      },
-    ));
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Hints",
-      ),
-      initialValue: currentSettings["hints"]?.join(","),
-      onChanged: (value) {
-        currentSettings["hints"] = value.split(",");
-      },
-    ));
-
-    return Column(
-      children: settings,
-    );
-  }
-
-  Widget getStopwatchSettings() {
-    return Column(
-      children: getCommonSettings(),
-    );
-  }
-
-  Widget getImageSettings() {
-    List<Widget> settings = getCommonSettings();
-    settings.add(
-      ElevatedButton(
-        onPressed: () async {
-          FilePickerResult? imageFile = await FilePicker.platform.pickFiles(
-            type: FileType.any,
-          );
-          if (imageFile != null) {
-            File externalImageFile = File(imageFile.files.single.path!);
-
-            String newFilePath =
-                (await getApplicationSupportDirectory()).path + "/images";
-
-            await externalImageFile.copy(newFilePath);
-
-            currentSettings["location"] = newFilePath;
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
-        child: const Text("Select Image"),
+        future: DBManager.instance.getMatchConfig(),
       ),
-    );
-
-    return Column(
-      children: settings,
-    );
-  }
-
-  Widget getHeadingSettings() {
-    return Column(
-      children: getCommonSettings(),
-    );
-  }
-
-  Widget getSliderSettings() {
-    List<Widget> settings = getCommonSettings();
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Min",
-      ),
-      initialValue: currentSettings["min"] ?? "0.0",
-      onChanged: (value) {
-        currentSettings["min"] = double.tryParse(value) ?? 0.0;
-      },
-    ));
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Max",
-      ),
-      initialValue: currentSettings["max"] ?? "100.0",
-      onChanged: (value) {
-        currentSettings["max"] = double.tryParse(value) ?? 100.0;
-      },
-    ));
-    settings.add(TextFormField(
-      decoration: const InputDecoration(
-        labelText: "Increment",
-      ),
-      initialValue: currentSettings["increment"] ?? "1.0",
-      onChanged: (value) {
-        currentSettings["increment"] = double.tryParse(value) ?? 1.0;
-      },
-    ));
-
-    return Column(
-      children: settings,
-    );
-  }
-
-  Widget getToggleSettings() {
-    return Column(
-      children: getCommonSettings(),
-    );
-  }
-
-  Widget getHeatmapSettings() {
-    List<Widget> settings = getCommonSettings();
-    settings.add(
-      ElevatedButton(
-        onPressed: () async {
-          FilePickerResult? imageFile = await FilePicker.platform.pickFiles(
-            type: FileType.any,
-          );
-          if (imageFile != null) {
-            File externalImageFile = File(imageFile.files.single.path!);
-
-            String newFilePath =
-                (await getApplicationSupportDirectory()).path + "/images";
-
-            await externalImageFile.copy(newFilePath);
-
-            currentSettings["location"] = newFilePath;
-          }
-        },
-        child: const Text("Select Image"),
-      ),
-    );
-
-    return Column(
-      children: settings,
     );
   }
 }
 
-class ImportExportPage extends StatefulWidget {
-  const ImportExportPage({Key? key}) : super(key: key);
+class PitSettingsPage extends StatefulWidget {
+  final int widgetToScroll;
+
+  const PitSettingsPage({this.widgetToScroll = 0, Key? key}) : super(key: key);
 
   @override
-  _ImportExportPageState createState() => _ImportExportPageState();
+  _PitSettingsPageState createState() => _PitSettingsPageState();
 }
 
-class _ImportExportPageState extends State<ImportExportPage> {
+class _PitSettingsPageState extends State<PitSettingsPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        _scrollController.jumpTo(
+          widget.widgetToScroll * 558.0,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Import/Export"),
+        title: const Text('Pit Settings'),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.exit_to_app,
-              size: 24,
-            ),
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                "/loading",
-                (route) => false,
-              );
-
-              Storage().readConfigFromLocalStorage();
+              Navigator.pushReplacementNamed(context, "/settings/pit_data");
             },
+            icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 2),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Import File from Device",
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.headline4?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onTertiaryContainer),
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  iconColor: Theme.of(context).colorScheme.onTertiaryContainer,
-                  onTap: () async {
-                    final result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ["json"],
-                    );
-
-                    if (result != null) {
-                      File file = File(result.files.single.path!);
-                      var data = await file.readAsString();
-                      Storage().matchConfigData = jsonDecode(data);
-                    }
-
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text("Import Complete"),
-                          content: const Text("The data has been imported."),
-                          actions: [
-                            TextButton(
-                              child: const Text("OK"),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
+      body: FutureBuilder(
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                FutureBuilder(
+                    builder: (BuildContext context,
+                        AsyncSnapshot<SharedPreferences> snapshot) {
+                      if (snapshot.hasData) {
+                        return BearScoutsTextField(
+                          const [
+                            "Pit Pages",
+                            "",
+                            "",
+                            "text",
+                            "Please enter a valid list of pit pages separated by commas",
                           ],
-                        );
-                      },
-                    );
-                  },
-                  subtitle: const Text(
-                    "Restore a backup match data configuration file",
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 2),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Export File to Device",
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.headline4?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onTertiaryContainer),
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  iconColor: Theme.of(context).colorScheme.onTertiaryContainer,
-                  onTap: () async {
-                    if (Platform.isAndroid) {
-                      String? saveLocation =
-                          await FilePicker.platform.getDirectoryPath();
-
-                      if (await Permission.storage.request().isGranted &&
-                          saveLocation != null) {
-                        final file = File("$saveLocation/settings_export.json");
-                        if (await file.exists()) {
-                          await file.delete();
-                        }
-
-                        await file.create();
-                        await file.writeAsString(
-                            jsonEncode(Storage().matchConfigData));
-
-                        var okAlert = AlertDialog(
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("OK"))
-                          ],
-                          title: const Text("File Saved"),
-                          content: const Text(
-                              "The file has been saved to the selected folder."),
-                        );
-
-                        showDialog(
-                            context: context, builder: (context) => okAlert);
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("OK"))
-                              ],
-                              title: const Text("Permission Denied"),
-                              content: const Text(
-                                "You must grant storage permission to export your settings.",
-                              ),
-                            );
+                          (bool isValid, String value) {
+                            snapshot.data!.setString("pitPages", value);
                           },
+                          snapshot.data!.getString("pitPages") ?? "",
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       }
-                    }
-                  },
-                  subtitle: const Text(
-                    "Export a backup match data configuration file",
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 2),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Reset Match Data to Default",
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.headline4?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onTertiaryContainer),
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  iconColor: Theme.of(context).colorScheme.onTertiaryContainer,
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Storage().readConfigFromAssetBundle();
-
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "Reset",
-                              style: TextStyle(color: Colors.white54),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Cancel"),
-                          ),
-                        ],
-                        title: const Text("Reset Configuration"),
-                        content: const Text(
-                            "Are you sure you want to reset the configuration to the default?"),
+                    },
+                    future: SharedPreferences.getInstance()),
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return DatapointSettingsWidget(
+                        snapshot.data![index],
+                        false,
                       );
                     },
-                  ),
-                  subtitle: const Text(
-                    "Restore the default match data configuration file (Rapid React)",
-                    textAlign: TextAlign.right,
+                    itemCount: snapshot.data!.length,
+                    controller: _scrollController,
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+        future: DBManager.instance.getPitConfig(),
       ),
     );
   }
@@ -1030,161 +393,414 @@ class AppSettingsPage extends StatefulWidget {
   _AppSettingsPageState createState() => _AppSettingsPageState();
 }
 
-class _SettingsWidget extends StatefulWidget {
-  final String settingName;
-
-  const _SettingsWidget({
-    Key? key,
-    required this.settingName,
-  }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _SettingsWidgetState();
-}
-
-class _SettingsWidgetState extends State<_SettingsWidget> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller.text = Storage().appConfig[widget.settingName];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          width: 3,
-        )),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextFormField(
-            controller: _controller,
-            decoration: InputDecoration(
-              labelText: widget.settingName,
-            ),
-            onChanged: (value) {
-              Storage().appConfig[widget.settingName] = value;
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class QRTeamSettingsWidget extends StatefulWidget {
-  const QRTeamSettingsWidget({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _QRTeamSettingsWidgetState();
-}
-
-class _QRTeamSettingsWidgetState extends State<QRTeamSettingsWidget> {
-  Map teamsJson = {};
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          width: 3,
-        )),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              MobileScanner(
-                allowDuplicates: false,
-                controller: MobileScannerController(
-                  facing: CameraFacing.back,
-                  torchEnabled: false,
-                ),
-                onDetect: (barcode, args) {
-                  if (barcode.rawValue != null) {
-                    teamsJson = json.decode(barcode.rawValue!);
-                  }
-                },
-              ),
-              Center(
-                  child: ElevatedButton(
-                child: const Text("Read Team Configuration"),
-                onPressed: () {
-                  Storage().appConfig["Team Names"] = teamsJson["Team Names"];
-                  Storage().appConfig["Team Numbers"] =
-                      teamsJson["Team Numbers"];
-
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text("Teams read successfully"),
-                      content: const Text(
-                        "The teams have been read from the QR code. These changes will be reflected in pit scouting after an app reload.",
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text("OK"),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ))
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _AppSettingsPageState extends State<AppSettingsPage> {
-  @override
-  void dispose() {
-    super.dispose();
-
-    Storage().writeConfigToLocalStorage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("App Settings"),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.exit_to_app,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                "/loading",
-                (route) => false,
-              );
-            },
-          ),
-        ],
+        title: const Text('App Settings'),
       ),
-      body: ListView(children: const <Widget>[
-        _SettingsWidget(settingName: "Tablet Name"),
-        _SettingsWidget(settingName: "Match Page Order"),
-        _SettingsWidget(settingName: "Pit Page Order"),
-        QRTeamSettingsWidget(),
-      ]),
+      body: FutureBuilder(
+        builder:
+            (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: [
+                BearScoutsTextField(
+                  const [
+                    "Tablet Name",
+                    "",
+                    "",
+                    "text",
+                    "Please enter a valid tablet name",
+                  ],
+                  (bool isValid, String value) {
+                    snapshot.data!.setString("tabletName", value);
+                  },
+                  snapshot.data!.getString("tabletName") ?? "",
+                ),
+                BearScoutsTextField(
+                  const [
+                    "Match Pages",
+                    "",
+                    "",
+                    "text",
+                    "Please enter a valid list of match pages separated by commas",
+                  ],
+                  (bool isValid, String value) {
+                    snapshot.data!.setString("matchPages", value);
+                  },
+                  snapshot.data!.getString("matchPages") ?? "",
+                ),
+                BearScoutsTextField(
+                  const [
+                    "Pit Pages",
+                    "",
+                    "",
+                    "text",
+                    "Please enter a valid list of pit pages separated by commas",
+                  ],
+                  (bool isValid, String value) {
+                    snapshot.data!.setString("pitPages", value);
+                  },
+                  snapshot.data!.getString("pitPages") ?? "",
+                ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+        future: SharedPreferences.getInstance(),
+      ),
+    );
+  }
+}
+
+class DatapointSettingsWidget extends StatefulWidget {
+  final Map<String, Object?> pointName;
+  final bool isMatch;
+
+  const DatapointSettingsWidget(this.pointName, this.isMatch, {Key? key})
+      : super(key: key);
+
+  @override
+  _DatapointSettingsWidgetState createState() =>
+      _DatapointSettingsWidgetState();
+}
+
+class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 3,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          child: Column(
+            children: [
+              BearScoutsTextField(
+                const ["Title", "", "", "text", "Enter a valid value"],
+                (bool isValid, String value) {
+                  if (widget.isMatch) {
+                    DBManager.instance.updateMatchConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "title",
+                      value,
+                    );
+                  } else {
+                    DBManager.instance.updatePitConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "title",
+                      value,
+                    );
+                  }
+                },
+                widget.pointName["title"].toString(),
+              ),
+              BearScoutsMultipleChoice(
+                const [
+                  "Data type",
+                  "",
+                  "",
+                  "choice,counter,field,stopwatch,"
+                      "image,heading,slider,toggle,heatmap",
+                  "Multiple choice,Counter,Field,Stopwatch,"
+                      "Image,Heading,Slider,Toggle,Heatmap"
+                ],
+                (bool isValid, String value) {
+                  if (widget.isMatch) {
+                    DBManager.instance.updateMatchConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "type",
+                      value,
+                    );
+                  } else {
+                    DBManager.instance.updatePitConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "type",
+                      value,
+                    );
+                  }
+                },
+                widget.pointName["type"].toString(),
+              ),
+              FutureBuilder(
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<SharedPreferences> snapshot,
+                  ) {
+                    if (snapshot.hasData) {
+                      String pages = snapshot.data!.getString(
+                            widget.isMatch ? "matchPages" : "pitPages",
+                          ) ??
+                          "";
+
+                      return BearScoutsMultipleChoice(
+                        [
+                          "Page",
+                          "",
+                          "",
+                          pages,
+                          pages,
+                        ],
+                        (bool isValid, String value) {},
+                        widget.pointName["page"].toString(),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                  future: SharedPreferences.getInstance()),
+              BearScoutsTextField(
+                const [
+                  "Special Field 1",
+                  "",
+                  "",
+                  "text",
+                  "Enter a valid value"
+                ],
+                (bool isValid, String value) {
+                  if (widget.isMatch) {
+                    DBManager.instance.updateMatchConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "special1",
+                      value,
+                    );
+                  } else {
+                    DBManager.instance.updatePitConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "special1",
+                      value,
+                    );
+                  }
+                },
+                widget.pointName["special1"].toString(),
+              ),
+              BearScoutsTextField(
+                const [
+                  "Special Field 2",
+                  "",
+                  "",
+                  "text",
+                  "Enter a valid value"
+                ],
+                (bool isValid, String value) {
+                  if (widget.isMatch) {
+                    DBManager.instance.updateMatchConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "special2",
+                      value,
+                    );
+                  } else {
+                    DBManager.instance.updatePitConfigDatapoint(
+                      widget.pointName["export"] as int,
+                      "special2",
+                      value,
+                    );
+                  }
+                },
+                widget.pointName["special2"].toString(),
+              ),
+              BearScoutsCounter(
+                const [
+                  "Export order",
+                  "",
+                  "counter",
+                  "",
+                  "",
+                ],
+                (bool isValid, String value) {
+                  if (widget.isMatch) {
+                    DBManager.instance.updateMatchConfigExportAtTitle(
+                      widget.pointName["title"].toString(),
+                      int.tryParse(value) ?? -1,
+                    );
+                  } else {
+                    DBManager.instance.updatePitConfigExportAtTitle(
+                      widget.pointName["title"].toString(),
+                      int.tryParse(value) ?? -1,
+                    );
+                  }
+                },
+                widget.pointName["export"].toString(),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      if (widget.isMatch) {
+                        DBManager.instance.deleteData(
+                          "delete from config_match where export = " +
+                              widget.pointName["export"].toString() +
+                              " and title = \"" +
+                              widget.pointName["title"].toString() +
+                              "\"",
+                        );
+
+                        DBManager.instance.updateData(
+                            "update config_match set export = export - 1 where export > " +
+                                widget.pointName["export"].toString());
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return MatchSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      } else {
+                        DBManager.instance.deleteData(
+                          "delete from config_pit where export = " +
+                              widget.pointName["export"].toString() +
+                              " and title = \"" +
+                              widget.pointName["title"].toString() +
+                              "\"",
+                        );
+
+                        DBManager.instance.updateData(
+                            "update config_pit set export = export - 1 where export > " +
+                                widget.pointName["export"].toString());
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return PitSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (widget.isMatch) {
+                        DBManager.instance.updateData(
+                            "update config_match set export = export + 1 where export >= " +
+                                widget.pointName["export"].toString());
+
+                        DBManager.instance.insertData(
+                          "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                              (int.tryParse(widget.pointName["export"]
+                                          .toString()) ??
+                                      -2)
+                                  .toString() +
+                              ")",
+                        );
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return MatchSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      } else {
+                        DBManager.instance.updateData(
+                            "update config_pit set export = export + 1 where export >= " +
+                                widget.pointName["export"].toString());
+
+                        DBManager.instance.insertData(
+                          "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                              (int.tryParse(widget.pointName["export"]
+                                          .toString()) ??
+                                      -2)
+                                  .toString() +
+                              ")",
+                        );
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return PitSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.add_circle,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (widget.isMatch) {
+                        DBManager.instance.updateData(
+                            "update config_match set export = export + 1 where export > " +
+                                widget.pointName["export"].toString());
+
+                        DBManager.instance.insertData(
+                          "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                              ((int.tryParse(widget.pointName["export"]
+                                              .toString()) ??
+                                          -2) +
+                                      1)
+                                  .toString() +
+                              ")",
+                        );
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return MatchSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      } else {
+                        DBManager.instance.updateData(
+                            "update config_pit set export = export + 1 where export > " +
+                                widget.pointName["export"].toString());
+
+                        DBManager.instance.insertData(
+                          "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                              ((int.tryParse(widget.pointName["export"]
+                                              .toString()) ??
+                                          -2) +
+                                      1)
+                                  .toString() +
+                              ")",
+                        );
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return PitSettingsPage(
+                              widgetToScroll: int.tryParse(
+                                      widget.pointName["export"].toString()) ??
+                                  0,
+                            );
+                          },
+                        ));
+                      }
+                    },
+                    icon: const Icon(Icons.add_circle_outline),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "scouting_app",
-    "short_name": "scouting_app",
+    "name": "scouting_app_sql",
+    "short_name": "scouting_app_sql",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

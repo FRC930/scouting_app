@@ -28,7 +28,27 @@ class NavDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
 
-              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+              Navigator.pushNamed(context, '/match_scouting');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.fact_check_outlined),
+            iconColor: Theme.of(context).colorScheme.primary,
+            title: const Text("Pit Scouting"),
+            onTap: () {
+              Navigator.pop(context);
+
+              Navigator.pushNamed(context, '/pit_scouting');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.list),
+            iconColor: Theme.of(context).colorScheme.primary,
+            title: const Text("Data Viewer"),
+            onTap: () {
+              Navigator.pop(context);
+
+              Navigator.pushNamed(context, '/viewer');
             },
           ),
           ListTile(
@@ -49,8 +69,7 @@ class NavDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
 
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/settings/auth', (_) => false);
+              Navigator.pushNamed(context, '/settings');
             },
           ),
         ],
