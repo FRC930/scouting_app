@@ -1,6 +1,6 @@
 {
-    "name": "scouting_app_sql",
-    "short_name": "scouting_app_sql",
+    "name": "BEARScouts",
+    "short_name": "BEARScouts",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

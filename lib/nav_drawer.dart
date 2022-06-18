@@ -22,11 +22,27 @@ class NavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home),
+            iconColor: Theme.of(context).colorScheme.primary,
+            title: const Text("Home Page"),
+            onTap: () {
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
+
+              Navigator.pushNamed(context, '/');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.fact_check),
             iconColor: Theme.of(context).colorScheme.primary,
             title: const Text("Match Scouting"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
 
               Navigator.pushNamed(context, '/match_scouting');
             },
@@ -36,7 +52,10 @@ class NavDrawer extends StatelessWidget {
             iconColor: Theme.of(context).colorScheme.primary,
             title: const Text("Pit Scouting"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
 
               Navigator.pushNamed(context, '/pit_scouting');
             },
@@ -46,7 +65,10 @@ class NavDrawer extends StatelessWidget {
             iconColor: Theme.of(context).colorScheme.primary,
             title: const Text("Data Viewer"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
 
               Navigator.pushNamed(context, '/viewer');
             },
@@ -56,7 +78,10 @@ class NavDrawer extends StatelessWidget {
             iconColor: Theme.of(context).colorScheme.primary,
             title: const Text("Settings"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
 
               Navigator.pushNamed(context, '/settings');
             },

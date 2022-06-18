@@ -292,6 +292,10 @@ class _PitDataListState extends State<PitDataList> {
         )
         .toList();
 
+    if (qrData.isEmpty) {
+      return "";
+    }
+
     String qrString = "";
     for (String title in exportOrder) {
       String dataToAdd = qrData[0][title].toString();

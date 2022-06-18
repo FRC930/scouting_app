@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bearscouts/custom_widgets.dart';
 import 'package:bearscouts/database.dart';
 import 'package:bearscouts/nav_drawer.dart';
+import 'package:bearscouts/themefile.dart';
 import 'package:crypto/crypto.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsAuthPage extends StatefulWidget {
@@ -165,7 +169,7 @@ class _SettingsAuthPageState extends State<SettingsAuthPage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      "Manage App Data",
+                      "Manage App Templates",
                       textAlign: TextAlign.right,
                       style: Theme.of(context).textTheme.headline4?.copyWith(
                           color: Theme.of(context)
@@ -203,22 +207,6 @@ class MatchSettingsPage extends StatefulWidget {
 }
 
 class _MatchSettingsPageState extends State<MatchSettingsPage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(
-      const Duration(milliseconds: 100),
-      () {
-        _scrollController.jumpTo(
-          widget.widgetToScroll * 558.0,
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -243,6 +231,17 @@ class _MatchSettingsPageState extends State<MatchSettingsPage> {
                   builder: (BuildContext context,
                       AsyncSnapshot<SharedPreferences> snapshot) {
                     if (snapshot.hasData) {
+                      if (snapshot.data!.getString("matchPages")?.isEmpty ??
+                          true) {
+                        DBManager.instance
+                            .getMatchPages()
+                            .then((List<String> pages) {
+                          snapshot.data!
+                              .setString("matchPages", pages.join(","));
+                          Navigator.pushReplacementNamed(
+                              context, "/settings/pit_data");
+                        });
+                      }
                       return BearScoutsTextField(
                         const [
                           "Match Pages",
@@ -273,7 +272,6 @@ class _MatchSettingsPageState extends State<MatchSettingsPage> {
                       );
                     },
                     itemCount: snapshot.data!.length,
-                    controller: _scrollController,
                   ),
                 ),
               ],
@@ -340,6 +338,17 @@ class _PitSettingsPageState extends State<PitSettingsPage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<SharedPreferences> snapshot) {
                       if (snapshot.hasData) {
+                        if (snapshot.data!.getString("pitPages")?.isEmpty ??
+                            true) {
+                          DBManager.instance
+                              .getPitPages()
+                              .then((List<String> pages) {
+                            snapshot.data!
+                                .setString("pitPages", pages.join(","));
+                            Navigator.pushReplacementNamed(
+                                context, "/settings/pit_data");
+                          });
+                        }
                         return BearScoutsTextField(
                           const [
                             "Pit Pages",
@@ -416,35 +425,18 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
                   ],
                   (bool isValid, String value) {
                     snapshot.data!.setString("tabletName", value);
+
+                    if (value.isNotEmpty) {
+                      DBManager.instance.setTabletColor();
+                    }
                   },
                   snapshot.data!.getString("tabletName") ?? "",
                 ),
-                BearScoutsTextField(
-                  const [
-                    "Match Pages",
-                    "",
-                    "",
-                    "text",
-                    "Please enter a valid list of match pages separated by commas",
-                  ],
-                  (bool isValid, String value) {
-                    snapshot.data!.setString("matchPages", value);
-                  },
-                  snapshot.data!.getString("matchPages") ?? "",
-                ),
-                BearScoutsTextField(
-                  const [
-                    "Pit Pages",
-                    "",
-                    "",
-                    "text",
-                    "Please enter a valid list of pit pages separated by commas",
-                  ],
-                  (bool isValid, String value) {
-                    snapshot.data!.setString("pitPages", value);
-                  },
-                  snapshot.data!.getString("pitPages") ?? "",
-                ),
+                BearScoutsMultipleChoice(
+                    const ["Tablet Color", "", "", "blue,red", "Blue,Red"],
+                    (bool valid, String value) {
+                  snapshot.data!.setString("tabletColor", value);
+                }, snapshot.data!.getString("tabletColor") ?? "blue,red"),
               ],
             );
           } else {
@@ -460,10 +452,10 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
 }
 
 class DatapointSettingsWidget extends StatefulWidget {
-  final Map<String, Object?> pointName;
+  final Map<String, Object?> pointValues;
   final bool isMatch;
 
-  const DatapointSettingsWidget(this.pointName, this.isMatch, {Key? key})
+  const DatapointSettingsWidget(this.pointValues, this.isMatch, {Key? key})
       : super(key: key);
 
   @override
@@ -472,8 +464,350 @@ class DatapointSettingsWidget extends StatefulWidget {
 }
 
 class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
+  void setSpecial1(bool isValid, String value) {
+    if (widget.isMatch) {
+      DBManager.instance.updateMatchConfigDatapoint(
+        widget.pointValues["export"] as int,
+        "special1",
+        value,
+      );
+    } else {
+      DBManager.instance.updatePitConfigDatapoint(
+        widget.pointValues["export"] as int,
+        "special1",
+        value,
+      );
+    }
+  }
+
+  void setSpecial2(bool isValid, String value) {
+    if (widget.isMatch) {
+      DBManager.instance.updateMatchConfigDatapoint(
+        widget.pointValues["export"] as int,
+        "special2",
+        value,
+      );
+    } else {
+      DBManager.instance.updatePitConfigDatapoint(
+        widget.pointValues["export"] as int,
+        "special2",
+        value,
+      );
+    }
+  }
+
+  Future<List<Widget>> _getCommonSettings() async {
+    return <Widget>[
+      BearScoutsTextField(
+        const ["Title", "", "", "text", "Enter a valid value"],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "title",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "title",
+              value,
+            );
+          }
+        },
+        widget.pointValues["title"].toString(),
+      ),
+      BearScoutsMultipleChoice(
+        const [
+          "Data type",
+          "",
+          "",
+          "choice,counter,field,stopwatch,"
+              "image,heading,slider,toggle,heatmap",
+          "Multiple choice,Counter,Field,Stopwatch,"
+              "Image,Heading,Slider,Toggle,Heatmap"
+        ],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "type",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "type",
+              value,
+            );
+          }
+        },
+        widget.pointValues["type"].toString(),
+      ),
+      FutureBuilder(
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<SharedPreferences> snapshot,
+        ) {
+          if (snapshot.hasData) {
+            String pages = snapshot.data!.getString(
+                  widget.isMatch ? "matchPages" : "pitPages",
+                ) ??
+                "";
+
+            return BearScoutsMultipleChoice(
+              [
+                "Page",
+                "",
+                "",
+                pages,
+                pages,
+              ],
+              (bool isValid, String value) {},
+              widget.pointValues["page"].toString(),
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+        future: SharedPreferences.getInstance(),
+      )
+    ];
+  }
+
+  Future<List<Widget>> _getFieldSettings() async {
+    List<Widget> settings = await _getCommonSettings();
+    settings.add(
+      BearScoutsMultipleChoice(
+        const <String>[
+          "Validation",
+          "",
+          "",
+          "integer,deciaml,text",
+          "Integer,Decimal,Text",
+        ],
+        setSpecial1,
+        widget.pointValues["special1"].toString(),
+      ),
+    );
+    settings.add(
+      BearScoutsTextField(
+        const <String>[
+          "Validation Error Message",
+          "",
+          "",
+          "text",
+          "Enter the text to display when user input is incorrect",
+        ],
+        setSpecial2,
+        widget.pointValues["special2"].toString(),
+      ),
+    );
+
+    return settings;
+  }
+
+  Future<List<Widget>> _getMultipleChoiceSettings() async {
+    List<Widget> settings = await _getCommonSettings();
+
+    settings.add(
+      BearScoutsTextField(
+        const <String>[
+          "Choices",
+          "",
+          "",
+          "text",
+          "Enter a valid list of choices, separated by commas"
+        ],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special1",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special1",
+              value,
+            );
+          }
+        },
+        widget.pointValues["special1"].toString(),
+      ),
+    );
+    settings.add(
+      BearScoutsTextField(
+        const <String>[
+          "Hints",
+          "",
+          "",
+          "text",
+          "Enter a valid list of hints, separated by commas"
+        ],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special2",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special2",
+              value,
+            );
+          }
+        },
+        widget.pointValues["special2"].toString(),
+      ),
+    );
+
+    return settings;
+  }
+
+  Future<List<Widget>> _getImageSettings() async {
+    List<Widget> settings = await _getCommonSettings();
+
+    settings.add(
+      ElevatedButton(
+        onPressed: () async {
+          FilePickerResult? imageFile =
+              await FilePicker.platform.pickFiles(type: FileType.image);
+
+          if (imageFile != null && imageFile.isSinglePick) {
+            File externalImageFile = File(imageFile.files.single.path!);
+
+            String newFilePath = "";
+            if (!Platform.isWindows) {
+              newFilePath = (await getApplicationSupportDirectory()).path +
+                  "/images/" +
+                  externalImageFile.path.split("/").last;
+            } else {
+              newFilePath = (await getApplicationSupportDirectory()).path +
+                  "\\images\\" +
+                  externalImageFile.path.split("\\").last;
+            }
+
+            File newFileLocation = File(newFilePath);
+            if (!await newFileLocation.exists()) {
+              await newFileLocation.create(recursive: true);
+            }
+
+            await externalImageFile.copy(newFilePath);
+
+            if (widget.isMatch) {
+              DBManager.instance.updateMatchConfigDatapoint(
+                widget.pointValues["export"] as int,
+                "special1",
+                newFilePath,
+              );
+            } else {
+              DBManager.instance.updatePitConfigDatapoint(
+                widget.pointValues["export"] as int,
+                "special1",
+                newFilePath,
+              );
+            }
+          }
+        },
+        child: const Text("Select Image"),
+      ),
+    );
+
+    return settings;
+  }
+
+  Future<List<Widget>> _getSliderSettings() async {
+    List<Widget> settings = await _getCommonSettings();
+
+    settings.add(
+      BearScoutsTextField(
+        const <String>[
+          "Minimum",
+          "",
+          "",
+          "integer",
+          "Enter the lowest integer selectable using this field"
+        ],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special1",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special1",
+              value,
+            );
+          }
+        },
+        widget.pointValues["special1"].toString(),
+      ),
+    );
+    settings.add(
+      BearScoutsTextField(
+        const <String>[
+          "Maximum",
+          "",
+          "",
+          "integer",
+          "Enter the highest integer selectable using this field"
+        ],
+        (bool isValid, String value) {
+          if (widget.isMatch) {
+            DBManager.instance.updateMatchConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special2",
+              value,
+            );
+          } else {
+            DBManager.instance.updatePitConfigDatapoint(
+              widget.pointValues["export"] as int,
+              "special2",
+              value,
+            );
+          }
+        },
+        widget.pointValues["special2"].toString(),
+      ),
+    );
+
+    return settings;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future<List<Widget>> settings;
+
+    switch (widget.pointValues["type"]) {
+      case "field":
+        settings = _getFieldSettings();
+        break;
+      case "choice":
+        settings = _getMultipleChoiceSettings();
+        break;
+      case "image":
+      case "heatmap":
+        settings = _getImageSettings();
+        break;
+      case "slider":
+        settings = _getSliderSettings();
+        break;
+      case "counter":
+      case "stopwatch":
+      case "heading":
+      case "toggle":
+      default:
+        settings = _getCommonSettings();
+        break;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: DecoratedBox(
@@ -485,319 +819,232 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          child: Column(
-            children: [
-              BearScoutsTextField(
-                const ["Title", "", "", "text", "Enter a valid value"],
-                (bool isValid, String value) {
-                  if (widget.isMatch) {
-                    DBManager.instance.updateMatchConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "title",
-                      value,
-                    );
-                  } else {
-                    DBManager.instance.updatePitConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "title",
-                      value,
-                    );
-                  }
-                },
-                widget.pointName["title"].toString(),
-              ),
-              BearScoutsMultipleChoice(
-                const [
-                  "Data type",
-                  "",
-                  "",
-                  "choice,counter,field,stopwatch,"
-                      "image,heading,slider,toggle,heatmap",
-                  "Multiple choice,Counter,Field,Stopwatch,"
-                      "Image,Heading,Slider,Toggle,Heatmap"
-                ],
-                (bool isValid, String value) {
-                  if (widget.isMatch) {
-                    DBManager.instance.updateMatchConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "type",
-                      value,
-                    );
-                  } else {
-                    DBManager.instance.updatePitConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "type",
-                      value,
-                    );
-                  }
-                },
-                widget.pointName["type"].toString(),
-              ),
-              FutureBuilder(
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<SharedPreferences> snapshot,
-                  ) {
-                    if (snapshot.hasData) {
-                      String pages = snapshot.data!.getString(
-                            widget.isMatch ? "matchPages" : "pitPages",
-                          ) ??
-                          "";
+          child: FutureBuilder(
+            future: settings,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
+              if (snapshot.hasData &&
+                  snapshot.data != null &&
+                  snapshot.data!.isNotEmpty) {
+                List<Widget> finalSettings = snapshot.data!;
 
-                      return BearScoutsMultipleChoice(
-                        [
-                          "Page",
-                          "",
-                          "",
-                          pages,
-                          pages,
-                        ],
-                        (bool isValid, String value) {},
-                        widget.pointName["page"].toString(),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                  future: SharedPreferences.getInstance()),
-              BearScoutsTextField(
-                const [
-                  "Special Field 1",
-                  "",
-                  "",
-                  "text",
-                  "Enter a valid value"
-                ],
-                (bool isValid, String value) {
-                  if (widget.isMatch) {
-                    DBManager.instance.updateMatchConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "special1",
-                      value,
-                    );
-                  } else {
-                    DBManager.instance.updatePitConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "special1",
-                      value,
-                    );
-                  }
-                },
-                widget.pointName["special1"].toString(),
-              ),
-              BearScoutsTextField(
-                const [
-                  "Special Field 2",
-                  "",
-                  "",
-                  "text",
-                  "Enter a valid value"
-                ],
-                (bool isValid, String value) {
-                  if (widget.isMatch) {
-                    DBManager.instance.updateMatchConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "special2",
-                      value,
-                    );
-                  } else {
-                    DBManager.instance.updatePitConfigDatapoint(
-                      widget.pointName["export"] as int,
-                      "special2",
-                      value,
-                    );
-                  }
-                },
-                widget.pointName["special2"].toString(),
-              ),
-              BearScoutsCounter(
-                const [
-                  "Export order",
-                  "",
-                  "counter",
-                  "",
-                  "",
-                ],
-                (bool isValid, String value) {
-                  if (widget.isMatch) {
-                    DBManager.instance.updateMatchConfigExportAtTitle(
-                      widget.pointName["title"].toString(),
-                      int.tryParse(value) ?? -1,
-                    );
-                  } else {
-                    DBManager.instance.updatePitConfigExportAtTitle(
-                      widget.pointName["title"].toString(),
-                      int.tryParse(value) ?? -1,
-                    );
-                  }
-                },
-                widget.pointName["export"].toString(),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
+                finalSettings.add(
+                  BearScoutsCounter(
+                    const [
+                      "Export order",
+                      "",
+                      "counter",
+                      "",
+                      "",
+                    ],
+                    (bool isValid, String value) {
                       if (widget.isMatch) {
-                        DBManager.instance.deleteData(
-                          "delete from config_match where export = " +
-                              widget.pointName["export"].toString() +
-                              " and title = \"" +
-                              widget.pointName["title"].toString() +
-                              "\"",
+                        DBManager.instance.updateMatchConfigExportAtTitle(
+                          widget.pointValues["title"].toString(),
+                          int.tryParse(value) ?? -1,
                         );
-
-                        DBManager.instance.updateData(
-                            "update config_match set export = export - 1 where export > " +
-                                widget.pointName["export"].toString());
-
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return MatchSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
-                            );
-                          },
-                        ));
                       } else {
-                        DBManager.instance.deleteData(
-                          "delete from config_pit where export = " +
-                              widget.pointName["export"].toString() +
-                              " and title = \"" +
-                              widget.pointName["title"].toString() +
-                              "\"",
+                        DBManager.instance.updatePitConfigExportAtTitle(
+                          widget.pointValues["title"].toString(),
+                          int.tryParse(value) ?? -1,
                         );
-
-                        DBManager.instance.updateData(
-                            "update config_pit set export = export - 1 where export > " +
-                                widget.pointName["export"].toString());
-
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return PitSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
-                            );
-                          },
-                        ));
                       }
                     },
-                    icon: const Icon(
-                      Icons.delete,
-                    ),
+                    widget.pointValues["export"].toString(),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (widget.isMatch) {
-                        DBManager.instance.updateData(
-                            "update config_match set export = export + 1 where export >= " +
-                                widget.pointName["export"].toString());
+                );
+                finalSettings.add(
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (widget.isMatch) {
+                            DBManager.instance.deleteData(
+                              "delete from config_match where export = " +
+                                  widget.pointValues["export"].toString() +
+                                  " and title = \"" +
+                                  widget.pointValues["title"].toString() +
+                                  "\"",
+                            );
 
-                        DBManager.instance.insertData(
-                          "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
-                              (int.tryParse(widget.pointName["export"]
+                            DBManager.instance.updateData(
+                                "update config_match set export = export - 1 where export > " +
+                                    widget.pointValues["export"].toString());
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return MatchSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
                                           .toString()) ??
-                                      -2)
-                                  .toString() +
-                              ")",
-                        );
-
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return MatchSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
+                                      0,
+                                );
+                              },
+                            ));
+                          } else {
+                            DBManager.instance.deleteData(
+                              "delete from config_pit where export = " +
+                                  widget.pointValues["export"].toString() +
+                                  " and title = \"" +
+                                  widget.pointValues["title"].toString() +
+                                  "\"",
                             );
-                          },
-                        ));
-                      } else {
-                        DBManager.instance.updateData(
-                            "update config_pit set export = export + 1 where export >= " +
-                                widget.pointName["export"].toString());
 
-                        DBManager.instance.insertData(
-                          "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
-                              (int.tryParse(widget.pointName["export"]
+                            DBManager.instance.updateData(
+                                "update config_pit set export = export - 1 where export > " +
+                                    widget.pointValues["export"].toString());
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return PitSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
                                           .toString()) ??
-                                      -2)
-                                  .toString() +
-                              ")",
-                        );
+                                      0,
+                                );
+                              },
+                            ));
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (widget.isMatch) {
+                            DBManager.instance.updateData(
+                                "update config_match set export = export + 1 where export >= " +
+                                    widget.pointValues["export"].toString());
 
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return PitSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
-                            );
-                          },
-                        ));
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.add_circle,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (widget.isMatch) {
-                        DBManager.instance.updateData(
-                            "update config_match set export = export + 1 where export > " +
-                                widget.pointName["export"].toString());
-
-                        DBManager.instance.insertData(
-                          "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
-                              ((int.tryParse(widget.pointName["export"]
+                            DBManager.instance.insertData(
+                              "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                                  (int.tryParse(widget.pointValues["export"]
                                               .toString()) ??
-                                          -2) +
-                                      1)
-                                  .toString() +
-                              ")",
-                        );
-
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return MatchSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
+                                          -2)
+                                      .toString() +
+                                  ")",
                             );
-                          },
-                        ));
-                      } else {
-                        DBManager.instance.updateData(
-                            "update config_pit set export = export + 1 where export > " +
-                                widget.pointName["export"].toString());
 
-                        DBManager.instance.insertData(
-                          "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
-                              ((int.tryParse(widget.pointName["export"]
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return MatchSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
+                                          .toString()) ??
+                                      0,
+                                );
+                              },
+                            ));
+                          } else {
+                            DBManager.instance.updateData(
+                                "update config_pit set export = export + 1 where export >= " +
+                                    widget.pointValues["export"].toString());
+
+                            DBManager.instance.insertData(
+                              "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                                  (int.tryParse(widget.pointValues["export"]
                                               .toString()) ??
-                                          -2) +
-                                      1)
-                                  .toString() +
-                              ")",
-                        );
-
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) {
-                            return PitSettingsPage(
-                              widgetToScroll: int.tryParse(
-                                      widget.pointName["export"].toString()) ??
-                                  0,
+                                          -2)
+                                      .toString() +
+                                  ")",
                             );
-                          },
-                        ));
-                      }
-                    },
-                    icon: const Icon(Icons.add_circle_outline),
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return PitSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
+                                          .toString()) ??
+                                      0,
+                                );
+                              },
+                            ));
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.add_circle,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (widget.isMatch) {
+                            DBManager.instance.updateData(
+                                "update config_match set export = export + 1 where export > " +
+                                    widget.pointValues["export"].toString());
+
+                            DBManager.instance.insertData(
+                              "insert into config_match values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                                  ((int.tryParse(widget.pointValues["export"]
+                                                  .toString()) ??
+                                              -2) +
+                                          1)
+                                      .toString() +
+                                  ")",
+                            );
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return MatchSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
+                                          .toString()) ??
+                                      0,
+                                );
+                              },
+                            ));
+                          } else {
+                            DBManager.instance.updateData(
+                                "update config_pit set export = export + 1 where export > " +
+                                    widget.pointValues["export"].toString());
+
+                            DBManager.instance.insertData(
+                              "insert into config_pit values (\"New Datapoint\", \"Home\", \"field\", \"text\", \"Enter a valid value\", " +
+                                  ((int.tryParse(widget.pointValues["export"]
+                                                  .toString()) ??
+                                              -2) +
+                                          1)
+                                      .toString() +
+                                  ")",
+                            );
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return PitSettingsPage(
+                                  widgetToScroll: int.tryParse(widget
+                                          .pointValues["export"]
+                                          .toString()) ??
+                                      0,
+                                );
+                              },
+                            ));
+                          }
+                        },
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
                   ),
-                ],
-              )
-            ],
+                );
+
+                return Column(
+                  children: finalSettings,
+                );
+              } else {
+                return const Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: 400,
+                    width: 400,
+                  ),
+                );
+              }
+            },
           ),
         ),
       ),

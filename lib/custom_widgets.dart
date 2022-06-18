@@ -148,7 +148,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
   static final Map<String, RegExp> _validationRegexes = {
     "integer": RegExp(r"^[0-9]+$"),
     "decimal": RegExp(r"^[0-9]+(\.[0-9]+)?$"),
-    "text": RegExp(r"^[^;]+$"),
+    "text": RegExp(r"^[a-zA-Z0-9,. ]+$"),
   };
 
   @override
@@ -173,7 +173,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
         controller: _textController,
         decoration: InputDecoration(
           labelText: widget._configOptions[0],
-          hintText: "Enter ${widget._configOptions[0]} here",
+          hintText: "Enter ${widget._configOptions[0]} Here",
           border: const OutlineInputBorder(),
         ),
         keyboardType: keyboardType,
@@ -254,7 +254,7 @@ class _BearScoutsCounterState extends State<BearScoutsCounter> {
               controller: _textController,
               decoration: InputDecoration(
                 labelText: widget._configOptions[0],
-                hintText: "Enter ${widget._configOptions[0]} here",
+                hintText: "Enter ${widget._configOptions[0]} Here",
                 border: const OutlineInputBorder(),
               ),
               enabled: false,

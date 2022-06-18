@@ -145,8 +145,8 @@ BottomNavigationBarThemeData darkNavigationBarTheme =
 
 BottomNavigationBarThemeData lightNavigationBarTheme =
     BottomNavigationBarThemeData(
-  backgroundColor: lightColorTheme.colorScheme.secondaryContainer,
+  backgroundColor: lightColorScheme.secondaryContainer,
   type: BottomNavigationBarType.fixed,
-  selectedItemColor: lightColorTheme.colorScheme.primary,
-  unselectedItemColor: lightColorTheme.colorScheme.onPrimaryContainer,
+  selectedItemColor: lightColorScheme.primary,
+  unselectedItemColor: lightColorScheme.onPrimaryContainer,
 );

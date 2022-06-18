@@ -24,63 +24,74 @@ Future<void> main() async {
   // await DBManager.instance.readConfigFromAssetBundle();
   await DBManager.instance.checkIfTablesExist();
 
+  DBManager.instance.setTabletColor();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static final notifier =
+      ValueNotifier<ThemeModel>(ThemeModel(ThemeMode.system));
+
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BEARscouts',
-      theme: lightColorTheme,
-      darkTheme: darkColorTheme,
-      themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case '/match_scouting':
-            return MaterialPageRoute(
-              builder: (context) => const MatchScouter(),
-            );
-          case '/pit_scouting':
-            return MaterialPageRoute(
-              builder: (context) => const PitScouter(),
-            );
-          case '/viewer':
-            return MaterialPageRoute(
-              builder: (context) => const ViewPage(),
-            );
-          case '/settings':
-            return MaterialPageRoute(
-              builder: (context) => const SettingsAuthPage(),
-            );
-          case '/settings/match_data':
-            return MaterialPageRoute(
-              builder: (context) => const MatchSettingsPage(),
-            );
-          case '/settings/pit_data':
-            return MaterialPageRoute(
-              builder: (context) => const PitSettingsPage(),
-            );
-          case '/settings/app_config':
-            return MaterialPageRoute(
-              builder: (context) => const AppSettingsPage(),
-            );
-          case '/settings/data_management':
-            return MaterialPageRoute(
-              builder: (context) => const DataManagementPage(),
-            );
-          case '/':
-          default:
-            return MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            );
-        }
+    return ValueListenableBuilder<ThemeModel>(
+      valueListenable: notifier,
+      builder: (_, model, __) {
+        final mode = model.mode;
+        return MaterialApp(
+          title: 'BEARscouts',
+          theme: lightColorTheme,
+          darkTheme: darkColorTheme,
+          themeMode: mode,
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case '/match_scouting':
+                return MaterialPageRoute(
+                  builder: (context) => const MatchScouter(),
+                );
+              case '/pit_scouting':
+                return MaterialPageRoute(
+                  builder: (context) => const PitScouter(),
+                );
+              case '/viewer':
+                return MaterialPageRoute(
+                  builder: (context) => const ViewPage(),
+                );
+              case '/settings':
+                return MaterialPageRoute(
+                  builder: (context) => const SettingsAuthPage(),
+                );
+              case '/settings/match_data':
+                return MaterialPageRoute(
+                  builder: (context) => const MatchSettingsPage(),
+                );
+              case '/settings/pit_data':
+                return MaterialPageRoute(
+                  builder: (context) => const PitSettingsPage(),
+                );
+              case '/settings/app_config':
+                return MaterialPageRoute(
+                  builder: (context) => const AppSettingsPage(),
+                );
+              case '/settings/data_management':
+                return MaterialPageRoute(
+                  builder: (context) => const DataManagementPage(),
+                );
+              case '/':
+              default:
+                return MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                );
+            }
+          },
+          home: const HomePage(),
+        );
       },
-      home: const HomePage(),
     );
   }
 }
@@ -93,11 +104,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _color = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BEARscouts'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () {
+                _color = !_color;
+
+                setState(() {
+                  MyApp.notifier.value = ThemeModel(
+                    _color ? ThemeMode.dark : ThemeMode.light,
+                  );
+                });
+              },
+              icon: Icon(_color ? Icons.dark_mode : Icons.light_mode),
+            ),
+          ),
+        ],
       ),
       drawer: const NavDrawer(),
       body: FutureBuilder(
@@ -106,7 +136,8 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             String tabletName = snapshot.data!.getString("tabletName") ?? "";
 
-            Color textColor = Colors.white;
+            Color textColor =
+                Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
 
             if (tabletName.toLowerCase().contains("red")) {
               textColor = Colors.red;
@@ -136,4 +167,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class ThemeModel with ChangeNotifier {
+  final ThemeMode _themeMode;
+  ThemeMode get mode => _themeMode;
+
+  ThemeModel(this._themeMode);
 }

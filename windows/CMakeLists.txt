@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(scouting_app_sql LANGUAGES CXX)
+project(BEARScouts LANGUAGES CXX)
 
-set(BINARY_NAME "scouting_app_sql")
+set(BINARY_NAME "BEARScouts")
 
 cmake_policy(SET CMP0063 NEW)
 

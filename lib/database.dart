@@ -1,9 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:bearscouts/themefile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mutex/mutex.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBManager {
@@ -90,9 +92,9 @@ class DBManager {
     });
   }
 
-  Future<void> syncDatabase() async {}
-
   Future<void> readConfigFromAssetBundle() async {
+    debugPrint("Reading config from asset bundle");
+
     if (_dataDB == null) {
       await initDatabases();
     }
@@ -125,18 +127,6 @@ class DBManager {
     }
 
     await createDataTables();
-  }
-
-  Future<void> addMatchConfigDatapoint(Map<String, String> settings) {
-    return _dbMutex.protect(() async {
-      await _dataDB!.insert("config_match", settings);
-    });
-  }
-
-  Future<void> addPitConfigDatapoint(Map<String, String> settings) {
-    return _dbMutex.protect(() async {
-      await _dataDB!.insert("config_pit", settings);
-    });
   }
 
   Future<void> updateMatchConfigDatapoint(
@@ -205,9 +195,8 @@ class DBManager {
         [key],
       );
     });
-    if (queryResult.isEmpty || queryResult.length > 1) {
-      debugPrint("Unable to get config. Either zero or one or more "
-          "entries were found with the same title.");
+    if (queryResult.isEmpty) {
+      debugPrint("Unable to get config. Key not found.");
       return [];
     }
     List<String> result = [];
@@ -429,5 +418,17 @@ class DBManager {
     await _dbMutex.protect(() async {
       await _dataDB!.rawUpdate(query);
     });
+  }
+
+  void setTabletColor() async {
+    final prefs = await SharedPreferences.getInstance();
+    String tabletName = prefs.getString("tabletColor") ?? "blue";
+    if (tabletName.toLowerCase().contains("red")) {
+      lightAppBarTheme = lightAppBarTheme.copyWith(color: Colors.red);
+      darkAppBarTheme = darkAppBarTheme.copyWith(color: Colors.red);
+    } else {
+      lightAppBarTheme = lightAppBarTheme.copyWith(color: Colors.blue);
+      darkAppBarTheme = darkAppBarTheme.copyWith(color: Colors.blue);
+    }
   }
 }

@@ -18,7 +18,7 @@ class _DataManagementPageState extends State<DataManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Data Management'),
+        title: const Text('Scouting App Templates'),
       ),
       body: Center(
         child: Column(
@@ -86,7 +86,7 @@ class _DataManagementPageState extends State<DataManagementPage> {
                     }
                   }
                 },
-                child: const Text('Export Data'),
+                child: const Text('Export Template'),
               ),
             ),
             Padding(
@@ -140,7 +140,7 @@ class _DataManagementPageState extends State<DataManagementPage> {
                     );
                   }
                 },
-                child: const Text('Import Match Data'),
+                child: const Text('Import Template'),
               ),
             ),
           ],
