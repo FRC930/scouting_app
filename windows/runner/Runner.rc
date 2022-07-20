@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "BEARScouts" "\0"
+            VALUE "CompanyName", "com.team930" "\0"
+            VALUE "FileDescription", "scouting_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "BEARScouts" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "BEARScouts.exe" "\0"
-            VALUE "ProductName", "BEARScouts" "\0"
+            VALUE "InternalName", "scouting_app" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 com.team930. All rights reserved." "\0"
+            VALUE "OriginalFilename", "scouting_app.exe" "\0"
+            VALUE "ProductName", "scouting_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

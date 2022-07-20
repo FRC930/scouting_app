@@ -1,6 +1,7 @@
 import 'package:bearscouts/custom_widgets.dart';
 import 'package:bearscouts/database.dart';
 import 'package:bearscouts/nav_drawer.dart';
+import 'package:bearscouts/themefile.dart';
 import 'package:flutter/material.dart';
 
 class PitScouter extends StatefulWidget {
@@ -16,6 +17,17 @@ class _PitScouterState extends State<PitScouter> {
   int team = -1;
 
   @override
+  void initState() {
+    super.initState();
+
+    DBManager.instance.getPitPages().then((pages) {
+      setState(() {
+        pageNames = pages;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         builder: (context, AsyncSnapshot<List<String>> snapshot) {
@@ -26,6 +38,39 @@ class _PitScouterState extends State<PitScouter> {
               appBar: AppBar(
                 title: const Text('Pit Scouting'),
                 actions: [
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Are you sure?"),
+                          content: const Text(
+                            "This will FOREVER lose all data entered during "
+                            "this session. Only do this if you are CERTAIN that "
+                            "you do not need this data.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                DBManager.instance.clearPitData();
+
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, "/pit_scouting");
+                              },
+                              child: const Text("Yes"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("No"),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.save),
                     onPressed: () {
@@ -83,11 +128,14 @@ class _PitScouterState extends State<PitScouter> {
                   ),
                 ],
               ),
-              body: IndexedStack(
-                index: _currentIndex,
-                children: pageNames.map((e) {
-                  return PitScoutWidget(e);
-                }).toList(),
+              body: Container(
+                decoration: backgroundDecoration,
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: pageNames.map((e) {
+                    return PitScoutWidget(e);
+                  }).toList(),
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: _currentIndex,

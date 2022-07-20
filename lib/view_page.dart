@@ -1,6 +1,7 @@
-import 'package:bearscouts/nav_drawer.dart';
-import 'package:flutter/material.dart';
 import 'package:bearscouts/database.dart';
+import 'package:bearscouts/nav_drawer.dart';
+import 'package:bearscouts/themefile.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewPage extends StatefulWidget {
@@ -20,12 +21,15 @@ class _ViewPageState extends State<ViewPage> {
       appBar: AppBar(
         title: const Text('Data Viewer'),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: const [
-          MatchDataList(),
-          PitDataList(),
-        ],
+      body: Container(
+        decoration: backgroundDecoration,
+        child: IndexedStack(
+          index: _currentIndex,
+          children: const [
+            MatchDataList(),
+            PitDataList(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -353,8 +357,11 @@ class QRCodeViewPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('QR Code'),
       ),
-      body: Center(
-        child: dataWidget,
+      body: Container(
+        decoration: backgroundDecoration,
+        child: Center(
+          child: dataWidget,
+        ),
       ),
     );
   }

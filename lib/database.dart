@@ -5,13 +5,16 @@ import 'package:bearscouts/themefile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mutex/mutex.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBManager {
   Database? _dataDB;
   final LinkedHashMap<String, String> _matchData = LinkedHashMap();
   final LinkedHashMap<String, String> _pitData = LinkedHashMap();
+
+  final modeNotifier = ValueNotifier<ThemeModel>(ThemeModel(ThemeMode.system));
+  final colorNotifier =
+      ValueNotifier<ColorChangeNotifier>(ColorChangeNotifier(darkAppBarTheme));
 
   static final DBManager _instance = DBManager._();
   static DBManager get instance => _instance;
@@ -419,16 +422,18 @@ class DBManager {
       await _dataDB!.rawUpdate(query);
     });
   }
+}
 
-  void setTabletColor() async {
-    final prefs = await SharedPreferences.getInstance();
-    String tabletName = prefs.getString("tabletColor") ?? "blue";
-    if (tabletName.toLowerCase().contains("red")) {
-      lightAppBarTheme = lightAppBarTheme.copyWith(color: Colors.red);
-      darkAppBarTheme = darkAppBarTheme.copyWith(color: Colors.red);
-    } else {
-      lightAppBarTheme = lightAppBarTheme.copyWith(color: Colors.blue);
-      darkAppBarTheme = darkAppBarTheme.copyWith(color: Colors.blue);
-    }
-  }
+class ThemeModel with ChangeNotifier {
+  final ThemeMode _themeMode;
+  ThemeMode get mode => _themeMode;
+
+  ThemeModel(this._themeMode);
+}
+
+class ColorChangeNotifier with ChangeNotifier {
+  final AppBarTheme _appBarTheme;
+  AppBarTheme get theme => _appBarTheme;
+
+  ColorChangeNotifier(this._appBarTheme);
 }

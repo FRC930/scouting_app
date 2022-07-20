@@ -4,10 +4,10 @@ project(runner LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "scoutin_app_merge")
+set(BINARY_NAME "scouting_app")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "com.team930.scoutin_app_merge")
+set(APPLICATION_ID "com.team930.scouting_app")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

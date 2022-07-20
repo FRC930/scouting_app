@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:bearscouts/data_management.dart';
 import 'package:bearscouts/database.dart';
-import 'package:bearscouts/settings.dart';
-import 'package:flutter/material.dart';
+import 'package:bearscouts/match_scouting.dart';
 import 'package:bearscouts/nav_drawer.dart';
 import 'package:bearscouts/pit_scouting.dart';
+import 'package:bearscouts/settings.dart';
+import 'package:bearscouts/static_pages.dart';
 import 'package:bearscouts/themefile.dart';
 import 'package:bearscouts/view_page.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
-import 'match_scouting.dart';
 
 Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux) {
@@ -22,30 +22,49 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   // await DBManager.instance.readConfigFromAssetBundle();
-  await DBManager.instance.checkIfTablesExist();
 
-  DBManager.instance.setTabletColor();
+  Future.microtask(
+    () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getString("tabletColor")?.toLowerCase().contains("red") ??
+          false) {
+        DBManager.instance.colorNotifier.value = ColorChangeNotifier(
+          darkAppBarTheme.copyWith(
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else {
+        DBManager.instance.colorNotifier.value = ColorChangeNotifier(
+          darkAppBarTheme.copyWith(
+            backgroundColor: Colors.blue,
+          ),
+        );
+      }
+    },
+  );
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static final notifier =
-      ValueNotifier<ThemeModel>(ThemeModel(ThemeMode.system));
-
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeModel>(
-      valueListenable: notifier,
-      builder: (_, model, __) {
-        final mode = model.mode;
+    return ValueListenableBuilder2<ThemeModel, ColorChangeNotifier>(
+      first: DBManager.instance.modeNotifier,
+      second: DBManager.instance.colorNotifier,
+      builder: (_, modeModel, colorModel, __) {
+        final mode = modeModel.mode;
+        final lightTheme = lightColorTheme.copyWith(
+            appBarTheme: DBManager.instance.colorNotifier.value.theme);
+        final darkTheme = darkColorTheme.copyWith(
+            appBarTheme: DBManager.instance.colorNotifier.value.theme);
         return MaterialApp(
           title: 'BEARscouts',
-          theme: lightColorTheme,
-          darkTheme: darkColorTheme,
+          theme: lightTheme,
+          darkTheme: darkTheme,
           themeMode: mode,
           debugShowCheckedModeBanner: false,
           onGenerateRoute: (RouteSettings settings) {
@@ -68,11 +87,11 @@ class MyApp extends StatelessWidget {
                 );
               case '/settings/match_data':
                 return MaterialPageRoute(
-                  builder: (context) => const MatchSettingsPage(),
+                  builder: (context) => MatchSettingsPage(),
                 );
               case '/settings/pit_data':
                 return MaterialPageRoute(
-                  builder: (context) => const PitSettingsPage(),
+                  builder: (context) => PitSettingsPage(),
                 );
               case '/settings/app_config':
                 return MaterialPageRoute(
@@ -82,14 +101,23 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(
                   builder: (context) => const DataManagementPage(),
                 );
+              case '/about':
+                return MaterialPageRoute(
+                  builder: (context) => const BEARScoutsAboutUs(),
+                );
               case '/':
               default:
                 return MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) => BEARScoutsLoading(
+                    action: () async {
+                      await DBManager.instance.checkIfTablesExist();
+                    },
+                    nextPage: const HomePage(),
+                  ),
                 );
             }
           },
-          home: const HomePage(),
+          initialRoute: '/',
         );
       },
     );
@@ -104,7 +132,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _color = true;
+  static bool _color = true;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                 _color = !_color;
 
                 setState(() {
-                  MyApp.notifier.value = ThemeModel(
+                  DBManager.instance.modeNotifier.value = ThemeModel(
                     _color ? ThemeMode.dark : ThemeMode.light,
                   );
                 });
@@ -130,48 +158,44 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const NavDrawer(),
-      body: FutureBuilder(
-        builder:
-            (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-          if (snapshot.hasData) {
-            String tabletName = snapshot.data!.getString("tabletName") ?? "";
+      body: Container(
+        decoration: backgroundDecoration,
+        child: FutureBuilder(
+          builder: (BuildContext context,
+              AsyncSnapshot<SharedPreferences> snapshot) {
+            if (snapshot.hasData) {
+              String tabletName = snapshot.data!.getString("tabletName") ?? "";
 
-            Color textColor =
-                Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
+              Color textColor =
+                  Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
 
-            if (tabletName.toLowerCase().contains("red")) {
-              textColor = Colors.red;
-            } else if (tabletName.toLowerCase().contains("blue")) {
-              textColor = Colors.blue;
-            }
+              if (tabletName.toLowerCase().contains("red")) {
+                textColor = Colors.red;
+              } else if (tabletName.toLowerCase().contains("blue")) {
+                textColor = Colors.blue;
+              }
 
-            tabletName += "\nScouting Tablet";
+              tabletName += "\nScouting Tablet";
 
-            return Center(
-              child: Text(
-                tabletName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 64,
+              return Center(
+                child: Text(
+                  tabletName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 64,
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-        future: SharedPreferences.getInstance(),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+          future: SharedPreferences.getInstance(),
+        ),
       ),
     );
   }
-}
-
-class ThemeModel with ChangeNotifier {
-  final ThemeMode _themeMode;
-  ThemeMode get mode => _themeMode;
-
-  ThemeModel(this._themeMode);
 }

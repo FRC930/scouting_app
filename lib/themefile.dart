@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Color palette
@@ -7,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 TextTheme lightAppTextTheme = GoogleFonts.openSansTextTheme().copyWith(
   headline1: GoogleFonts.montserrat(
-    fontSize: 42,
+    fontSize: 36,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.italic,
   ),
@@ -17,22 +18,22 @@ TextTheme lightAppTextTheme = GoogleFonts.openSansTextTheme().copyWith(
     fontStyle: FontStyle.italic,
   ),
   headline3: GoogleFonts.montserrat(
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.italic,
   ),
   headline4: GoogleFonts.montserrat(
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.italic,
   ),
   headline5: GoogleFonts.montserrat(
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.italic,
   ),
   headline6: GoogleFonts.montserrat(
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.italic,
   ),
@@ -82,6 +83,7 @@ AppBarTheme lightAppBarTheme = AppBarTheme(
   titleTextStyle: lightAppTextTheme.headline2?.copyWith(
     color: lightColorScheme.onSecondaryContainer,
   ),
+  iconTheme: IconThemeData(color: lightColorScheme.onSecondaryContainer),
 );
 
 ThemeData lightColorTheme = ThemeData.from(
@@ -125,6 +127,7 @@ AppBarTheme darkAppBarTheme = AppBarTheme(
   titleTextStyle: lightAppTextTheme.headline2?.copyWith(
     color: darkColorScheme.onSecondaryContainer,
   ),
+  iconTheme: IconThemeData(color: darkColorScheme.onSecondaryContainer),
 );
 
 ThemeData darkColorTheme = ThemeData.from(
@@ -150,3 +153,14 @@ BottomNavigationBarThemeData lightNavigationBarTheme =
   selectedItemColor: lightColorScheme.primary,
   unselectedItemColor: lightColorScheme.onPrimaryContainer,
 );
+
+DecorationImage backgroundImage = const DecorationImage(
+  image: Svg(
+    "assets/logo.svg",
+    color: Color(0xFF1E22AA),
+    size: Size(200, 100),
+  ),
+  alignment: Alignment.bottomRight,
+  opacity: 0.4,
+);
+BoxDecoration backgroundDecoration = BoxDecoration(image: backgroundImage);

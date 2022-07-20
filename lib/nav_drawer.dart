@@ -6,8 +6,7 @@ class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: <Widget>[
           DrawerHeader(
             child: Text(
@@ -85,6 +84,25 @@ class NavDrawer extends StatelessWidget {
 
               Navigator.pushNamed(context, '/settings');
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            iconColor: Theme.of(context).colorScheme.primary,
+            title: const Text("About Us"),
+            onTap: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+
+              Navigator.pushNamed(context, '/about');
+            },
+          ),
+          const Expanded(
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Text("\u00A9 Mukwonago BEARs Team 930"),
+              ),
+            ),
           ),
         ],
       ),

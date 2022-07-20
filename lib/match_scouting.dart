@@ -1,7 +1,8 @@
-import 'package:bearscouts/nav_drawer.dart';
-import 'package:flutter/material.dart';
 import 'package:bearscouts/custom_widgets.dart';
 import 'package:bearscouts/database.dart';
+import 'package:bearscouts/nav_drawer.dart';
+import 'package:bearscouts/themefile.dart';
+import 'package:flutter/material.dart';
 
 class MatchScouter extends StatefulWidget {
   const MatchScouter({Key? key}) : super(key: key);
@@ -36,6 +37,39 @@ class _MatchScouterState extends State<MatchScouter> {
               appBar: AppBar(
                 title: const Text('Match Scouting'),
                 actions: [
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Are you sure?"),
+                          content: const Text(
+                            "This will FOREVER lose all data entered during "
+                            "this match. Only do this if you are CERTAIN that "
+                            "you do not need this data.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                DBManager.instance.clearMatchData();
+
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, "/match_scouting");
+                              },
+                              child: const Text("Yes"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("No"),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.save),
                     onPressed: () {
@@ -93,11 +127,14 @@ class _MatchScouterState extends State<MatchScouter> {
                   ),
                 ],
               ),
-              body: IndexedStack(
-                index: _currentIndex,
-                children: pageNames.map((e) {
-                  return MatchScoutWidget(e);
-                }).toList(),
+              body: Container(
+                decoration: backgroundDecoration,
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: pageNames.map((e) {
+                    return MatchScoutWidget(e);
+                  }).toList(),
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: _currentIndex,

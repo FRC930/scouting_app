@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.team930.scoutin_app_merge">
+    package="com.team930.scouting_app">
    <application
-        android:label="scoutin_app_merge"
+        android:label="scouting_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
