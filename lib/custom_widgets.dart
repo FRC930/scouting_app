@@ -325,6 +325,58 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
       );
       widget.isValidWithValue(true, _options[0]);
     }
+
+    if (_hints.length > _options.length) {
+      while (_hints.length > _options.length) {
+        _hints.removeLast();
+      }
+
+      Future.delayed(const Duration(milliseconds: 100), () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Insufficient options"),
+            content: const Text(
+              "There are too many options in the list for one of the multiple "
+              "choice boxes. Contact your app administrator to resolve this.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("OK"),
+              )
+            ],
+          ),
+        );
+      });
+    } else if (_hints.length < _options.length) {
+      while (_options.length > _hints.length) {
+        _options.removeLast();
+      }
+
+      Future.delayed(const Duration(milliseconds: 100), () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Insufficient hints"),
+            content: const Text(
+              "There are too many hints in the list for one of the multiple "
+              "choice boxes. Contact your app administrator to resolve this.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("OK"),
+              )
+            ],
+          ),
+        );
+      });
+    }
   }
 
   @override

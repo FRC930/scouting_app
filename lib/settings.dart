@@ -406,7 +406,7 @@ class _PitSettingsPageState extends State<PitSettingsPage> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MatchSettingsPage(
+                                  builder: (context) => PitSettingsPage(
                                       scrollToOffset:
                                           widget._scrollController.offset),
                                 ),
@@ -744,15 +744,14 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
 
   Future<List<Widget>> _getMultipleChoiceSettings() async {
     List<Widget> settings = await _getCommonSettings();
-
     settings.add(
       BearScoutsTextField(
         const <String>[
-          "Choices",
+          "Outputs",
           "",
           "",
           "text",
-          "Enter a valid list of choices, separated by commas"
+          "Enter a valid list of choice outputs, separated by commas"
         ],
         (bool isValid, String value) {
           if (widget.isMatch) {
@@ -775,11 +774,11 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
     settings.add(
       BearScoutsTextField(
         const <String>[
-          "Hints",
+          "Scouter Choices",
           "",
           "",
           "text",
-          "Enter a valid list of hints, separated by commas"
+          "Enter a valid list of displayable items, separated by commas"
         ],
         (bool isValid, String value) {
           if (widget.isMatch) {

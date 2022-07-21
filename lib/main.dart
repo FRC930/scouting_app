@@ -40,6 +40,9 @@ Future<void> main() async {
           ),
         );
       }
+
+      DBManager.instance.modeNotifier.value = ThemeModel(
+          prefs.getBool("darkMode") ?? true ? ThemeMode.dark : ThemeMode.light);
     },
   );
 
@@ -145,6 +148,10 @@ class _HomePageState extends State<HomePage> {
             child: IconButton(
               onPressed: () {
                 _color = !_color;
+
+                SharedPreferences.getInstance().then((value) {
+                  value.setBool("darkMode", _color);
+                });
 
                 setState(() {
                   DBManager.instance.modeNotifier.value = ThemeModel(
