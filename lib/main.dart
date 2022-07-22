@@ -43,6 +43,11 @@ Future<void> main() async {
 
       DBManager.instance.modeNotifier.value = ThemeModel(
           prefs.getBool("darkMode") ?? true ? ThemeMode.dark : ThemeMode.light);
+
+      if (prefs.getBool("firstRun") ?? true) {
+        await DBManager.instance.checkIfTablesExist();
+        prefs.setBool("firstRun", false);
+      }
     },
   );
 
@@ -111,12 +116,7 @@ class MyApp extends StatelessWidget {
               case '/':
               default:
                 return MaterialPageRoute(
-                  builder: (context) => BEARScoutsLoading(
-                    action: () async {
-                      await DBManager.instance.checkIfTablesExist();
-                    },
-                    nextPage: const HomePage(),
-                  ),
+                  builder: (context) => const HomePage(),
                 );
             }
           },
