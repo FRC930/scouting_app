@@ -152,7 +152,13 @@ class _MatchScouterState extends State<MatchScouter> {
               ),
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 30,
+                height: 30,
+              ),
+            );
           }
         },
         future: DBManager.instance.getMatchPages());
@@ -188,7 +194,13 @@ class _MatchScoutWidgetState extends State<MatchScoutWidget> {
                       true,
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: SizedBox(
+                        child: CircularProgressIndicator(),
+                        width: 30,
+                        height: 30,
+                      ),
+                    );
                   }
                 },
                 future: DBManager.instance.getMatchDatapointConfig(
@@ -198,7 +210,13 @@ class _MatchScoutWidgetState extends State<MatchScoutWidget> {
             },
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: SizedBox(
+              child: CircularProgressIndicator(),
+              width: 30,
+              height: 30,
+            ),
+          );
         }
       },
       future: DBManager.instance.getMatchPageWidgets(widget.pageName),

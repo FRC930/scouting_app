@@ -131,11 +131,15 @@ class BearScoutsTextField extends StatefulWidget {
   final List<String> _configOptions;
   final String initialValue;
   final void Function(bool, String) isValidWithValue;
+  final bool editable;
 
   const BearScoutsTextField(
-      this._configOptions, this.isValidWithValue, this.initialValue,
-      {Key? key})
-      : super(key: key);
+    this._configOptions,
+    this.isValidWithValue,
+    this.initialValue, {
+    Key? key,
+    this.editable = true,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _BearScoutsTextFieldState();
@@ -148,7 +152,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
   static final Map<String, RegExp> _validationRegexes = {
     "integer": RegExp(r"^[0-9]+$"),
     "decimal": RegExp(r"^[0-9]+(\.[0-9]+)?$"),
-    "text": RegExp(r"^[a-zA-Z0-9,. ]+$"),
+    "text": RegExp(r"^[a-zA-Z0-9,. \-]+$"),
   };
 
   @override
@@ -190,6 +194,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
           widget.isValidWithValue(true, value);
           return null;
         },
+        enabled: widget.editable,
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );

@@ -10,6 +10,7 @@ import 'package:bearscouts/static_pages.dart';
 import 'package:bearscouts/themefile.dart';
 import 'package:bearscouts/view_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -21,6 +22,7 @@ Future<void> main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+  await DBManager.instance.initDatabases();
   // await DBManager.instance.readConfigFromAssetBundle();
 
   Future.microtask(
@@ -36,13 +38,14 @@ Future<void> main() async {
       } else {
         DBManager.instance.colorNotifier.value = ColorChangeNotifier(
           darkAppBarTheme.copyWith(
-            backgroundColor: Colors.blue,
+            backgroundColor: darkColorScheme.onSecondary,
           ),
         );
       }
 
       DBManager.instance.modeNotifier.value = ThemeModel(
           prefs.getBool("darkMode") ?? true ? ThemeMode.dark : ThemeMode.light);
+      _HomePageState._color = prefs.getBool("darkMode") ?? true;
 
       if (prefs.getBool("firstRun") ?? true) {
         await DBManager.instance.checkIfTablesExist();
@@ -138,6 +141,19 @@ class _HomePageState extends State<HomePage> {
   static bool _color = true;
 
   @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        DBManager.instance.modeNotifier.value = ThemeModel(
+          _color ? ThemeMode.dark : ThemeMode.light,
+        );
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -196,7 +212,11 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 100,
+                  height: 100,
+                ),
               );
             }
           },

@@ -19,7 +19,7 @@ class _DataManagementPageState extends State<DataManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scouting App Templates'),
+        title: const Text('Templates'),
       ),
       body: Container(
         decoration: backgroundDecoration,

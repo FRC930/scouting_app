@@ -153,7 +153,13 @@ class _PitScouterState extends State<PitScouter> {
               ),
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 30,
+                height: 30,
+              ),
+            );
           }
         },
         future: DBManager.instance.getPitPages());
@@ -189,7 +195,13 @@ class _PitScoutWidgetState extends State<PitScoutWidget> {
                       false,
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: SizedBox(
+                        child: CircularProgressIndicator(),
+                        width: 30,
+                        height: 30,
+                      ),
+                    );
                   }
                 },
                 future: DBManager.instance.getPitDatapointConfig(
@@ -199,7 +211,13 @@ class _PitScoutWidgetState extends State<PitScoutWidget> {
             },
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: SizedBox(
+              child: CircularProgressIndicator(),
+              width: 30,
+              height: 30,
+            ),
+          );
         }
       },
       future: DBManager.instance.getPitPageWidgets(widget.pageName),

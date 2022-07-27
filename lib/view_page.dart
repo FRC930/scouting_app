@@ -152,7 +152,11 @@ class _MatchDataListState extends State<MatchDataList> {
           );
         } else {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: SizedBox(
+              child: CircularProgressIndicator(),
+              width: 30,
+              height: 30,
+            ),
           );
         }
       },
@@ -275,7 +279,11 @@ class _PitDataListState extends State<PitDataList> {
           );
         } else {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: SizedBox(
+              child: CircularProgressIndicator(),
+              width: 30,
+              height: 30,
+            ),
           );
         }
       },

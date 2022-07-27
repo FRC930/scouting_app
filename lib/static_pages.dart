@@ -201,68 +201,6 @@ class BEARScoutsAboutUs extends StatelessWidget {
   }
 }
 
-class BEARScoutsLoading extends StatefulWidget {
-  final AsyncCallback action;
-  final Widget nextPage;
-  const BEARScoutsLoading({
-    required this.action,
-    required this.nextPage,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _BEARScoutsLoadingState();
-}
-
-class _BEARScoutsLoadingState extends State<BEARScoutsLoading> {
-  bool doneLoading = false;
-  Timer? loader;
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.microtask(() async {
-      await widget.action();
-      doneLoading = true;
-    });
-
-    Future.delayed(const Duration(milliseconds: 500), () {
-      loader = Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
-        if (doneLoading) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return widget.nextPage;
-              },
-            ),
-          );
-
-          loader?.cancel();
-        }
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Please Wait...")),
-      body: Container(
-        decoration: backgroundDecoration,
-        child: const Center(
-          child: SizedBox(
-            height: 400,
-            width: 400,
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class ValueListenableBuilder2<A, B> extends StatelessWidget {
   const ValueListenableBuilder2({
     required this.first,

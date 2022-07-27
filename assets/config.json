@@ -178,8 +178,8 @@
         {
             "title": "Drive Train Motors",
             "type": "choice",
-            "special1": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons",
-            "special2": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons",
+            "special1": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons,Other",
+            "special2": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons,Other",
             "page": "Physical Robot Features",
             "export": 2
         },

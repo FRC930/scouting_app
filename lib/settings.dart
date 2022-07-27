@@ -234,6 +234,8 @@ class MatchSettingsPage extends StatefulWidget {
 }
 
 class _MatchSettingsPageState extends State<MatchSettingsPage> {
+  bool isOkWithDelete = false;
+
   @override
   void initState() {
     super.initState();
@@ -244,103 +246,202 @@ class _MatchSettingsPageState extends State<MatchSettingsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Match Settings'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MatchSettingsPage(
-                      scrollToOffset: widget._scrollController.offset),
-                ),
-              );
-            },
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: backgroundDecoration,
-        child: FutureBuilder(
-          builder: (BuildContext context,
-              AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  FutureBuilder(
-                    builder: (BuildContext context,
-                        AsyncSnapshot<SharedPreferences> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.getString("matchPages") == null) {
-                          DBManager.instance
-                              .getMatchPages()
-                              .then((List<String> pages) {
-                            snapshot.data!
-                                .setString("matchPages", pages.join(","));
+  void dispose() {
+    super.dispose();
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MatchSettingsPage(
-                                    scrollToOffset:
-                                        widget._scrollController.offset),
-                              ),
-                            );
-                          });
-                        }
-                        return BearScoutsTextField(
-                          const [
-                            "Match Pages",
-                            "",
-                            "",
-                            "text",
-                            "Please enter a valid list of match pages separated by commas",
-                          ],
-                          (bool isValid, String value) {
-                            snapshot.data!.setString("matchPages", value);
-                          },
-                          snapshot.data!.getString("matchPages") ?? "",
-                        );
-                      } else {
-                        return const Center(
-                          child: Padding(
-                            child: CircularProgressIndicator(),
-                            padding: EdgeInsets.only(top: 10),
-                          ),
-                        );
-                      }
-                    },
-                    future: SharedPreferences.getInstance(),
+    if (isOkWithDelete) {
+      DBManager.instance.createDataTables();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isOkWithDelete) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Match Settings'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MatchSettingsPage(
+                        scrollToOffset: widget._scrollController.offset),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: widget._scrollController,
-                      itemBuilder: (context, index) {
-                        return DatapointSettingsWidget(
-                          snapshot.data![index],
-                          true,
-                          controller: widget._scrollController,
-                        );
-                      },
-                      itemCount: snapshot.data!.length,
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-          future: DBManager.instance.getMatchConfig(),
+                );
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
         ),
-      ),
-    );
+        body: Container(
+          decoration: backgroundDecoration,
+          child: FutureBuilder(
+            builder: (BuildContext context,
+                AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    FutureBuilder(
+                      builder: (BuildContext context,
+                          AsyncSnapshot<SharedPreferences> snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.getString("matchPages") == null) {
+                            DBManager.instance
+                                .getMatchPages()
+                                .then((List<String> pages) {
+                              snapshot.data!
+                                  .setString("matchPages", pages.join(","));
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MatchSettingsPage(
+                                      scrollToOffset:
+                                          widget._scrollController.offset),
+                                ),
+                              );
+                            });
+                          }
+                          return BearScoutsTextField(
+                            const [
+                              "Match Pages",
+                              "",
+                              "",
+                              "text",
+                              "Please enter a valid list of match pages separated by commas",
+                            ],
+                            (bool isValid, String value) {
+                              snapshot.data!.setString("matchPages", value);
+                            },
+                            snapshot.data!.getString("matchPages") ?? "",
+                          );
+                        } else {
+                          return const Center(
+                            child: Padding(
+                              child: SizedBox(
+                                child: CircularProgressIndicator(),
+                                width: 30,
+                                height: 30,
+                              ),
+                              padding: EdgeInsets.only(top: 10),
+                            ),
+                          );
+                        }
+                      },
+                      future: SharedPreferences.getInstance(),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: widget._scrollController,
+                        itemBuilder: (context, index) {
+                          return DatapointSettingsWidget(
+                            snapshot.data![index],
+                            true,
+                            controller: widget._scrollController,
+                          );
+                        },
+                        itemCount: snapshot.data!.length,
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 30,
+                    height: 30,
+                  ),
+                );
+              }
+            },
+            future: DBManager.instance.getMatchConfig(),
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Match Settings'),
+        ),
+        body: Container(
+          decoration: backgroundDecoration,
+          child: ListView(
+            controller: widget._scrollController,
+            children: <Widget>[
+              const Center(
+                child: Text(
+                  "WARNING",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+              const Center(
+                child: Text(
+                  "Potential data loss ahead",
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 30,
+                  ),
+                ),
+              ),
+              const Center(
+                child: Padding(
+                    child: Text(
+                      "Entering the editing page will erase any previously "
+                      "saved match and pit data. Ensure that you either have a "
+                      "backup or do not and will not need this data at any "
+                      "point in the future. This decision is final and cannot "
+                      "be reversed.",
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.all(5)),
+              ),
+              Padding(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("One more time"),
+                        content: const Text(
+                            "Are you ABSOLUTELY sure that you don't need this data?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              setState(() {
+                                isOkWithDelete = true;
+                              });
+                            },
+                            child: const Text("Yes, delete my data"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("No, keep my data"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: const Text("I understand"),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 30,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -355,6 +456,8 @@ class PitSettingsPage extends StatefulWidget {
 }
 
 class _PitSettingsPageState extends State<PitSettingsPage> {
+  bool isOkWithDelete = false;
+
   @override
   void initState() {
     super.initState();
@@ -365,102 +468,194 @@ class _PitSettingsPageState extends State<PitSettingsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pit Settings'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PitSettingsPage(
-                      scrollToOffset: widget._scrollController.offset),
-                ),
-              );
-            },
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: backgroundDecoration,
-        child: FutureBuilder(
-          builder: (BuildContext context,
-              AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  FutureBuilder(
-                      builder: (BuildContext context,
-                          AsyncSnapshot<SharedPreferences> snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.getString("pitPages") == null) {
-                            DBManager.instance
-                                .getPitPages()
-                                .then((List<String> pages) {
-                              snapshot.data!
-                                  .setString("pitPages", pages.join(","));
+  void dispose() {
+    super.dispose();
 
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PitSettingsPage(
-                                      scrollToOffset:
-                                          widget._scrollController.offset),
-                                ),
-                              );
-                            });
-                          }
-                          return BearScoutsTextField(
-                            const [
-                              "Pit Pages",
-                              "",
-                              "",
-                              "text",
-                              "Please enter a valid list of pit pages separated by commas",
-                            ],
-                            (bool isValid, String value) {
-                              snapshot.data!.setString("pitPages", value);
-                            },
-                            snapshot.data!.getString("pitPages") ?? "",
-                          );
-                        } else {
-                          return const Center(
-                            child: Padding(
-                              child: CircularProgressIndicator(),
-                              padding: EdgeInsets.only(top: 10),
-                            ),
-                          );
-                        }
-                      },
-                      future: SharedPreferences.getInstance()),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: widget._scrollController,
-                      itemBuilder: (context, index) {
-                        return DatapointSettingsWidget(
-                          snapshot.data![index],
-                          false,
-                          controller: widget._scrollController,
-                        );
-                      },
-                      itemCount: snapshot.data!.length,
-                    ),
+    if (isOkWithDelete) {
+      DBManager.instance.createDataTables();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isOkWithDelete) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Pit Settings'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PitSettingsPage(
+                        scrollToOffset: widget._scrollController.offset),
                   ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-          future: DBManager.instance.getPitConfig(),
+                );
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
         ),
-      ),
-    );
+        body: Container(
+          decoration: backgroundDecoration,
+          child: FutureBuilder(
+            builder: (BuildContext context,
+                AsyncSnapshot<List<Map<String, Object?>>> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    FutureBuilder(
+                        builder: (BuildContext context,
+                            AsyncSnapshot<SharedPreferences> snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data!.getString("pitPages") == null) {
+                              DBManager.instance
+                                  .getPitPages()
+                                  .then((List<String> pages) {
+                                snapshot.data!
+                                    .setString("pitPages", pages.join(","));
+
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PitSettingsPage(
+                                        scrollToOffset:
+                                            widget._scrollController.offset),
+                                  ),
+                                );
+                              });
+                            }
+                            return BearScoutsTextField(
+                              const [
+                                "Pit Pages",
+                                "",
+                                "",
+                                "text",
+                                "Please enter a valid list of pit pages separated by commas",
+                              ],
+                              (bool isValid, String value) {
+                                snapshot.data!.setString("pitPages", value);
+                              },
+                              snapshot.data!.getString("pitPages") ?? "",
+                            );
+                          } else {
+                            return const Center(
+                              child: Padding(
+                                child: SizedBox(
+                                  child: CircularProgressIndicator(),
+                                  width: 30,
+                                  height: 30,
+                                ),
+                                padding: EdgeInsets.only(top: 10),
+                              ),
+                            );
+                          }
+                        },
+                        future: SharedPreferences.getInstance()),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: widget._scrollController,
+                        itemBuilder: (context, index) {
+                          return DatapointSettingsWidget(
+                            snapshot.data![index],
+                            false,
+                            controller: widget._scrollController,
+                          );
+                        },
+                        itemCount: snapshot.data!.length,
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 30,
+                    height: 30,
+                  ),
+                );
+              }
+            },
+            future: DBManager.instance.getPitConfig(),
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Pit Settings'),
+        ),
+        body: Container(
+          decoration: backgroundDecoration,
+          child: ListView(
+            controller: widget._scrollController,
+            children: <Widget>[
+              const Center(
+                child: Text(
+                  "WARNING",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+              const Center(
+                child: Text(
+                  "Potential data loss ahead",
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 30,
+                  ),
+                ),
+              ),
+              const Center(
+                child: Padding(
+                    child: Text(
+                      "Entering the editing page will erase any previously "
+                      "saved match and pit data. Ensure that you either have a "
+                      "backup or do not and will not need this data at any "
+                      "point in the future. This decision is final and cannot "
+                      "be reversed.",
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.all(5)),
+              ),
+              Padding(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("One more time"),
+                        content: const Text(
+                            "Are you ABSOLUTELY sure that you don't need this data?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                setState(() {
+                                  isOkWithDelete = true;
+                                });
+                              },
+                              child: const Text("Yes, delete my data"))
+                        ],
+                      ),
+                    );
+                  },
+                  child: const Text("I understand"),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 30,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -534,7 +729,11 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
               );
             } else {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 30,
+                  height: 30,
+                ),
               );
             }
           },
@@ -622,6 +821,8 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
           }
         },
         widget.pointValues["title"].toString(),
+        editable: widget.pointValues["title"] != "Team Number" &&
+            widget.pointValues["title"] != "Match Number",
       ),
       BearScoutsMultipleChoice(
         const [
@@ -1002,50 +1203,68 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
                       children: [
                         IconButton(
                           onPressed: () {
-                            if (widget.isMatch) {
-                              DBManager.instance.deleteData(
-                                "delete from config_match where export = " +
-                                    widget.pointValues["export"].toString() +
-                                    " and title = \"" +
-                                    widget.pointValues["title"].toString() +
-                                    "\"",
-                              );
-
-                              DBManager.instance.updateData(
-                                  "update config_match set export = export - 1 where export > " +
-                                      widget.pointValues["export"].toString());
-
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(
-                                builder: (context) {
-                                  return MatchSettingsPage(
-                                    scrollToOffset:
-                                        widget.controller?.offset ?? 0.0,
-                                  );
-                                },
-                              ));
-                            } else {
-                              DBManager.instance.deleteData(
-                                "delete from config_pit where export = " +
-                                    widget.pointValues["export"].toString() +
-                                    " and title = \"" +
-                                    widget.pointValues["title"].toString() +
-                                    "\"",
-                              );
-
-                              DBManager.instance.updateData(
-                                  "update config_pit set export = export - 1 where export > " +
-                                      widget.pointValues["export"].toString());
-
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PitSettingsPage(
-                                      scrollToOffset:
-                                          widget.controller?.offset ?? 0.0),
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: const Text(
+                                  "Are you sure you want to delete this datapoint?",
                                 ),
-                              );
-                            }
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+
+                                      if (widget.pointValues["title"] ==
+                                              "Team Number" ||
+                                          widget.pointValues["title"] ==
+                                              "Match Number") {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title:
+                                                const Text("Deletion Danger"),
+                                            content: const Text(
+                                              "Deleting this field may cause the app to stop working. Are you sure?",
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+
+                                                  _deletePoint();
+                                                },
+                                                child: const Text(
+                                                  "Yes",
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "No",
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        _deletePoint();
+                                      }
+                                    },
+                                    child: const Text(
+                                      "Yes, delete this datapoint",
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Take me back!"),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           icon: const Icon(
                             Icons.delete,
@@ -1173,8 +1392,8 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
                   return const Center(
                     child: SizedBox(
                       child: CircularProgressIndicator(),
-                      height: 400,
-                      width: 400,
+                      width: 30,
+                      height: 30,
                     ),
                   );
                 }
@@ -1186,6 +1405,50 @@ class _DatapointSettingsWidgetState extends State<DatapointSettingsWidget> {
     } else {
       return Column(
         children: settingsInst[widget.pointValues["export"].toString()] ?? [],
+      );
+    }
+  }
+
+  void _deletePoint() {
+    if (widget.isMatch) {
+      DBManager.instance.deleteData(
+        "delete from config_match where export = " +
+            widget.pointValues["export"].toString() +
+            " and title = \"" +
+            widget.pointValues["title"].toString() +
+            "\"",
+      );
+
+      DBManager.instance.updateData(
+          "update config_match set export = export - 1 where export > " +
+              widget.pointValues["export"].toString());
+
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return MatchSettingsPage(
+            scrollToOffset: widget.controller?.offset ?? 0.0,
+          );
+        },
+      ));
+    } else {
+      DBManager.instance.deleteData(
+        "delete from config_pit where export = " +
+            widget.pointValues["export"].toString() +
+            " and title = \"" +
+            widget.pointValues["title"].toString() +
+            "\"",
+      );
+
+      DBManager.instance.updateData(
+          "update config_pit set export = export - 1 where export > " +
+              widget.pointValues["export"].toString());
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              PitSettingsPage(scrollToOffset: widget.controller?.offset ?? 0.0),
+        ),
       );
     }
   }
