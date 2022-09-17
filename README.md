@@ -1,6 +1,6 @@
 # BEARscouts
 
-Welcome to the git repository for FRC Team 930's scouting app! This application is written in Dart and uses the Flutter framework. Currently this project only supports Android, but more platforms are coming very soon! 
+Welcome to the git repository for FRC Team 930's scouting app! This application is written in Dart and uses the Flutter framework. Currently this project only supports Android and Windows, but more platforms are coming very soon! 
 
 *Note: iOS may be mostly supported, but has not been tested*
 
@@ -15,9 +15,9 @@ Welcome to the git repository for FRC Team 930's scouting app! This application 
 * Ability to rename the device (with color coding for red/blue)
 * Exports data to a QR code for easy importing to a scouting database
 * Supports export of up to six matches at a time
+* Includes a pit scouting framework that can be modified much the same way as the match scouting
+* 
 
 ## Planned Features
-* Pit scouting app
-* Adding widgets to the middle of the configuration (not just to the end)
 * Add web support
 * Companion Google sheet to use with the app
