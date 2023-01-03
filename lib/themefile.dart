@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 /// Color palette
 /// [Material Design color palette](https://material.io/design/color/the-color-system.html#color-theme-creation)
 /// This is used by the app to determine color across the entire app
+/// We use google fonts for our branded fonts
 
 TextTheme lightAppTextTheme = GoogleFonts.openSansTextTheme().copyWith(
   headline1: GoogleFonts.montserrat(

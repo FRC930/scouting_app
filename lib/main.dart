@@ -209,17 +209,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BEARscouts'),
+        // These actions are on the AppBar.
+        // In this case we only have one: theme toggle
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               onPressed: () {
+                // We store the state in a class variable
                 _color = !_color;
 
+                // Tell SharedPreferences what theme it is so that
+                // we can read it on next app startup
                 SharedPreferences.getInstance().then((value) {
                   value.setBool("darkMode", _color);
                 });
 
+                // The ThemeNotifiers are stored in the DBManager class
+                // These tell the app when to reload its view to refresh the theme
                 setState(() {
                   DBManager.instance.modeNotifier.value = ThemeModel(
                     _color ? ThemeMode.dark : ThemeMode.light,
@@ -231,18 +238,24 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      // Standard NavDrawer, see that class for more info
       drawer: const NavDrawer(),
       body: Container(
         decoration: backgroundDecoration,
+        // Use FutureBuilder to ensure that we have SharedPreferences loaded
         child: FutureBuilder(
           builder: (BuildContext context,
               AsyncSnapshot<SharedPreferences> snapshot) {
             if (snapshot.hasData) {
+              // We have the SharedPreferences object
+              // Get the name that we stored from the last run of the app
               String tabletName = snapshot.data!.getString("tabletName") ?? "";
 
+              // Default to white if the tablet name does specify color
               Color textColor =
                   Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
 
+              // If/else to decide which color the text needs to be
               if (tabletName.toLowerCase().contains("red")) {
                 textColor = Colors.red;
               } else if (tabletName.toLowerCase().contains("blue")) {
@@ -251,6 +264,7 @@ class _HomePageState extends State<HomePage> {
 
               tabletName += "\nScouting Tablet";
 
+              // Construct the text using the parameters that we found out
               return Center(
                 child: Text(
                   tabletName,
@@ -262,6 +276,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else {
+              // CircularProgressIndicator to tell the user we are waiting
+              // on SharedPreferences to load
               return const Center(
                 child: SizedBox(
                   child: CircularProgressIndicator(),

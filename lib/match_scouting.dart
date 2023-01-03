@@ -11,34 +11,32 @@ class MatchScouter extends StatefulWidget {
   _MatchScouterState createState() => _MatchScouterState();
 }
 
+// This is the class that manages showing the user the different pages and
+// datapoints in the match scouting section.
 class _MatchScouterState extends State<MatchScouter> {
+  // This is the index of the page we are showing
   int _currentIndex = 0;
   List<String> pageNames = [];
 
   @override
-  void initState() {
-    super.initState();
-
-    DBManager.instance.getMatchPages().then((pages) {
-      setState(() {
-        pageNames = pages;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Future builder to get the match pages from database
     return FutureBuilder(
         builder: (context, AsyncSnapshot<List<String>> snapshot) {
+          // Check to see if we are ready
           if (snapshot.hasData) {
+            // Get the data from the snapshot
             pageNames = snapshot.data ?? [];
             return Scaffold(
               drawer: const NavDrawer(),
               appBar: AppBar(
                 title: const Text('Match Scouting'),
                 actions: [
+                  // Clear fields button
                   IconButton(
                     onPressed: () {
+                      // Make sure that the user knows exactly what they are 
+                      // doing by pressing this button
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -50,6 +48,7 @@ class _MatchScouterState extends State<MatchScouter> {
                           ),
                           actions: [
                             TextButton(
+                              // They've clicked yes. Erase the data.
                               onPressed: () {
                                 DBManager.instance.clearMatchData();
 
@@ -59,6 +58,7 @@ class _MatchScouterState extends State<MatchScouter> {
                               child: const Text("Yes"),
                             ),
                             TextButton(
+                              // They realize that they made a mistake, abort
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -70,10 +70,13 @@ class _MatchScouterState extends State<MatchScouter> {
                     },
                     icon: const Icon(Icons.clear),
                   ),
+                  // Save icon
                   IconButton(
                     icon: const Icon(Icons.save),
                     onPressed: () {
+                      // Make sure that all the fields are filled out
                       if (!validFields.containsValue(false)) {
+                        // Write in-memory data to database
                         DBManager.instance.writeMatchData();
                         showDialog(
                           context: context,
@@ -85,6 +88,7 @@ class _MatchScouterState extends State<MatchScouter> {
                               TextButton(
                                 child: const Text('OK'),
                                 onPressed: () {
+                                  // Clear the match data and reload the page
                                   DBManager.instance.clearMatchData();
                                   Navigator.of(context).popUntil(
                                     (route) => route.isFirst,
@@ -98,6 +102,7 @@ class _MatchScouterState extends State<MatchScouter> {
                           ),
                         );
                       } else {
+                        // They've not filled out all the required fields, yell at them
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -127,6 +132,8 @@ class _MatchScouterState extends State<MatchScouter> {
                   ),
                 ],
               ),
+              // The main body. Everything here is pretty simple. We just return
+              // a page using the name we got before.
               body: Container(
                 decoration: backgroundDecoration,
                 child: IndexedStack(
@@ -136,6 +143,8 @@ class _MatchScouterState extends State<MatchScouter> {
                   }).toList(),
                 ),
               ),
+              // Bottom navigation bar. This allows the user to switch freely
+              // between pages.
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: _currentIndex,
                 onTap: (int index) {
@@ -152,6 +161,7 @@ class _MatchScouterState extends State<MatchScouter> {
               ),
             );
           } else {
+            // Loading indicator
             return const Center(
               child: SizedBox(
                 child: CircularProgressIndicator(),
@@ -161,6 +171,7 @@ class _MatchScouterState extends State<MatchScouter> {
             );
           }
         },
+        // The future to get the match pages.
         future: DBManager.instance.getMatchPages());
   }
 }
@@ -174,6 +185,7 @@ class MatchScoutWidget extends StatefulWidget {
   _MatchScoutWidgetState createState() => _MatchScoutWidgetState();
 }
 
+/// This is the class that tells the data widget what to render
 class _MatchScoutWidgetState extends State<MatchScoutWidget> {
   @override
   Widget build(BuildContext context) {
@@ -189,11 +201,13 @@ class _MatchScoutWidgetState extends State<MatchScoutWidget> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<String>> widgetSnapshot) {
                   if (widgetSnapshot.hasData) {
+                    // Get a new data widget with match set to true
                     return BearScoutsDataWidget(
                       widgetSnapshot.data!,
                       true,
                     );
                   } else {
+                    // Loading indicator
                     return const Center(
                       child: SizedBox(
                         child: CircularProgressIndicator(),
@@ -203,6 +217,7 @@ class _MatchScoutWidgetState extends State<MatchScoutWidget> {
                     );
                   }
                 },
+                // The future to get the datapoint config from the database
                 future: DBManager.instance.getMatchDatapointConfig(
                   pageSnapshot.data![index],
                 ),
@@ -219,6 +234,7 @@ class _MatchScoutWidgetState extends State<MatchScoutWidget> {
           );
         }
       },
+      // Get the widgets on the current page
       future: DBManager.instance.getMatchPageWidgets(widget.pageName),
     );
   }

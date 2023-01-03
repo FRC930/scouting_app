@@ -1,14 +1,15 @@
-import 'dart:async';
-
 import 'package:bearscouts/nav_drawer.dart';
 import 'package:bearscouts/themefile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// About us page is static
 class BEARScoutsAboutUs extends StatelessWidget {
   const BEARScoutsAboutUs({Key? key}) : super(key: key);
 
+  // All of the following stuff is all text and formatting
+  // This should not be difficult to figure out
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +202,8 @@ class BEARScoutsAboutUs extends StatelessWidget {
   }
 }
 
+// This combines two value listenable builders into one templated class
+// This allows the app to listen to two events to decide when to re-render
 class ValueListenableBuilder2<A, B> extends StatelessWidget {
   const ValueListenableBuilder2({
     required this.first,

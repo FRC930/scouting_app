@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:bearscouts/database.dart';
@@ -8,10 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+// This holds all of the fields stored by name and whether they are valid or
+// invalid. When we switch between match and pit scouting, this map is cleared
 Map<String, bool> validFields = {};
 
+
 class BearScoutsDataWidget extends StatefulWidget {
+  // This holds all of the information needed to construct a collection widget
   final List<String> datapoint;
+  // This tells the widget which database table it needs to write to
   final bool isMatch;
 
   const BearScoutsDataWidget(
@@ -24,17 +28,25 @@ class BearScoutsDataWidget extends StatefulWidget {
   _BearScoutsDataWidgetState createState() => _BearScoutsDataWidgetState();
 }
 
+// The state class for the overarching data collection widget
 class _BearScoutsDataWidgetState extends State<BearScoutsDataWidget> {
+  // This function will be called whenever the data is changed or the widget
+  // is initialized
   void onSave(bool valid, String value) {
+    // The valid parameter tells us whether to write the data or not
     if (valid) {
+      // Write that the field is valid to the validFields map
       validFields[widget.datapoint[0]] = true;
 
+      // Check where to write the data
       if (widget.isMatch) {
+        // Call the function in DBManager to write the match data
         DBManager.instance.setMatchDatapoint(
           widget.datapoint[0],
           value,
         );
       } else {
+        // Call the other function in DBManger to write the pit data
         DBManager.instance.setPitDatapoint(
           widget.datapoint[0],
           value,
@@ -43,6 +55,8 @@ class _BearScoutsDataWidgetState extends State<BearScoutsDataWidget> {
     }
   }
 
+  // This is a helper function to ensure that we get the proper data
+  // Using the isMatch variable it decides whether to get pit or match
   String getDatapoint() {
     if (widget.isMatch) {
       return DBManager.instance.getMatchDatapoint(widget.datapoint[0]);
@@ -55,6 +69,7 @@ class _BearScoutsDataWidgetState extends State<BearScoutsDataWidget> {
   void initState() {
     super.initState();
 
+    // Assmue that the field is invalid when we first start up
     validFields[widget.datapoint[0]] = false;
   }
 
@@ -62,60 +77,72 @@ class _BearScoutsDataWidgetState extends State<BearScoutsDataWidget> {
   void dispose() {
     super.dispose();
 
+    // Remove the widget from validFields so that we can switch collection
+    // types without keeping the old widget data
     validFields.remove(widget.datapoint[0]);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Switch on the type of datapoint
     switch (widget.datapoint[2]) {
+      // Multiple choice
       case "choice":
         return BearScoutsMultipleChoice(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Numerical counter
       case "counter":
         return BearScoutsCounter(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Uneditable text that will not be exported to the qr code
       case "heading":
         return BearScoutsHeading(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Image that will not be exported to the qr code
       case "image":
         return BearScoutsDisplayImage(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Stopwatch in default configuration
       case "stopwatch":
         return BearScoutsStopwatch(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Toggle or switch, outputs true/false
       case "toggle":
         return BearScoutsToggle(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Slider with min/max and precision settings
       case "slider":
         return BearScoutsSlider(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Heatmap that will export the points that the user inputs
       case "heatmap":
         return BearScoutsHeatMap(
           widget.datapoint,
           onSave,
           getDatapoint(),
         );
+      // Basic text field
       case "field":
       default:
         return BearScoutsTextField(
@@ -127,10 +154,15 @@ class _BearScoutsDataWidgetState extends State<BearScoutsDataWidget> {
   }
 }
 
+// Ordinary text field that is suitable for single-line inputs
 class BearScoutsTextField extends StatefulWidget {
+  // The options which configure the text field
   final List<String> _configOptions;
+  // What to put in the text field initially
   final String initialValue;
+  // Basically our save function
   final void Function(bool, String) isValidWithValue;
+  // Whether to make the text field editable or not
   final bool editable;
 
   const BearScoutsTextField(
@@ -145,10 +177,16 @@ class BearScoutsTextField extends StatefulWidget {
   State<StatefulWidget> createState() => _BearScoutsTextFieldState();
 }
 
+// State class for our text field
 class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
+  // TextEditingController to make programatic changes to the text contained
+  // in the text field. This is used to set the initial value and get what
+  // the field currently contains
   final TextEditingController _textController = TextEditingController();
+  // GlobalKey to ensure that the field is valid
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // We use these to validate the input based on what the config states
   static final Map<String, RegExp> _validationRegexes = {
     "integer": RegExp(r"^[0-9]+$"),
     "decimal": RegExp(r"^[0-9]+(\.[0-9]+)?$"),
@@ -159,11 +197,13 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
   void initState() {
     super.initState();
 
+    // Set the initial value of the text controller
     _textController.text = widget.initialValue;
   }
 
   @override
   Widget build(BuildContext context) {
+    // Set the text input type based on the type of validation
     TextInputType keyboardType = TextInputType.text;
     if (widget._configOptions[3] == "integer") {
       keyboardType = TextInputType.number;
@@ -171,6 +211,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
       keyboardType = const TextInputType.numberWithOptions(decimal: true);
     }
 
+    // Construct the widget using the config options passed in the contructor
     return Padding(
       padding: const EdgeInsets.all(10),
       child: TextFormField(
@@ -182,6 +223,7 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
         ),
         keyboardType: keyboardType,
         key: _formKey,
+        // This gets called whenever the text changes
         validator: (String? value) {
           if (value == null || value.isEmpty) {
             return 'Please enter a value';
@@ -201,7 +243,10 @@ class _BearScoutsTextFieldState extends State<BearScoutsTextField> {
   }
 }
 
+// This is the counter widget. We use this to collect numerical values that
+// will change often during the match, such as game pieces scored
 class BearScoutsCounter extends StatefulWidget {
+  // See the text field class for an explanation of what these are
   final List<String> _configOptions;
   final String initialValue;
   final void Function(bool, String) isValidWithValue;
@@ -215,18 +260,24 @@ class BearScoutsCounter extends StatefulWidget {
   State<StatefulWidget> createState() => _BearScoutsCounterState();
 }
 
+// The state class for our counter
 class _BearScoutsCounterState extends State<BearScoutsCounter> {
+  // The text controller that will increment and decrement the counter
   final TextEditingController _textController = TextEditingController();
+  // Counter variable for keeping track of what number we're at
   int _counter = 0;
 
   @override
   void initState() {
     super.initState();
 
+    // Use the initial value to set the counter
     _counter = int.tryParse(widget.initialValue) ?? 0;
 
+    // Change the text controller to match what the initial value is
     _textController.text = _counter.toString();
 
+    // This widget will always have a valid value
     widget.isValidWithValue(true, _counter.toString());
   }
 
@@ -238,6 +289,7 @@ class _BearScoutsCounterState extends State<BearScoutsCounter> {
         children: [
           SizedBox(
             height: 58,
+            // Counter decrement button
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -255,6 +307,7 @@ class _BearScoutsCounterState extends State<BearScoutsCounter> {
             ),
           ),
           Expanded(
+            // The text field to display the current value
             child: TextField(
               controller: _textController,
               decoration: InputDecoration(
@@ -267,6 +320,7 @@ class _BearScoutsCounterState extends State<BearScoutsCounter> {
           ),
           SizedBox(
             height: 58,
+            // Counter increment button
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -288,7 +342,11 @@ class _BearScoutsCounterState extends State<BearScoutsCounter> {
   }
 }
 
+// This is the class used for constructing multiple choice boxes. These should
+// be used for data fields where there is a specific couple of choices. If
+// there is a possibility for variety, it would be better to use a text field
 class BearScoutsMultipleChoice extends StatefulWidget {
+  // See text field for an explanation of these
   final List<String> _configOptions;
   final String initialValue;
   final void Function(bool, String) isValidWithValue;
@@ -302,20 +360,29 @@ class BearScoutsMultipleChoice extends StatefulWidget {
   State<StatefulWidget> createState() => _BearScoutsMultipleChoiceState();
 }
 
+// The state class for the multiple choice box
 class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
+  // This list contains the various options that the user can choose
   List<String> _options = [];
+  // This list contains the values that the user will see
   List<String> _hints = [];
+  // This field contains the currently selected item for use in validation
   DropdownMenuItem<String>? _selectedItem;
 
   @override
   void initState() {
     super.initState();
 
+    // Split and assign the options
     String optionString = widget._configOptions[3];
     _options = optionString.split(",");
+    // Split and assign the hints 
     String hintString = widget._configOptions[4];
     _hints = hintString.split(",");
 
+    // Try to set the initial value, if it does not exist in the array, set
+    // the current item to the first item in the list. This field will also
+    // always be valid, so make sure to set that too.
     if (widget.initialValue.isNotEmpty &&
         _options.contains(widget.initialValue)) {
       _selectedItem = DropdownMenuItem<String>(
@@ -331,11 +398,17 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
       widget.isValidWithValue(true, _options[0]);
     }
 
+    // Equalize the size of the lists so that we don't run into issues with
+    // array index out of bounds errors. The user should put the same number
+    // of items into the form creation, but if they don't this ensures the
+    // app will still function
     if (_hints.length > _options.length) {
       while (_hints.length > _options.length) {
         _hints.removeLast();
       }
 
+      // Tell the user that there was an issue with the configuration, but
+      // continue operation like nothing happened
       Future.delayed(const Duration(milliseconds: 100), () {
         showDialog(
           context: context,
@@ -356,6 +429,7 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
           ),
         );
       });
+    // Same thing as above, just the other way around
     } else if (_hints.length < _options.length) {
       while (_options.length > _hints.length) {
         _options.removeLast();
@@ -397,6 +471,7 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
         ),
         child: Column(
           children: [
+            // The label for the drop down menu
             Align(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
@@ -412,6 +487,7 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
               ),
               alignment: Alignment.centerLeft,
             ),
+            // The actual drop down menu
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: DropdownButtonFormField<String>(
@@ -426,6 +502,7 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
                   ),
                 ),
                 onChanged: (String? value) {
+                  // set state to actually change the selected item
                   setState(() {
                     _selectedItem = DropdownMenuItem<String>(
                       value: value,
@@ -445,7 +522,9 @@ class _BearScoutsMultipleChoiceState extends State<BearScoutsMultipleChoice> {
   }
 }
 
+// The stopwatch class is used for anything involving precise timing.
 class BearScoutsStopwatch extends StatefulWidget {
+  // See text field for an explanation of these items
   final List<String> _configOptions;
   final String initialValue;
   final void Function(bool, String) isValidWithValue;
@@ -459,21 +538,30 @@ class BearScoutsStopwatch extends StatefulWidget {
   State<StatefulWidget> createState() => _BearScoutsStopwatchState();
 }
 
+// The state class for the stop watch
 class _BearScoutsStopwatchState extends State<BearScoutsStopwatch> {
+  // Text controller for making the stopwatch display the time
   final TextEditingController _textController = TextEditingController();
+  // A built in stopwatch class that we will use to keep track of time
   final Stopwatch _stopwatch = Stopwatch();
+  // The timer to ensure that we update the display
   Timer? updateTimer;
+  // Boolean to tell us if the stopwatch is running or not
   bool _isRunning = false;
 
   @override
   void initState() {
     super.initState();
 
+    // Try to set it to an initial value, and if not, set it to zero
     _textController.text =
         widget.initialValue.isEmpty ? "0.0" : widget.initialValue;
 
+    // This field will always be valid
     widget.isValidWithValue(true, widget.initialValue);
 
+    // Write the values to the database every 500 ms, just in case the 
+    // user doesn't stop the stopwatch before exiting the page
     Timer(const Duration(milliseconds: 500), () {
       widget.isValidWithValue(
         true,
@@ -488,6 +576,7 @@ class _BearScoutsStopwatchState extends State<BearScoutsStopwatch> {
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
+          // The text field displaying the time
           Expanded(
             child: TextField(
               controller: _textController,
@@ -498,6 +587,8 @@ class _BearScoutsStopwatchState extends State<BearScoutsStopwatch> {
               enabled: false,
             ),
           ),
+          // This is the start/stop button, and will change based on the
+          // current status of the timer
           SizedBox(
             height: 58,
             child: ElevatedButton(
@@ -528,6 +619,7 @@ class _BearScoutsStopwatchState extends State<BearScoutsStopwatch> {
                   : const Icon(Icons.play_arrow),
             ),
           ),
+          // Reset button
           SizedBox(
             height: 58,
             child: ElevatedButton(
