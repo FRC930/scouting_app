@@ -1,6 +1,6 @@
 {
-    "name": "scouting_app",
-    "short_name": "scouting_app",
+    "name": "BEARScouts",
+    "short_name": "BEARScouts",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
