@@ -1,10 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.team930.bearscouts">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.team930.scouting_app">
    <application
-        android:label="BEARscouts"
+        android:label="BEARScouts"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
