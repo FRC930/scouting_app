@@ -386,16 +386,16 @@
             "export": 11
         },
         {
-            "title": "Do you have a auto balancer",
-            "type": "toggle",
-            "page": "Robot Abilities",
-            "export": 12
-        },
-        {
             "title": "What is your preferred endgame position",
             "type": "choice",
 	        "special1": "Middle,Left side,Right side,Any",
             "special2": "Middle,Left side,Right side,Any",
+            "page": "Robot Abilities",
+            "export": 12
+        },
+        {
+            "title": "Do you have a auto balancer",
+            "type": "toggle",
             "page": "Robot Abilities",
             "export": 13
         },
