@@ -460,6 +460,14 @@
             "special2": "This cannot contain semicolons",
             "page": "Miscellaneous",
             "export": 21
+        },
+        {
+            "title": "Competition",
+            "type": "choice",
+            "special1": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "special2": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "page": "Miscellaneous",
+            "export": 22
         }
     ]
 }
