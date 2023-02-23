@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1169
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "2023ScoutingDataTransfer", "2023ScoutingDataTransfer.dtproj", "{D9C1F1AD-B590-4436-96CC-FC3BF8D46A26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9C1F1AD-B590-4436-96CC-FC3BF8D46A26}.Development|Default.ActiveCfg = Development
+		{D9C1F1AD-B590-4436-96CC-FC3BF8D46A26}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20AEA561-4CB3-440E-9CF4-4C6AA6365E6F}
+	EndGlobalSection
+EndGlobal

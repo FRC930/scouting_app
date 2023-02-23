@@ -17,149 +17,281 @@
             "export": 1
         },
         {
+            "title": "Alliance Color",
+            "type": "choice",
+            "special1": "Red,Blue",
+            "special2": "Red,Blue",
+            "page": "Pre-Match",
+            "export": 2
+        },
+        {
             "title": "Scouter Name",
             "type": "field",
             "special1": "text",
             "special2": "This cannot have semicolons in it",
             "page": "Pre-Match",
-            "export": 2
-        },
-        {
-            "title": "Auton Data",
-            "type": "heading",
-            "page": "Match",
             "export": 3
         },
         {
-            "title": "Auton Upper Hub Scored",
-            "type": "counter",
-            "page": "Match",
+            "title": "Competition",
+            "type": "choice",
+            "special1": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "special2": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "page": "Pre-Match",
             "export": 4
         },
         {
-            "title": "Auton Lower Hub Scored",
-            "type": "counter",
-            "page": "Match",
+            "title": "Match Type",
+            "type": "choice",
+            "special1": "Qualification,Double Eliminations,Finals",
+            "special2": "Qualification,Double Eliminations,Finals",
+            "page": "Pre-Match",
             "export": 5
         },
         {
-            "title": "Tarmac Image",
+            "title": "Field Image",
             "type": "image",
-            "special1": "assets/Tarmac.png",
+            "special1": "assets/2023_field_image.png",
             "page": "Pre-Match",
             "export": 6
         },
         {
-            "title": "Starting Location",
-            "type": "choice",
-            "special1": "1,2,3,4",
-            "special2": "1,2,3,4",
-            "page": "Pre-Match",
+            "title": "Auto - Mobility",
+            "type": "heading",
+            "page": "Match",
             "export": 7
         },
         {
-            "title": "Tarmac Taxi",
+            "title": "Mobility - Leaving Community",
             "type": "toggle",
             "page": "Match",
             "export": 8
         },
         {
-            "title": "Teleop Data",
+            "title": "Auto CONES",
             "type": "heading",
             "page": "Match",
             "export": 9
         },
         {
-            "title": "Teleop Upper Hub Scored",
+            "title": "Auto Cones Scored on Top Row",
             "type": "counter",
             "page": "Match",
             "export": 10
         },
+
         {
-            "title": "Teleop Upper Hub Missed",
+            "title": "Auto Cones Scored on Middle Row",
             "type": "counter",
             "page": "Match",
             "export": 11
         },
         {
-            "title": "Teleop Lower Hub Scored",
+            "title": "Auto Cones Scored on Bottom Row",
             "type": "counter",
             "page": "Match",
             "export": 12
         },
         {
-            "title": "Teleop Lower Hub Missed",
-            "type": "counter",
+            "title": "Auto CUBES",
+            "type": "heading",
             "page": "Match",
             "export": 13
         },
         {
-            "title": "Defense",
-            "type": "choice",
-            "special1": "0,1,2,3",
-            "special2": "0 (No defense),1 (Bad defense),2 (Mediocre defense),3 (Good defense)",
+            "title": "Auto Cubes Scored on Top Row",
+            "type": "counter",
             "page": "Match",
             "export": 14
         },
         {
-            "title": "Endgame Data",
-            "type": "heading",
+            "title": "Auto Cubes Scored on Middle Row",
+            "type": "counter",
             "page": "Match",
             "export": 15
         },
         {
-            "title": "Hang Time",
-            "type": "stopwatch",
+            "title": "Auto Cones Scored on Bottom Row",
+            "type": "counter",
             "page": "Match",
             "export": 16
         },
         {
-            "title": "Hang Type",
-            "type": "choice",
-            "special1": "No Hang,Robot Fell,Low Rung,Mid Rung,High Rung,Traversal Rung",
-            "special2": "No Hang,Robot Fell,Low Rung,Mid Rung,High Rung,Traversal Rung",
+            "title": "Auto - Charge Station",
+            "type": "heading",
             "page": "Match",
             "export": 17
         },
         {
-            "title": "Would you pick this robot?",
+            "title": "Auto Charge Station",
             "type": "choice",
-            "special1": "No Pick,1st Pick,2nd Pick",
-            "special2": "No Pick,1st Pick,2nd Pick",
-            "page": "Post-Match",
+	        "special1": "Engaged,Docked,Unsuccessful Attempt,Not Attempted",
+            "special2": "Engaged,Docked,Unsuccessful Attempt,Not Attempted",
+            "page": "Match",
             "export": 18
+        },
+        {
+            "title": "Teleop CONES",
+            "type": "heading",
+            "page": "Match",
+            "export": 19
+        },
+        {
+            "title": "Teleop Cones Scored on the Top Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 20
+        },
+        {
+            "title": "Teleop Cones Scored on the Middle Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 21
+        },
+        {
+            "title": "Teleop Cones Scored on the Bottom Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 22
+        },
+        {
+            "title": "Teleop CUBES",
+            "type": "heading",
+            "page": "Match",
+            "export": 23
+        },
+        {
+            "title": "Teleop Cubes Scored on the Top Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 24
+        },
+        {
+            "title": "Teleop Cubes Scored on the Middle Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 25
+        },
+        {
+            "title": "Teleop Cubes Scored on the Bottom Row",
+            "type": "counter",
+            "page": "Match",
+            "export": 26
+        },
+        {
+            "title": "Missed and Dropped Game Pieces",
+            "type": "heading",
+            "page": "Match",
+            "export": 27
+        },
+        {
+            "title": "CONES Missed:While Scoring",
+            "type": "counter",
+            "page": "Match",
+            "export": 28
+        },
+        {
+            "title": "CUBES Missed:While Scoring",
+            "type": "counter",
+            "page": "Match",
+            "export": 29
+        },
+        {
+            "title": "CONES Dropped:While Transporting",
+            "type": "counter",
+            "page": "Match",
+            "export": 30
+        },
+        {
+            "title": "CUBES Dropped:While Transporting",
+            "type": "counter",
+            "page": "Match",
+            "export": 31
+        },
+        {
+            "title": "Endgame",
+            "type": "heading",
+            "page": "Match",
+            "export": 32
+        },
+  	    {
+            "title": "Charge Station",
+            "type": "choice",
+	        "special1" : "Engaged,Docked,Attempted but failed,Not Attempted",
+            "special2" : "Engaged,Docked,Attempted but failed,Not Attempted",
+            "page": "Match",
+            "export": 33
+        },
+ 	    {
+            "title": "Was Defended",
+            "type": "toggle",
+            "page": "Post-Match",
+            "export": 34
+ 
         },
         {
             "title": "Robot Role",
             "type": "choice",
-            "special1": "Offense - Hub Cleanup,Offense - Launch Pad,Defense - Pushing Robots,Defense - Ramming Robots,Defense - Hitting Cargo",
-            "special2": "Offense - Hub Cleanup,Offense - Launch Pad,Defense - Pushing Robots,Defense - Ramming Robots,Defense - Hitting Cargo",
+            "special1": "Scoring,Shuttle,Defense,Other",
+            "special2": "Scoring,Shuttle,Defense,Other",
             "page": "Post-Match",
-            "export": 19
+            "export": 35
         },
-        {
+	    {
+            "title": "Substation Preference",
+            "type": "choice",
+            "special1": "Chute,Shelf,Both,None",
+            "special2": "Chute,Shelf,Both,None",
+            "page": "Post-Match",
+            "export": 36
+        },
+	    {
+            "title": "Cargo Intake Preference",
+            "type": "choice",
+	        "special1": "Ground,Shelf,Not Attempted",
+            "special2": "Ground,Shelf,Not Attempted",
+            "page": "Post-Match",
+            "export": 37
+        },
+	    {
             "title": "Penalties",
             "type": "counter",
             "page": "Post-Match",
-            "export": 20
+            "export": 38
         },
         {
             "title": "Disabled",
             "type": "toggle",
             "page": "Post-Match",
-            "export": 21
+            "export": 39
+        },
+	    {
+            "title": "Defense Quality:Explain your answer in the comments",
+            "type": "choice",
+	        "special1": "None,Not Effective,Effective,Very Effective",
+            "special2": "None,Not Effective,Effective,Very Effective",
+            "page": "Post-Match",
+            "export": 40
         },
         {
-            "title": "General Comments",
+            "title": "Would you pick this robot",
+            "type": "choice",
+            "special1": "No Pick,1st Pick,2nd Pick",
+            "special2": "No Pick,1st Pick,2nd Pick",
+            "page": "Post-Match",
+            "export": 41
+        },
+        {
+            "title": "Comments",
             "type": "field",
             "special1": "text",
-            "special2": "This cannot have semicolons in it",
+            "special2": "This cannot contain semicolons",
             "page": "Post-Match",
-            "export": 22
+            "export": 42
         }
     ],
     "pit": [
-        {
+	{
             "title": "Team Number",
             "type": "field",
             "special1": "integer",
@@ -170,30 +302,32 @@
         {
             "title": "Drive Train Type",
             "type": "choice",
-            "special1": "Tank,Mecanum,Swerve",
-            "special2": "Tank,Mecanum,Swerve",
+            "special1": "Tank,Mecanum,Swerve,Other",
+            "special2": "Tank,Mecanum,Swerve,Other",
             "page": "Physical Robot Features",
             "export": 1
         },
         {
             "title": "Drive Train Motors",
             "type": "choice",
-            "special1": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons,Other",
-            "special2": "2 Falcons,4 Falcons,6 Falcons,8 Falcons,10 Falcons,12 Falcons,Other",
+            "special1": "Neos,Falcons,CIM,775,Neo550,Other",
+            "special2": "Neos,Falcons,CIM,775,Neo550,Other",
             "page": "Physical Robot Features",
             "export": 2
         },
         {
             "title": "Wheel Type",
             "type": "choice",
-            "special1": "Traction,Blue Nitrile,Colson,Mecanum,Pneumatic",
-            "special2": "Traction,Blue Nitrile,Colson,Mecanum,Pneumatic",
+            "special1": "Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
+            "special2": "Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
             "page": "Physical Robot Features",
             "export": 3
         },
         {
             "title": "Number of Wheels",
-            "type": "counter",
+            "type": "field",
+            "special1": "text",
+            "special2": "4 wheel, 6 wheel, 8 wheel, Other",
             "page": "Physical Robot Features",
             "export": 4
         },
@@ -220,104 +354,88 @@
             "export": 7
         },
         {
-            "title": "Ball Storage",
-            "type": "counter",
+            "title": "What game pieces can you score",
+            "type": "choice",
+	        "special1": "None,Just Cones,Just Cubes,Both",
+            "special2": "None,Just Cones,Just Cubes,Both",
             "page": "Robot Abilities",
             "export": 8
         },
         {
-            "title": "Hub Level",
+            "title": "What is your specialty game piece",
             "type": "choice",
-            "special1": "Lower Hub,Upper Hub,Both",
-            "special2": "Lower Hub,Upper Hub,Both",
+            "special1": "Cones,Cubes,None",
+            "special2": "Cones,Cubes,None",
             "page": "Robot Abilities",
             "export": 9
         },
         {
-            "title": "Shooter Mechanism",
+            "title": "Where do you get your game pieces from",
             "type": "choice",
-            "special1": "2 Wheel Shooter,1 Wheel Shooter,Dumper,None,Catapult,Other",
-            "special2": "2 Wheel Shooter,1 Wheel Shooter,Dumper,None,Catapult,Other",
+            "special1": "Shelf,Chute,Ground,All,None",
+            "special2": "Shelf,Chute,Ground,All,None",
             "page": "Robot Abilities",
             "export": 10
         },
         {
-            "title": "Fender Shot",
-            "type": "toggle",
+            "title": "What is your preferred preloading choice",
+            "type": "choice",
+	        "special1": "Cone,Cube",
+            "special2": "Cone,Cube",
             "page": "Robot Abilities",
             "export": 11
         },
         {
-            "title": "Tarmac Shot",
-            "type": "toggle",
+            "title": "What is your preferred endgame position",
+            "type": "choice",
+	        "special1": "Middle,Left side,Right side,Any",
+            "special2": "Middle,Left side,Right side,Any",
             "page": "Robot Abilities",
             "export": 12
         },
         {
-            "title": "Launch Pad Shot",
+            "title": "Do you have a auto balancer",
             "type": "toggle",
             "page": "Robot Abilities",
             "export": 13
         },
         {
-            "title": "Low Rung Hang",
-            "type": "choice",
-            "special1": "Yes,No,Planned",
-            "special2": "Yes,No,Planned",
-            "page": "Endgame Capabilities",
+            "title": "Can you engage the charge station in auto",
+            "type": "toggle",
+            "page": "Robot Abilities",
             "export": 14
         },
         {
-            "title": "Mid Rung Hang",
+            "title": "Scoring Mechanism",
             "type": "choice",
-            "special1": "Yes,No,Planned",
-            "special2": "Yes,No,Planned",
-            "page": "Endgame Capabilities",
+            "special1": "Pincher,Pink Arm,Four Bar,Elevator",
+            "special2": "Pincher,Pink Arm,Four Bar,Elevator",
+            "page": "Robot Abilities",
             "export": 15
         },
         {
-            "title": "High Rung Hang",
+            "title": "Intake Mechanism",
             "type": "choice",
-            "special1": "Yes,No,Planned",
-            "special2": "Yes,No,Planned",
-            "page": "Endgame Capabilities",
+            "special1": "Weed wacker,Wheels,Ground Intake",
+            "special2": "Weed wacker,Wheels,Ground Intake",
+            "page": "Robot Abilities",
             "export": 16
         },
         {
-            "title": "Traversal Rung Hang",
+            "title": "Where Can You Score",
             "type": "choice",
-            "special1": "Yes,No,Planned",
-            "special2": "Yes,No,Planned",
-            "page": "Endgame Capabilities",
+            "special1": "All,Low Level,Mid Level,High Level",
+            "special2": "All,Low Level,Mid Level,High Level",
+            "page": "Robot Abilities",
             "export": 17
         },
         {
-            "title": "Climber Mechanism",
-            "type": "choice",
-            "special1": "Elevator Climber,Double Elevator Climber,Windmill Climber,None,Other",
-            "special2": "Elevator Climber,Double Elevator Climber,Windmill Climber,None,Other",
-            "page": "Endgame Capabilities",
+            "title": "Robot Name",
+            "type": "field",
+            "special1": "text",
+            "special2": "This cant contain semicolons",
+            "page": "Miscellaneous",
             "export": 18
-        },
-        {
-            "title": "Hook Type",
-            "type": "choice",
-            "special1": "Open Hook,Closed Hook,None",
-            "special2": "Open Hook,Closed Hook,None",
-            "page": "Endgame Capabilities",
-            "export": 19
-        },
-        {
-            "title": "Hooks On Bar",
-            "type": "counter",
-            "page": "Endgame Capabilities",
-            "export": 20
-        },
-        {
-            "title": "Endgame Lock",
-            "type": "toggle",
-            "page": "Endgame Capabilities",
-            "export": 21
         },
         {
             "title": "Programming Language",
@@ -325,7 +443,7 @@
             "special1": "Java,C++,LabView,Other",
             "special2": "Java,C++,LabView,Other",
             "page": "Miscellaneous",
-            "export": 22
+            "export": 19
         },
         {
             "title": "Most Time Spent",
@@ -333,15 +451,7 @@
             "special1": "text",
             "special2": "This cannot contain semicolons",
             "page": "Miscellaneous",
-            "export": 23
-        },
-        {
-            "title": "Robot Name",
-            "type": "field",
-            "special1": "text",
-            "special2": "This cannot contain semicolons",
-            "page": "Miscellaneous",
-            "export": 24
+            "export": 20
         },
         {
             "title": "Comments",
@@ -349,7 +459,15 @@
             "special1": "text",
             "special2": "This cannot contain semicolons",
             "page": "Miscellaneous",
-            "export": 25
+            "export": 21
+        },
+        {
+            "title": "Competition",
+            "type": "choice",
+            "special1": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "special2": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "page": "Miscellaneous",
+            "export": 22
         }
     ]
 }

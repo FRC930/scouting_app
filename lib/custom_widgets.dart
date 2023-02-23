@@ -891,10 +891,10 @@ class BearScoutsHeatMap extends StatefulWidget {
   State<StatefulWidget> createState() => _BearScoutsHeatMapState();
 }
 
+//This module was in testing and is not used.
 class _BearScoutsHeatMapState extends State<BearScoutsHeatMap> {
   final _BearScoutsHeatMapPainter _painter2 = _BearScoutsHeatMapPainter();
   String currentValue = "";
-
   @override
   void initState() {
     super.initState();

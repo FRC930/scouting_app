@@ -5,7 +5,7 @@ Welcome to the git repository for FRC Team 930's scouting app! This application 
 *Note: iOS may be mostly supported, but has not been tested*
 
 ## Features
-* Defaults to a configuration useful for the 2022 FRC season (Rapid React)
+* Defaults to a configuration useful for the 2023 FRC season (ChargedUp)
 * Easily edit datapoints in-app using the built in configuration editor
 * Password-protected configuration to prevent accidental data changes
 * Flexible ordering using the concept of multiple pages (default: Pre-Match, Match, Post-Match)
