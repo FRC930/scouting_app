@@ -19,8 +19,8 @@
         {
             "title": "Alliance Color",
             "type": "choice",
-            "special1": "Red,Blue",
-            "special2": "Red,Blue",
+            "special1": "Blue,Red",
+            "special2": "Blue,Red",
             "page": "Pre-Match",
             "export": 2
         },
@@ -35,16 +35,16 @@
         {
             "title": "Competition",
             "type": "choice",
-            "special1": "Midwest,Wisconsin,Pittsburgh,Houston",
-            "special2": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "special1": "Wisconsin,Midwest,Pittsburgh,Houston",
+            "special2": "Wisconsin,Midwest,Pittsburgh,Houston",
             "page": "Pre-Match",
             "export": 4
         },
         {
             "title": "Match Type",
             "type": "choice",
-            "special1": "Qualification,Double Eliminations,Finals",
-            "special2": "Qualification,Double Eliminations,Finals",
+            "special1": "Qualification,Practice,Double Eliminations,Finals",
+            "special2": "Qualification,Practice,Double Eliminations,Finals",
             "page": "Pre-Match",
             "export": 5
         },
@@ -111,7 +111,7 @@
             "export": 15
         },
         {
-            "title": "Auto Cones Scored on Bottom Row",
+            "title": "Auto Cubes Scored on Bottom Row",
             "type": "counter",
             "page": "Match",
             "export": 16
@@ -125,8 +125,8 @@
         {
             "title": "Auto Charge Station",
             "type": "choice",
-	        "special1": "Engaged,Docked,Unsuccessful Attempt,Not Attempted",
-            "special2": "Engaged,Docked,Unsuccessful Attempt,Not Attempted",
+	        "special1": "Not Attempted,Engaged,Docked,Parked,Attempted but failed",
+            "special2": "Not Attempted,Engaged,Docked,Parked,Attempted but failed",
             "page": "Match",
             "export": 18
         },
@@ -217,8 +217,8 @@
   	    {
             "title": "Charge Station",
             "type": "choice",
-	        "special1" : "Engaged,Docked,Attempted but failed,Not Attempted",
-            "special2" : "Engaged,Docked,Attempted but failed,Not Attempted",
+	        "special1" : "Not Attempted,Engaged,Docked,Attempted but failed",
+            "special2" : "Not Attempted,Engaged,Docked,Attempted but failed",
             "page": "Match",
             "export": 33
         },
@@ -248,8 +248,8 @@
 	    {
             "title": "Cargo Intake Preference",
             "type": "choice",
-	        "special1": "Ground,Shelf,Not Attempted",
-            "special2": "Ground,Shelf,Not Attempted",
+	        "special1": "Ground,Shelf,Chute,Not Attempted",
+            "special2": "Ground,Shelf,Chute,Not Attempted",
             "page": "Post-Match",
             "export": 37
         },
@@ -265,13 +265,19 @@
             "page": "Post-Match",
             "export": 39
         },
+        {
+            "title": "Tipped",
+            "type": "toggle",
+            "page": "Post-Match",
+            "export": 40
+        },
 	    {
             "title": "Defense Quality:Explain your answer in the comments",
             "type": "choice",
 	        "special1": "None,Not Effective,Effective,Very Effective",
             "special2": "None,Not Effective,Effective,Very Effective",
             "page": "Post-Match",
-            "export": 40
+            "export": 41
         },
         {
             "title": "Would you pick this robot",
@@ -279,15 +285,15 @@
             "special1": "No Pick,1st Pick,2nd Pick",
             "special2": "No Pick,1st Pick,2nd Pick",
             "page": "Post-Match",
-            "export": 41
+            "export": 42
         },
         {
-            "title": "Comments",
+            "title": "Brief Comments",
             "type": "field",
             "special1": "text",
             "special2": "This cannot contain semicolons",
             "page": "Post-Match",
-            "export": 42
+            "export": 43
         }
     ],
     "pit": [
@@ -302,8 +308,8 @@
         {
             "title": "Drive Train Type",
             "type": "choice",
-            "special1": "Tank,Mecanum,Swerve,Other",
-            "special2": "Tank,Mecanum,Swerve,Other",
+            "special1": "Swerve,Tank,Mecanum,Other",
+            "special2": "Swerve,Tank,Mecanum,Other",
             "page": "Physical Robot Features",
             "export": 1
         },
@@ -318,8 +324,8 @@
         {
             "title": "Wheel Type",
             "type": "choice",
-            "special1": "Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
-            "special2": "Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
+            "special1": "Black Nitrile,Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
+            "special2": "Black Nitrile,Blue Nitrile,Colson,Mecanum,Pneumatic,Omni,Other",
             "page": "Physical Robot Features",
             "export": 3
         },
@@ -348,9 +354,9 @@
             "export": 6
         },
         {
-            "title": "Driver Camera",
+            "title": "Do You Score In The Co Op Zone",
             "type": "toggle",
-            "page": "Physical Robot Features",
+            "page": "Robot Abilities",
             "export": 7
         },
         {
@@ -386,48 +392,54 @@
             "export": 11
         },
         {
+            "title": "Can You Pick Up Tipped Over Cones",
+            "type": "toggle",
+            "page": "Robot Abilities",
+            "export": 12
+        },
+        {
             "title": "What is your preferred endgame position",
             "type": "choice",
 	        "special1": "Middle,Left side,Right side,Any",
             "special2": "Middle,Left side,Right side,Any",
             "page": "Robot Abilities",
-            "export": 12
+            "export": 13
         },
         {
             "title": "Do you have a auto balancer",
             "type": "toggle",
             "page": "Robot Abilities",
-            "export": 13
+            "export": 14
         },
         {
             "title": "Can you engage the charge station in auto",
             "type": "toggle",
             "page": "Robot Abilities",
-            "export": 14
-        },
-        {
-            "title": "Scoring Mechanism",
-            "type": "choice",
-            "special1": "Pincher,Pink Arm,Four Bar,Elevator",
-            "special2": "Pincher,Pink Arm,Four Bar,Elevator",
-            "page": "Robot Abilities",
             "export": 15
         },
         {
-            "title": "Intake Mechanism",
+            "title": "Scoring Manipulator",
             "type": "choice",
-            "special1": "Weed wacker,Wheels,Ground Intake",
-            "special2": "Weed wacker,Wheels,Ground Intake",
+            "special1": "Pincher,Claw,Pink Arm,Four Bar,Elevator,Suction,Scissor Lift,Other",
+            "special2": "Pincher,Claw,Pink Arm,Four Bar,Elevator,Suction,Scissor Lift,Other",
             "page": "Robot Abilities",
             "export": 16
         },
         {
-            "title": "Where Can You Score",
+            "title": "Intake Mechanism",
             "type": "choice",
-            "special1": "All,Low Level,Mid Level,High Level",
-            "special2": "All,Low Level,Mid Level,High Level",
+            "special1": "Weed wacker,Wheels,Ground Intake,Other",
+            "special2": "Weed wacker,Wheels,Ground Intake,Other",
             "page": "Robot Abilities",
             "export": 17
+        },
+        {
+            "title": "Where Can You Score",
+            "type": "choice",
+            "special1": "All,Low Level,Mid Level,High Level,None",
+            "special2": "All,Low Level,Mid Level,High Level,None",
+            "page": "Robot Abilities",
+            "export": 18
         },
         {
             "title": "Robot Name",
@@ -435,7 +447,7 @@
             "special1": "text",
             "special2": "This cant contain semicolons",
             "page": "Miscellaneous",
-            "export": 18
+            "export": 19
         },
         {
             "title": "Programming Language",
@@ -443,7 +455,7 @@
             "special1": "Java,C++,LabView,Other",
             "special2": "Java,C++,LabView,Other",
             "page": "Miscellaneous",
-            "export": 19
+            "export": 20
         },
         {
             "title": "Most Time Spent",
@@ -451,7 +463,7 @@
             "special1": "text",
             "special2": "This cannot contain semicolons",
             "page": "Miscellaneous",
-            "export": 20
+            "export": 21
         },
         {
             "title": "Comments",
@@ -459,15 +471,15 @@
             "special1": "text",
             "special2": "This cannot contain semicolons",
             "page": "Miscellaneous",
-            "export": 21
+            "export": 22
         },
         {
             "title": "Competition",
             "type": "choice",
-            "special1": "Midwest,Wisconsin,Pittsburgh,Houston",
-            "special2": "Midwest,Wisconsin,Pittsburgh,Houston",
+            "special1": "Wisconsin,Midwest,Pittsburgh,Houston",
+            "special2": "Wisconsin,Midwest,Pittsburgh,Houston",
             "page": "Miscellaneous",
-            "export": 22
+            "export": 23
         }
     ]
 }
