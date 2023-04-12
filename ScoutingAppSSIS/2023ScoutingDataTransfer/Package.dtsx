@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="39"
-  DTS:VersionGUID="{664B9924-57BC-4E5C-9832-FE3C99EB9BF4}">
+  DTS:VersionBuild="50"
+  DTS:VersionGUID="{A9BAE715-D3EC-4DE3-84FA-41CBD8042732}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -383,7 +383,7 @@
               DTS:DataPrecision="18"
               DTS:TextQualified="True"
               DTS:ObjectName="TeamNumber"
-              DTS:DTSID="{F05B716A-99BF-4749-9FCB-07A13693164B}"
+              DTS:DTSID="{10E336E5-E231-439B-88C4-856F30D65CFD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -392,7 +392,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="DriveTrainType"
-              DTS:DTSID="{EEC05478-FC69-4895-9994-0A78CD9F1E15}"
+              DTS:DTSID="{394819BC-DAA9-4A23-A5A6-772F25BCBCBD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -401,7 +401,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="DriveTrainMotors"
-              DTS:DTSID="{25A498E1-E446-4D40-A967-5C5E4130F8CD}"
+              DTS:DTSID="{6D81386B-4E3B-4B78-B675-4D1AD795FEE1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -410,7 +410,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="WheelType"
-              DTS:DTSID="{BAF9A2A5-B866-4ADF-BE59-58DA15D2855E}"
+              DTS:DTSID="{43D38F57-88F6-4F7E-AD63-3105267E1A62}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -419,7 +419,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="NumberOfWheels"
-              DTS:DTSID="{3D8A5E4E-686A-4451-9E7C-84FBDE17FC7D}"
+              DTS:DTSID="{9F52025B-CDE8-4A46-973A-316A526DC7FC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -427,7 +427,7 @@
               DTS:DataType="14"
               DTS:TextQualified="True"
               DTS:ObjectName="RobotWidth"
-              DTS:DTSID="{207F71F3-5C8C-441E-931E-0E6D5C0587F1}"
+              DTS:DTSID="{E8A8600B-6FBB-4870-BC23-EAAB741D97BB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -435,7 +435,7 @@
               DTS:DataType="14"
               DTS:TextQualified="True"
               DTS:ObjectName="RobotWeight"
-              DTS:DTSID="{0701BA32-1171-41AF-B85E-6609BF474D94}"
+              DTS:DTSID="{5D846E09-0745-4503-8774-0ADA52B705D5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -444,7 +444,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="WillScoreCoopZone"
-              DTS:DTSID="{8EB79671-E6C1-4BEA-A191-7ACB96A4B2F6}"
+              DTS:DTSID="{8C4D0843-1C1F-4B79-874F-226CDAFA7295}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -453,7 +453,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="GamePiecesScoring"
-              DTS:DTSID="{5C695F60-D2F5-4282-A77D-1B6C929C6DBD}"
+              DTS:DTSID="{DF6C4907-B510-4723-9DBD-16DD34E2B653}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -462,7 +462,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="GamePiecesSpecialty"
-              DTS:DTSID="{B5EE66B2-42E6-4EB8-B34F-618DF98BE764}"
+              DTS:DTSID="{5B58B03F-20B4-4DC2-8546-86616BEB3C31}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -471,7 +471,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="GamePiecesLoadingLocation"
-              DTS:DTSID="{3D23A787-15BA-48E0-A1FF-03B95752CFCB}"
+              DTS:DTSID="{E375FDC3-1786-4283-BACD-215AF642D727}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -480,7 +480,16 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="GamePiecePreloaded"
-              DTS:DTSID="{5B04C40C-AA34-4D51-8874-30A10CC9DBA3}"
+              DTS:DTSID="{AA033D09-DCA4-459C-A332-FE420B6591E2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="5"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PickUpTippedCone"
+              DTS:DTSID="{A587D3A8-3C64-4796-9419-0AFAB16D53E3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -489,7 +498,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="EndgamePreferedPosition"
-              DTS:DTSID="{414EDF17-5899-43EB-BFA0-9208AE2179A3}"
+              DTS:DTSID="{7125A1D8-5F62-44F0-A729-6D1CEFC11385}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -498,7 +507,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="EndgameAutoBalancer"
-              DTS:DTSID="{D5772C34-A3BD-43EA-9A48-030F4C5B202A}"
+              DTS:DTSID="{C69C173C-2888-4198-8C4C-8AA9029AE83B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -507,16 +516,16 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="EndgameEngageInAuto"
-              DTS:DTSID="{C00B4F8D-2F5D-485A-A2BA-F57D234B67AC}"
+              DTS:DTSID="{6F27870A-7F3B-4CE7-8111-CB0A5DA7952A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x003B_"
-              DTS:MaximumWidth="10"
+              DTS:MaximumWidth="15"
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="ScoringMechanism"
-              DTS:DTSID="{DB7BD652-640C-4A5C-A47A-A219092F3B3D}"
+              DTS:DTSID="{D6DF2E00-FE60-4184-859A-A3A264AD2395}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -525,7 +534,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="IntakeMechanism"
-              DTS:DTSID="{D41AE8F7-BD2B-404E-A0A5-BC9E19763A80}"
+              DTS:DTSID="{9FA4A40B-9B52-4DCF-A4F2-51AF7A36185F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -534,7 +543,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="ScoringLevels"
-              DTS:DTSID="{4E3EFABE-8812-406F-8B3F-564BDD16619E}"
+              DTS:DTSID="{84FCBAAC-010D-43A1-9322-045D84FD072B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -543,7 +552,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="RobotName"
-              DTS:DTSID="{22641C2F-5B5C-4145-87A1-F855206CCFDF}"
+              DTS:DTSID="{35FDA74D-2ADE-4156-B688-22C3736B7FDC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -552,7 +561,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="ProgrammingLanguage"
-              DTS:DTSID="{DD9B6572-B096-4E52-B0DC-6DE6122CA665}"
+              DTS:DTSID="{22A36DE0-4E46-44EC-9830-89E930C0BF3C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -561,7 +570,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="MostTimeSpent"
-              DTS:DTSID="{A75965B5-50F0-41BA-B931-A723D9ECA9E8}"
+              DTS:DTSID="{16B2B945-2E95-48DC-898C-7369C3F02017}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -570,7 +579,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="Comments"
-              DTS:DTSID="{DEFF70A7-0DFD-4DF6-90ED-62FCD7BB6249}"
+              DTS:DTSID="{CFD74369-249E-4F24-B877-DD250C1B6059}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -579,7 +588,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="Competition"
-              DTS:DTSID="{E311AFE7-50A0-4750-856A-D0FFA9BA20A1}"
+              DTS:DTSID="{6408B2C2-87D4-4F00-9AB6-05C1C174685B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -588,7 +597,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="Nope"
-              DTS:DTSID="{7F486ADB-51FD-4156-ADAC-65A8A3BBE688}"
+              DTS:DTSID="{F5166AAA-8A59-4A80-8FE1-A2ACC3D409F6}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -607,7 +616,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAqK0b/6uFR02wgCTcPGkoogAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABXmqfID2x9ZD9U1xK3l7X8AAAAAASAAACgAAAAEAAAADRqt5AbnR6M6Mb4Fm4mZY0wAAAAGUZ8iD7CtOlrx4eN2rxJ58gnF6E2z6lCBIreQR+NKrADPXtIyAOCueZnnbc9wyz/FAAAAPSlkxLWslzdXhI7pesbrf3w1CX7</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAqK0b/6uFR02wgCTcPGkoogAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD+P6sQQUvx+NijGenu7NUXAAAAAASAAACgAAAAEAAAAJ/y5q5v0EDU+pK25iGJvJUwAAAAkuBH36Ymp+QF7zz/gOYXyrZF42sjGnLyV6iCE+IKVyR49HDGkjqhwj3MSmpQIHVgFAAAAI3VucUXt1/oLJb5cxpI33WtXhfq</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -2351,7 +2360,7 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RobotWidth]"
-                      dataType="r8"
+                      dataType="decimal"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RobotWidth]"
@@ -2371,7 +2380,7 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RobotWeight]"
-                      dataType="r8"
+                      dataType="decimal"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RobotWeight]"
@@ -2495,27 +2504,6 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[EndgameAutoBalancer]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EndgameAutoBalancer]"
-                      length="5"
-                      lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[EndgameAutoBalancer]"
-                      name="EndgameAutoBalancer"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the data is in binary format."
-                          name="UseBinaryFormat">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[EndgameEngageInAuto]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -2542,7 +2530,7 @@
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ScoringMechanism]"
-                      length="10"
+                      length="15"
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[ScoringMechanism]"
                       name="ScoringMechanism"
                       truncationRowDisposition="FailComponent">
@@ -2704,6 +2692,48 @@
                           name="UseBinaryFormat">false</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PickUpTippedCone]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[PickUpTippedCone]"
+                      length="5"
+                      lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PickUpTippedCone]"
+                      name="PickUpTippedCone"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[EndgameAutoBalancer]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EndgameAutoBalancer]"
+                      length="5"
+                      lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[EndgameAutoBalancer]"
+                      name="EndgameAutoBalancer"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2776,11 +2806,6 @@
                       length="10"
                       name="EndgamePreferedPosition" />
                     <externalMetadataColumn
-                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EndgameAutoBalancer]"
-                      dataType="wstr"
-                      length="5"
-                      name="EndgameAutoBalancer" />
-                    <externalMetadataColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EndgameEngageInAuto]"
                       dataType="wstr"
                       length="5"
@@ -2788,7 +2813,7 @@
                     <externalMetadataColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ScoringMechanism]"
                       dataType="wstr"
-                      length="10"
+                      length="15"
                       name="ScoringMechanism" />
                     <externalMetadataColumn
                       refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IntakeMechanism]"
@@ -2825,6 +2850,16 @@
                       dataType="wstr"
                       length="5"
                       name="WillScoreCoopZone" />
+                    <externalMetadataColumn
+                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[PickUpTippedCone]"
+                      dataType="wstr"
+                      length="5"
+                      name="PickUpTippedCone" />
+                    <externalMetadataColumn
+                      refId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EndgameAutoBalancer]"
+                      dataType="wstr"
+                      length="5"
+                      name="EndgameAutoBalancer" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -2972,13 +3007,13 @@
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[NumberOfWheels]" />
                     <inputColumn
                       refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RobotWidth]"
-                      cachedDataType="r8"
+                      cachedDataType="decimal"
                       cachedName="RobotWidth"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotWidth]"
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RobotWidth]" />
                     <inputColumn
                       refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RobotWeight]"
-                      cachedDataType="r8"
+                      cachedDataType="decimal"
                       cachedName="RobotWeight"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotWeight]"
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RobotWeight]" />
@@ -3034,7 +3069,7 @@
                     <inputColumn
                       refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ScoringMechanism]"
                       cachedDataType="wstr"
-                      cachedLength="10"
+                      cachedLength="15"
                       cachedName="ScoringMechanism"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScoringMechanism]"
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[ScoringMechanism]" />
@@ -3087,6 +3122,13 @@
                       cachedName="WillScoreCoopZone"
                       externalMetadataColumnId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CoopZone]"
                       lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[WillScoreCoopZone]" />
+                    <inputColumn
+                      refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PickUpTippedCone]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="PickUpTippedCone"
+                      externalMetadataColumnId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PickUpTippedCone]"
+                      lineageId="Package\Loading data into PitData Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PickUpTippedCone]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3164,7 +3206,7 @@
                     <externalMetadataColumn
                       refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScoringMechanism]"
                       dataType="wstr"
-                      length="10"
+                      length="15"
                       name="ScoringMechanism" />
                     <externalMetadataColumn
                       refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IntakeMechanism]"
@@ -3206,6 +3248,11 @@
                       dataType="wstr"
                       length="5"
                       name="CoopZone" />
+                    <externalMetadataColumn
+                      refId="Package\Loading data into PitData Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PickUpTippedCone]"
+                      dataType="wstr"
+                      length="5"
+                      name="PickUpTippedCone" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3327,27 +3374,27 @@
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="286,42"
+          Size="281.6,41.6"
           Id="Package\Load from Staging to main MatchData Table"
           TopLeft="50.285715142075,225.129414922061" />
         <NodeLayout
-          Size="266,42"
+          Size="265.6,41.6"
           Id="Package\Load from Staging to main PitData Table"
           TopLeft="363.771434507565,223.294120778675" />
         <NodeLayout
-          Size="253,42"
+          Size="252.8,41.6"
           Id="Package\Loading data into MatchData Staging"
           TopLeft="66.8571439957129,133.364707752742" />
         <NodeLayout
-          Size="233,42"
+          Size="232.8,41.6"
           Id="Package\Loading data into PitData Staging"
           TopLeft="377.533339598444,135.709805814313" />
         <NodeLayout
-          Size="217,42"
+          Size="216.8,41.6"
           Id="Package\Truncate MatchData Staging"
           TopLeft="91.4285729855906,41.6000005834243" />
         <NodeLayout
-          Size="196,42"
+          Size="196,41.6"
           Id="Package\Truncate PitData Staging"
           TopLeft="405.48572093224,40.3764711545001" />
         <EdgeLayout
@@ -3374,7 +3421,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="193.371429568894,174.964707752742">
+          TopLeft="192.171429568894,174.964707752742">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -3457,15 +3504,15 @@
     design-time-name="Package\Loading data into MatchData Staging">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="166,42"
-          Id="Package\Loading data into MatchData Staging\Insert into Staging"
-          TopLeft="147.119050077165,92.9882365982423" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="150,42"
           Id="Package\Loading data into MatchData Staging\Flat File Source"
           TopLeft="157.142859818984,10.2666668194104" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Loading data into MatchData Staging\Insert into Staging"
+          TopLeft="147.119050077165,92.9882365982423" />
         <EdgeLayout
           Id="Package\Loading data into MatchData Staging.Paths[Flat File Source Output]"
           TopLeft="231.130954948075,52.2666668194104">
@@ -3485,7 +3532,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

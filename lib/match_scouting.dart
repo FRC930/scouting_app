@@ -15,6 +15,7 @@ class MatchScouter extends StatefulWidget {
 // datapoints in the match scouting section.
 class _MatchScouterState extends State<MatchScouter> {
   // This is the index of the page we are showing
+  
   int _currentIndex = 0;
   List<String> pageNames = [];
 
