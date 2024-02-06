@@ -76,8 +76,8 @@
         {
             "title": "Auto Pickup Location",
             "type": "choice",
-            "special1": "Wing,Centerline,Both",
-            "special2": "Wing,Centerline,Both",
+            "special1": "Wing,Centerline,Both,Neither",
+            "special2": "Wing,Centerline,Both,Neither",
             "page": "Match",
             "export": 10
         },
@@ -108,8 +108,8 @@
         {
             "title": "Majority Notes Scored From Where",
             "type": "choice",
-            "special1": "Speaker,Podium,Centerline,Wing",
-            "special2": "Speaker,Podium,Centerline,Wing",
+            "special1": "Speaker,Podium,Centerline,Wing,None",
+            "special2": "Speaker,Podium,Centerline,Wing,None",
             "page": "Match",
             "export": 15
         },
