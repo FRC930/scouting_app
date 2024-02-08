@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/6/2024 5:44:18 PM"
@@ -11,34 +11,17 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="11"
-  DTS:VersionGUID="{3AFB8551-DCA9-4FA8-9784-21B738E74904}">
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{E9BE945E-B113-4733-8847-1A6D3D4C9C66}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Match_Data_Destination]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}"
-      DTS:ObjectName="Match_Data_Destination">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectRetryCount="1"
-          DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433;User ID=Lydia;Initial Catalog=930Strategy;Provider=SQLOLEDB.1;Application Name=SSIS-Package-{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUXHZ0L7H80KmGDVYLmtxlQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAMukMSmyR8xsUpZnawzAPfcxGgG9MPi+RgTZKIaIs7ywAAAAAOgAAAAAIAACAAAAAVaxSXaW176sm2wqPeRugNK7+di0+Vj31DS7OIAZSsxhAAAABcKsKqGjHWkS3u9CuoTUGrQAAAAO9fXWpO7/q/OK/WyKqe5O0T9SPGhirlG/p1HB5sx7xx+VEWiUuLjMiv5ZtXyWg7f4TRSzX5GwyGrJL3X0zYIc0</DTS:Password>
-        </DTS:ConnectionManager>
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Match_Data_Source]"
+      DTS:refId="Package.ConnectionManagers[Match_Data]"
       DTS:CreationName="FLATFILE"
       DTS:Description="2024 Match Data"
       DTS:DTSID="{7A9D3729-F8C4-4B7A-9F90-249288F109B5}"
-      DTS:ObjectName="Match_Data_Source">
+      DTS:ObjectName="Match_Data">
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Format="Delimited"
@@ -216,6 +199,23 @@
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Match_Data_Destination]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}"
+      DTS:ObjectName="Match_Data_Destination">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433;User ID=Lydia;Initial Catalog=930Strategy;Provider=SQLOLEDB.1;Application Name=SSIS-Package-{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUXHZ0L7H80KmGDVYLmtxlQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACSVUzS0TOL2Pxb2Va47wcWpq7KA3ykJirHFCRbf4guxQAAAAAOgAAAAAIAACAAAACdwH4lmZzNbNAsf5pxqDAg0/ebRSk9VSI0W0zhXlwHPRAAAAC+nqV5zNtDUCl3DpZCUeSUQAAAADu9odJIOEDhti/Qdh8yvbnKPHl89pkGXc+nXBXI9KCSF7B2Ez4jbISXFQTqgEY00SxGaHGYwKRyM+RawEUBWxM</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
   <DTS:Variables />
   <DTS:Executables>
@@ -255,8 +255,8 @@
               <connections>
                 <connection
                   refId="Package\MatchData\Flat File Source.Connections[FlatFileConnection]"
-                  connectionManagerID="Package.ConnectionManagers[Match_Data_Source]"
-                  connectionManagerRefId="Package.ConnectionManagers[Match_Data_Source]"
+                  connectionManagerID="Package.ConnectionManagers[Match_Data]"
+                  connectionManagerRefId="Package.ConnectionManagers[Match_Data]"
                   name="FlatFileConnection" />
               </connections>
               <outputs>
@@ -1130,25 +1130,37 @@
         <NodeLayout
           Size="156,42"
           Id="Package\MatchData\Flat File Source"
-          TopLeft="162,86" />
+          TopLeft="61,76" />
         <NodeLayout
           Size="177,42"
           Id="Package\MatchData\OLE DB Destination"
           TopLeft="153,151" />
         <EdgeLayout
           Id="Package\MatchData.Paths[Flat File Source Output]"
-          TopLeft="240.75,128">
+          TopLeft="139,118">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,23"
+              EndConnector="102.5,33"
               Start="0,0"
-              End="0,15.5">
+              End="102.5,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,15.5" />
+                    End="0,12.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12.5"
+                    Point2="0,16.5"
+                    Point3="4,16.5" />
+                  <mssgle:LineSegment
+                    End="98.5,16.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="98.5,16.5"
+                    Point2="102.5,16.5"
+                    Point3="102.5,20.5" />
+                  <mssgle:LineSegment
+                    End="102.5,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
