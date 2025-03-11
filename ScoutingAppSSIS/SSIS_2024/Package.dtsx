@@ -1,0 +1,1948 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2024 5:44:18 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-AQU4NFK"
+  DTS:CreatorName="DESKTOP-AQU4NFK\HP"
+  DTS:DTSID="{148E1564-8680-476A-9739-F30A91F5E52D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5397.1"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="34"
+  DTS:VersionGUID="{50640673-B633-4EC3-96AF-0758DE619E25}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{A2F8234C-0F00-4756-9E30-FA21EA6E2FD5}"
+      DTS:ObjectName="frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433;User ID=Lydia;Initial Catalog=930Strategy;Provider=SQLOLEDB.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-Package-{A2F8234C-0F00-4756-9E30-FA21EA6E2FD5}frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUXHZ0L7H80KmGDVYLmtxlQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABtFccwsU+TGhiZkutqMWlAOg5l40BuFQr+9SIkcnT88QAAAAAOgAAAAAIAACAAAACebgLc8BL2xCiCWHydK2vcwYDm5D8yo8UdsicaFf+O5hAAAAAQ905/d47otkB71nT+0IhNQAAAAIjklyMBnPrk7cFXvfy/i4zGpct80fWP3hoChMM/L9ipyze7zpY+lQnyaikHddnu+24HR7HjYLK1qFDImpNAQcQ</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Match_Data_Destination]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}"
+      DTS:ObjectName="Match_Data_Destination">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433;User ID=Lydia;Initial Catalog=930Strategy;Provider=SQLOLEDB.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-Package-{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUXHZ0L7H80KmGDVYLmtxlQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAYwbDeeAwA5aG0Bjcvjfoptcln73XLkfmRDw6nDh9CPAAAAAAOgAAAAAIAACAAAABWJvyP0Ak0peqVJnXKtGtvBG9RTM/h6jWsLYGLsJyI9hAAAAAnGRIWgJPpYfBjHwnlLH3MQAAAAGoCFp4fFFyPrC4vlBcXnEn0r4kKeg8Z4P1fKvxl7i+vgSnGaxdY24CpPSkNIBWUj8/FHg0FbS/3RcXBi+rRLCg</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Match_Data_Source]"
+      DTS:CreationName="FLATFILE"
+      DTS:Description="2024 Match Data"
+      DTS:DTSID="{7A9D3729-F8C4-4B7A-9F90-249288F109B5}"
+      DTS:ObjectName="Match_Data_Source">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\FRC930\Scouting_Text_Files\Match_Data.txt">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Team Number "
+              DTS:DTSID="{98A56796-FB1F-4582-93B7-452730CBDD5C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Match Number"
+              DTS:DTSID="{0F85D597-02C7-4037-BAA1-FAA7FB59917E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="4"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Alliance Color"
+              DTS:DTSID="{6B992E30-AB78-4479-9FC2-DFED2C85AA8D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Scouter Name"
+              DTS:DTSID="{B28E5D31-383F-4518-BCDA-3737DA6321F8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Competition"
+              DTS:DTSID="{45634D78-5601-469A-AF09-807A0C1623A8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Starting Position "
+              DTS:DTSID="{9CFECE4B-1281-4B01-9A93-30D45A960AC8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Auto Notes in Speaker "
+              DTS:DTSID="{0B2DF01B-6DAC-45B7-975F-BDB04A5A6B00}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Auto Notes in Amp "
+              DTS:DTSID="{AFB9DBAD-0A37-4386-944D-567B31A262F8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Auto Pickup Location "
+              DTS:DTSID="{8C733CC5-C0A1-4D65-9230-6B21C62D52DE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Tele Notes in Speaker "
+              DTS:DTSID="{E20ABCF6-D0F4-48CA-9AF5-EA5CB38D426C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Tele Notes in Amp "
+              DTS:DTSID="{08D70C61-D4C8-4EC0-9643-FA678B7D0592}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Notes in Trap "
+              DTS:DTSID="{A358B345-2EF3-4F3D-9731-F6E8FC2930B9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Where Notes Scored "
+              DTS:DTSID="{9B0342E7-4801-49C0-BE72-A87D2D95680D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Climb "
+              DTS:DTSID="{A9734B7D-278B-4240-9ACD-CF84540F3A15}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Driver Confidence "
+              DTS:DTSID="{3B53AA1E-1380-4DBE-B788-5820431BDB0F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Intake Preference "
+              DTS:DTSID="{76F6DC7D-BC74-4C1A-BA50-C7DD82E5C3A6}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="20"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Disabled "
+              DTS:DTSID="{2B12F00A-0C6B-43A7-A8A6-A411396A7FE3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Defense Rating "
+              DTS:DTSID="{641DE511-05EB-4226-928C-D5EA3290A1B9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="800"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Comments"
+              DTS:DTSID="{53174162-1772-4E75-8AAC-3C1C47A9D2B7}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Pit_Data_Destination]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{ea22770b-2cdc-45d7-aee2-46334e18dd52}"
+      DTS:ObjectName="Pit_Data_Destination">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433;User ID=Lydia;Initial Catalog=930Strategy;Provider=SQLOLEDB.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-Package-{FDDA02C8-55DE-428D-BE9F-3D6EFFE011BA}frc930.ctnhg0z4iiia.us-east-2.rds.amazonaws.com,1433.930Strategy.Lydia;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUXHZ0L7H80KmGDVYLmtxlQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABdUMSR4HlikibVCrnMURFRGPqsGttStFB4iRLvSAfIzgAAAAAOgAAAAAIAACAAAAD9mCiKpDxjcraM/ynisK4P/H/TfKWmIs0b+oRulM+f8xAAAADnZT2nzn1OK/rbXXy/QpshQAAAAGap2vh6WYcPldjWEwJnSHniSfORghc5S3phTfcPy8qFjX7p9XtIz2vUJjRpPH8n3bN7ATbhz7WoLj/dBpw3uOw</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Pit_Data_Source]"
+      DTS:CreationName="FLATFILE"
+      DTS:Description="Pit Data source"
+      DTS:DTSID="{F2CC2805-8A61-4512-9652-25895B8E0126}"
+      DTS:ObjectName="Pit_Data_Source">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\FRC930\Scouting_Text_Files\Pit_Data.txt">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="20"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Team Number"
+              DTS:DTSID="{A07404D1-B6DE-4C74-967C-73F4C582565C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Drive Train"
+              DTS:DTSID="{9E8B7811-DB92-4AC1-8AF0-D4FE32D54B91}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="14"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Robot Width"
+              DTS:DTSID="{B5D3B18C-E14F-41F5-B4AA-87984C41BC58}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:DataType="14"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Robot Height"
+              DTS:DTSID="{8C296D5A-9BB9-4C18-8BF6-0B8A96EDCB28}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="15"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Programming Language"
+              DTS:DTSID="{F91A69CC-228A-4A1D-8856-A43248E39BFA}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Robot Name"
+              DTS:DTSID="{9191F637-4CF5-4100-BE03-AA4F95FC0140}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x003B_"
+              DTS:MaximumWidth="200"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Comments"
+              DTS:DTSID="{08702B40-C341-4646-9D71-D7BA5AE9D01C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="15"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Competition"
+              DTS:DTSID="{7EA83668-CB31-4588-B9CD-57E27050D56C}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C443F679-5DC3-4A06-B96F-6E57D183CA09}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{A2F8234C-0F00-4756-9E30-FA21EA6E2FD5}"
+          SQLTask:SqlStatementSource="Truncate Table dbo.MatchData_Staging" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task 1"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{23D2180C-245A-4E48-8F12-1643F44A1285}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task 1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{A2F8234C-0F00-4756-9E30-FA21EA6E2FD5}"
+          SQLTask:SqlStatementSource="Truncate Table dbo.PitData_Staging" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\MatchData"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{8A3E4ECA-9ED8-4310-AF1D-31485B48F94E}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="MatchData"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\MatchData\Match Flat File Source"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="1033"
+              name="Match Flat File Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MatchData\Match Flat File Source.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Match_Data_Source]"
+                  connectionManagerRefId="Package.ConnectionManagers[Match_Data_Source]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Team Number ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Team Number ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Team Number ]"
+                      name="Team Number "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Match Number]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Match Number]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Match Number]"
+                      name="Match Number"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Alliance Color]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Alliance Color]"
+                      length="4"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Alliance Color]"
+                      name="Alliance Color"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Scouter Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Scouter Name]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Scouter Name]"
+                      name="Scouter Name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Competition]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Competition]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Competition]"
+                      name="Competition"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Starting Position ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Starting Position ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Starting Position ]"
+                      name="Starting Position "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Speaker ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Notes in Speaker ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Speaker ]"
+                      name="Auto Notes in Speaker "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Amp ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Notes in Amp ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Amp ]"
+                      name="Auto Notes in Amp "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Pickup Location ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Pickup Location ]"
+                      length="10"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Pickup Location ]"
+                      name="Auto Pickup Location "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Speaker ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Tele Notes in Speaker ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Speaker ]"
+                      name="Tele Notes in Speaker "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Amp ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Tele Notes in Amp ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Amp ]"
+                      name="Tele Notes in Amp "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Notes in Trap ]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Notes in Trap ]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Notes in Trap ]"
+                      name="Notes in Trap "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Where Notes Scored ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Where Notes Scored ]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Where Notes Scored ]"
+                      name="Where Notes Scored "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Climb ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Climb ]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Climb ]"
+                      name="Climb "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Driver Confidence ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Driver Confidence ]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Driver Confidence ]"
+                      name="Driver Confidence "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Intake Preference ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Intake Preference ]"
+                      length="10"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Intake Preference ]"
+                      name="Intake Preference "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Disabled ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Disabled ]"
+                      length="20"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Disabled ]"
+                      name="Disabled "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Defense Rating ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Defense Rating ]"
+                      length="50"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Defense Rating ]"
+                      name="Defense Rating "
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Comments]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Comments]"
+                      length="800"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Comments]"
+                      name="Comments"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Team Number ]"
+                      dataType="i8"
+                      name="Team Number " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Match Number]"
+                      dataType="i8"
+                      name="Match Number" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Alliance Color]"
+                      dataType="wstr"
+                      length="4"
+                      name="Alliance Color" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Scouter Name]"
+                      dataType="wstr"
+                      length="50"
+                      name="Scouter Name" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Competition]"
+                      dataType="wstr"
+                      length="50"
+                      name="Competition" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Starting Position ]"
+                      dataType="i8"
+                      name="Starting Position " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Notes in Speaker ]"
+                      dataType="i8"
+                      name="Auto Notes in Speaker " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Notes in Amp ]"
+                      dataType="i8"
+                      name="Auto Notes in Amp " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Auto Pickup Location ]"
+                      dataType="wstr"
+                      length="10"
+                      name="Auto Pickup Location " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Tele Notes in Speaker ]"
+                      dataType="i8"
+                      name="Tele Notes in Speaker " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Tele Notes in Amp ]"
+                      dataType="i8"
+                      name="Tele Notes in Amp " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Notes in Trap ]"
+                      dataType="i8"
+                      name="Notes in Trap " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Where Notes Scored ]"
+                      dataType="wstr"
+                      length="50"
+                      name="Where Notes Scored " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Climb ]"
+                      dataType="wstr"
+                      length="50"
+                      name="Climb " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Driver Confidence ]"
+                      dataType="wstr"
+                      length="50"
+                      name="Driver Confidence " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Intake Preference ]"
+                      dataType="wstr"
+                      length="10"
+                      name="Intake Preference " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Disabled ]"
+                      dataType="wstr"
+                      length="20"
+                      name="Disabled " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Defense Rating ]"
+                      dataType="wstr"
+                      length="50"
+                      name="Defense Rating " />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Comments]"
+                      dataType="wstr"
+                      length="800"
+                      name="Comments" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="1252"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MatchData\Match OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Match OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MatchData_Staging]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MatchData\Match OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Match_Data_Destination]"
+                  connectionManagerRefId="Package.ConnectionManagers[Match_Data_Destination]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Competition]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Competition"
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Competition]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Competition]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Comments]"
+                      cachedDataType="wstr"
+                      cachedLength="800"
+                      cachedName="Comments"
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Comments]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Team Number ]"
+                      cachedDataType="i8"
+                      cachedName="Team Number "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TeamNumber]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Team Number ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Match Number]"
+                      cachedDataType="i8"
+                      cachedName="Match Number"
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MatchNumber]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Match Number]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Alliance Color]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="Alliance Color"
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AllianceColor]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Alliance Color]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Scouter Name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Scouter Name"
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScouterName]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Scouter Name]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Starting Position ]"
+                      cachedDataType="i8"
+                      cachedName="Starting Position "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_Starting_Location]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Starting Position ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Auto Notes in Speaker ]"
+                      cachedDataType="i8"
+                      cachedName="Auto Notes in Speaker "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_ScoreNotes_Speaker]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Speaker ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Auto Pickup Location ]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Auto Pickup Location "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_PickupLocation]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Pickup Location ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Tele Notes in Speaker ]"
+                      cachedDataType="i8"
+                      cachedName="Tele Notes in Speaker "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Speaker]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Speaker ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Notes in Trap ]"
+                      cachedDataType="i8"
+                      cachedName="Notes in Trap "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Trap]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Notes in Trap ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Where Notes Scored ]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Where Notes Scored "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Majority_Notes_Scored_Where]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Where Notes Scored ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Climb ]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Climb "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ClimbType]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Climb ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Driver Confidence ]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Driver Confidence "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DriverConfidence]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Driver Confidence ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Intake Preference ]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Intake Preference "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IntakePreference]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Intake Preference ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Defense Rating ]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Defense Rating "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DefenseRating]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Defense Rating ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Tele Notes in Amp ]"
+                      cachedDataType="i8"
+                      cachedName="Tele Notes in Amp "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Amp]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Tele Notes in Amp ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Auto Notes in Amp ]"
+                      cachedDataType="i8"
+                      cachedName="Auto Notes in Amp "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_ScoreNotes_Amp]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Auto Notes in Amp ]" />
+                    <inputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Disabled ]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="Disabled "
+                      externalMetadataColumnId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Disabled]"
+                      lineageId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output].Columns[Disabled ]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TeamNumber]"
+                      dataType="i4"
+                      name="TeamNumber" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MatchNumber]"
+                      dataType="i4"
+                      name="MatchNumber" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AllianceColor]"
+                      dataType="wstr"
+                      length="4"
+                      name="AllianceColor" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScouterName]"
+                      dataType="wstr"
+                      length="50"
+                      name="ScouterName" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Competition]"
+                      dataType="wstr"
+                      length="50"
+                      name="Competition" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_Starting_Location]"
+                      dataType="i4"
+                      name="Auto_Starting_Location" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_ScoreNotes_Speaker]"
+                      dataType="i4"
+                      name="Auto_ScoreNotes_Speaker" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_ScoreNotes_Amp]"
+                      dataType="i4"
+                      name="Auto_ScoreNotes_Amp" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Auto_PickupLocation]"
+                      dataType="wstr"
+                      length="10"
+                      name="Auto_PickupLocation" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Speaker]"
+                      dataType="i4"
+                      name="Tele_ScoreNotes_Speaker" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Amp]"
+                      dataType="i4"
+                      name="Tele_ScoreNotes_Amp" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Tele_ScoreNotes_Trap]"
+                      dataType="i4"
+                      name="Tele_ScoreNotes_Trap" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Majority_Notes_Scored_Where]"
+                      dataType="wstr"
+                      length="50"
+                      name="Majority_Notes_Scored_Where" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ClimbType]"
+                      dataType="wstr"
+                      length="50"
+                      name="ClimbType" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DriverConfidence]"
+                      dataType="wstr"
+                      length="50"
+                      name="DriverConfidence" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IntakePreference]"
+                      dataType="wstr"
+                      length="10"
+                      name="IntakePreference" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DefenseRating]"
+                      dataType="wstr"
+                      length="50"
+                      name="DefenseRating" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                      dataType="wstr"
+                      length="800"
+                      name="Comments" />
+                    <externalMetadataColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Disabled]"
+                      dataType="wstr"
+                      length="20"
+                      name="Disabled" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MatchData\Match OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MatchData\Match OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MatchData\Match OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MatchData\Match OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\MatchData.Paths[Flat File Source Output]"
+              endId="Package\MatchData\Match OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Flat File Source Output"
+              startId="Package\MatchData\Match Flat File Source.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\PitData"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{28fd29a8-5399-431d-b499-6266f643b180}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="PitData"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\PitData\Pit Flat File Source"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="1033"
+              name="Pit Flat File Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PitData\Pit Flat File Source.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Pit_Data_Source]"
+                  connectionManagerRefId="Package.ConnectionManagers[Pit_Data_Source]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Team Number]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Team Number]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Team Number]"
+                      name="Team Number"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Drive Train]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Drive Train]"
+                      length="50"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Drive Train]"
+                      name="Drive Train"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Width]"
+                      dataType="decimal"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Width]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Width]"
+                      name="Robot Width"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Height]"
+                      dataType="decimal"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Height]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Height]"
+                      name="Robot Height"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Programming Language]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Programming Language]"
+                      length="15"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Programming Language]"
+                      name="Programming Language"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Name]"
+                      length="50"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Name]"
+                      name="Robot Name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Comments]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Comments]"
+                      length="200"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Comments]"
+                      name="Comments"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Competition]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Competition]"
+                      length="15"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Competition]"
+                      name="Competition"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Comments]"
+                      dataType="wstr"
+                      length="200"
+                      name="Comments" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Team Number]"
+                      dataType="i8"
+                      name="Team Number" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Drive Train]"
+                      dataType="wstr"
+                      length="50"
+                      name="Drive Train" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Width]"
+                      dataType="decimal"
+                      name="Robot Width" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Height]"
+                      dataType="decimal"
+                      name="Robot Height" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Programming Language]"
+                      dataType="wstr"
+                      length="15"
+                      name="Programming Language" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Robot Name]"
+                      dataType="wstr"
+                      length="50"
+                      name="Robot Name" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Competition]"
+                      dataType="wstr"
+                      length="15"
+                      name="Competition" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="1252"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PitData\Pit OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Pit OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[PitData_Staging]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PitData\Pit OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Pit_Data_Destination]"
+                  connectionManagerRefId="Package.ConnectionManagers[Pit_Data_Destination]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Comments]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="Comments"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Comments]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Drive Train]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Drive Train"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DriveTrain]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Drive Train]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Robot Width]"
+                      cachedDataType="decimal"
+                      cachedName="Robot Width"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotWidth]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Width]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Robot Height]"
+                      cachedDataType="decimal"
+                      cachedName="Robot Height"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotHeight]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Height]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Programming Language]"
+                      cachedDataType="wstr"
+                      cachedLength="15"
+                      cachedName="Programming Language"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProgrammingLanguage]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Programming Language]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Robot Name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Robot Name"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotName]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Robot Name]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Competition]"
+                      cachedDataType="wstr"
+                      cachedLength="15"
+                      cachedName="Competition"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Competition]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Competition]" />
+                    <inputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Team Number]"
+                      cachedDataType="i8"
+                      cachedName="Team Number"
+                      externalMetadataColumnId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TeamNumber]"
+                      lineageId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output].Columns[Team Number]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TeamNumber]"
+                      dataType="i4"
+                      name="TeamNumber" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Competition]"
+                      dataType="wstr"
+                      length="15"
+                      name="Competition" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                      dataType="wstr"
+                      length="200"
+                      name="Comments" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DriveTrain]"
+                      dataType="wstr"
+                      length="50"
+                      name="DriveTrain" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotWidth]"
+                      dataType="numeric"
+                      name="RobotWidth"
+                      precision="4"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotHeight]"
+                      dataType="numeric"
+                      name="RobotHeight"
+                      precision="4"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProgrammingLanguage]"
+                      dataType="wstr"
+                      length="15"
+                      name="ProgrammingLanguage" />
+                    <externalMetadataColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RobotName]"
+                      dataType="wstr"
+                      length="50"
+                      name="RobotName" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PitData\Pit OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PitData\Pit OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PitData\Pit OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PitData\Pit OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\PitData.Paths[Flat File Source Output]"
+              endId="Package\PitData\Pit OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Flat File Source Output"
+              startId="Package\PitData\Pit Flat File Source.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{A1822C15-42EB-4212-AA69-E2AF9189DE48}"
+      DTS:From="Package\Execute SQL Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\MatchData" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{EA55BD4E-234B-4807-82C5-3B84B18FCD8F}"
+      DTS:From="Package\Execute SQL Task 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\PitData" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\MatchData"
+          TopLeft="104,97" />
+        <NodeLayout
+          Size="115,42"
+          Id="Package\PitData"
+          TopLeft="415,113" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\Execute SQL Task"
+          TopLeft="82,3" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Execute SQL Task 1"
+          TopLeft="383,25" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="168.5,45">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="472.5,67">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46"
+              Start="0,0"
+              End="0,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\MatchData">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="189,42"
+          Id="Package\MatchData\Match Flat File Source"
+          TopLeft="162,86" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\MatchData\Match OLE DB Destination"
+          TopLeft="153,151" />
+        <EdgeLayout
+          Id="Package\MatchData.Paths[Flat File Source Output]"
+          TopLeft="257.25,128">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,23"
+              Start="0,0"
+              End="0,15.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\MatchData\Match OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\PitData">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="172,42"
+          Id="Package\PitData\Pit Flat File Source"
+          TopLeft="163,38" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\PitData\Pit OLE DB Destination"
+          TopLeft="153,151" />
+        <EdgeLayout
+          Id="Package\PitData.Paths[Flat File Source Output]"
+          TopLeft="249.25,80">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\PitData\Pit OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -50,3 +50,6 @@ app.*.map.json
 
 scripts/*
 !scripts/*.py
+
+#Ignore this, comeback and fix it 2/7
+/ScoutingAppSSIS/SSIS_2024/.vs/

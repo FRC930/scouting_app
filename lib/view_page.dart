@@ -373,7 +373,7 @@ class QRCodeViewPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(40),
           child: CustomPaint(
-            size: const Size.square(360.0),
+            size: const Size.square(450.0),
             painter: QrPainter(
               data: qrCodeData,
               version: QrVersions.auto,
